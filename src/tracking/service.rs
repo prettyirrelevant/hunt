@@ -12,10 +12,8 @@ use crate::{
     jobs::{self, Stage},
 };
 
-/// Below this the reply goes to you instead of moving the job.
 const SURE: f32 = 0.8;
 
-/// Moves jobs on clear replies and asks you about unclear ones.
 pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
     let settings = app.settings().await?;
     let Some(address) = settings.email else { return Ok(()) };
@@ -117,7 +115,6 @@ pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
     Ok(())
 }
 
-/// Your answer about a reply hunt was unsure of.
 pub async fn resolve(app: &App, message: i64, class: Class) -> Result<()> {
     let (job_id, subject): (Option<i64>, String) =
         sqlx::query_as("select job_id, subject from messages where id = $1").bind(message).fetch_one(&app.db).await?;

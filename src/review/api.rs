@@ -82,7 +82,6 @@ pub async fn get_draft(id: i64) -> Result<DraftView, Error> {
     })
 }
 
-/// Keeps your edit and rebuilds the cover letter PDF from it.
 #[server]
 pub async fn save_letter(id: i64, letter: String) -> Result<(), Error> {
     use std::sync::Arc;

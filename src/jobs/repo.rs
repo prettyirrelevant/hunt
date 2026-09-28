@@ -7,7 +7,6 @@ use sqlx::{PgExecutor, PgPool};
 
 use super::model::{Job, Posting, Stage};
 
-/// Inserts unseen postings and returns their ids. Seen ones refresh `last_seen`.
 pub async fn add(db: &PgPool, postings: &[Posting]) -> Result<Vec<i64>> {
     let mut tx = db.begin().await?;
     // Two sweeps at once would each miss the other's twins and store a role twice.
@@ -102,12 +101,10 @@ pub async fn get_many(db: &PgPool, ids: &[i64]) -> Result<Vec<Job>> {
     Ok(sqlx::query_as(crate::select_jobs!("where id = any($1) order by id")).bind(ids).fetch_all(db).await?)
 }
 
-/// Moves each job to `to` and records why.
 pub async fn move_to(db: &PgPool, moves: &[(i64, &str)], to: Stage) -> Result<()> {
     shift(db, moves, None, to).await.map(drop)
 }
 
-/// Moves only jobs still at `from`, and returns the ids that moved.
 pub async fn move_from(db: &PgPool, from: Stage, moves: &[(i64, &str)], to: Stage) -> Result<Vec<i64>> {
     shift(db, moves, Some(from), to).await
 }

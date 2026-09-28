@@ -1,8 +1,6 @@
 # Copy to ~/.hunt/hunt.toml to change a default. Every key is optional.
 # HUNT_<KEY> environment variables override this file.
 
-# "embedded" runs PostgreSQL inside hunt.
-# A postgres:// URL uses your own server. It needs pgvector and pg_trgm.
-database = "embedded"
+database = "embedded"   # or a postgres:// URL
 port = 7777
 log = "hunt=info,warn"

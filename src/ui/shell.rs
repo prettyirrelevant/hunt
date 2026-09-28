@@ -152,7 +152,6 @@ fn Shortcuts() -> impl IntoView {
     on_cleanup(move || handle.remove());
 }
 
-/// Keys typed into a field belong to the field.
 pub fn typing(event: &leptos::ev::KeyboardEvent) -> bool {
     use leptos::wasm_bindgen::JsCast;
     event

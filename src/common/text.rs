@@ -19,14 +19,16 @@ static PII: LazyLock<[(Regex, &str); 4]> = LazyLock::new(|| {
     ]
 });
 
+/// Date ranges have fewer digits.
+const PHONE_MIN_DIGITS: usize = 10;
+
 pub fn scrub(text: &str) -> String {
     let text =
         PII.iter().fold(text.to_string(), |text, (pattern, mask)| pattern.replace_all(&text, *mask).into_owned());
-    // Only ten or more digits count as a phone number. Date ranges have fewer.
     PHONE
         .replace_all(&text, |m: &regex::Captures| {
             let digits = m[0].chars().filter(char::is_ascii_digit).count();
-            if digits >= 10 { "[phone]".to_string() } else { m[0].to_string() }
+            if digits >= PHONE_MIN_DIGITS { "[phone]".to_string() } else { m[0].to_string() }
         })
         .into_owned()
 }

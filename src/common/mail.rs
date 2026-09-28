@@ -15,7 +15,7 @@ const SMTP: &str = "smtp.gmail.com";
 const IMAP: (&str, u16) = ("imap.gmail.com", 993);
 
 fn keychain(config: &Config) -> String {
-    format!("hunt-gmail{}", config.instance())
+    format!("hunt-gmail{}", config.os_suffix())
 }
 
 pub struct Mailbox {
@@ -71,7 +71,6 @@ impl Mailbox {
         Ok(())
     }
 
-    /// Inbox messages with a UID above `after`, oldest first.
     pub async fn since(&self, after: u32) -> Result<Vec<Incoming>> {
         let mut roots = tokio_rustls::rustls::RootCertStore::empty();
         roots.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());

@@ -21,7 +21,6 @@ pub async fn save_embeddings(db: &PgPool, ids: &[i64], embeddings: &[Vector]) ->
     Ok(())
 }
 
-/// Of `companies`, the ones you applied to in the last 90 days, lowercased.
 pub async fn applied_recently(db: &PgPool, companies: &[&str]) -> Result<HashSet<String>> {
     Ok(sqlx::query_scalar(
         "select distinct lower(company) from jobs

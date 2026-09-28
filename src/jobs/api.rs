@@ -6,7 +6,6 @@ use crate::{insights::model::Event, ui::error::Error};
 
 pub const JOBS_PAGE: i64 = 30;
 
-/// The list filters, in the order the page shows them.
 pub const SHOWS: [(&str, &str); 7] = [
     ("", "Worth a look"),
     ("manual", "Do it yourself"),
@@ -26,10 +25,8 @@ pub struct JobList {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct JobDetail {
     pub job: Job,
-    /// The description as sanitized HTML.
     pub html: String,
     pub record: Vec<Event>,
-    /// Session videos and screenshots from the automated application.
     pub recording: Vec<String>,
 }
 

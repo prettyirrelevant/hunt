@@ -33,10 +33,7 @@ impl Want {
 
 #[derive(Debug, PartialEq)]
 pub enum Verdict {
-    Keep {
-        flags: Vec<&'static str>,
-    },
-    /// A person has to do part of the application.
+    Keep { flags: Vec<&'static str> },
     Manual(String),
     Drop(String),
 }

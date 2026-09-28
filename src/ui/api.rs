@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 
 use super::error::Error;
 
-/// What the sidebar shows on every page.
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Nav {
     pub ready: i64,

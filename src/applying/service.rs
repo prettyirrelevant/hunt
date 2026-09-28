@@ -126,7 +126,6 @@ fn form_prompt(job: &Job, contact: &crate::config::Contact, answers: &[Answer], 
     )
 }
 
-/// Deletes videos 30 days after an application ends (180 for offers), and the oldest past 5 GB.
 pub async fn prune(app: &App) -> Result<()> {
     let jobs: Vec<(i64, Stage, chrono::DateTime<Utc>)> = sqlx::query_as::<_, (i64, String, chrono::DateTime<Utc>)>(
         "select id, stage, stage_at from jobs

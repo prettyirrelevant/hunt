@@ -19,9 +19,7 @@ use crate::{
 };
 
 pub const SHORTLIST_AT: i32 = 70;
-/// Most AI assessments per day.
 const AI_PER_DAY: i64 = 80;
-/// How much closer to your skips a job must be to hide it before a model exists.
 const ROCCHIO_MARGIN: f64 = 0.08;
 const ROCCHIO_MIN_SKIPS: i64 = 5;
 

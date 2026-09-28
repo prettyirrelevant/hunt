@@ -31,7 +31,6 @@ pub struct Provider {
     pub name: String,
     pub on: bool,
     pub status: String,
-    /// The model it reads your sites with. Empty means its default.
     pub web_model: String,
     pub models: Vec<String>,
 }
@@ -67,7 +66,6 @@ pub async fn get_settings() -> Result<View, Error> {
             models,
         })
         .collect();
-    // Turned-on providers first, in your order.
     providers.sort_by_key(|p| s.providers.iter().position(|q| q.name() == p.name).unwrap_or(usize::MAX));
     let email = s.email.clone().unwrap_or_default();
     Ok(View {
@@ -128,7 +126,6 @@ pub async fn save_contact(contact: Contact) -> Result<(), Error> {
     Ok(Settings::edit(&app.db, |s| s.contact = contact).await?)
 }
 
-/// `order` lists the providers you turned on, first choice first.
 #[server]
 pub async fn save_providers(order: Vec<String>) -> Result<(), Error> {
     use std::sync::Arc;
@@ -141,7 +138,6 @@ pub async fn save_providers(order: Vec<String>) -> Result<(), Error> {
     Ok(Settings::edit(&app.db, |s| s.providers = providers).await?)
 }
 
-/// Saves `model` after one test call. Empty means the provider's default.
 #[server]
 pub async fn save_web_model(provider: String, model: String) -> Result<(), Error> {
     use std::sync::Arc;
@@ -168,7 +164,6 @@ pub async fn save_web_model(provider: String, model: String) -> Result<(), Error
     .await?)
 }
 
-/// The password goes to the Keychain, the address to settings.
 #[server]
 pub async fn save_email(address: String, password: String) -> Result<(), Error> {
     use std::sync::Arc;

@@ -80,10 +80,10 @@ The crate compiles twice: `ssr` for the server and `hydrate` for WASM.
 ## Style
 
 - Add a helper only for a second caller.
-- Comment why, never what. Keep comments to one short line.
+- Prefer a name, type or check to a comment. Comment only a why the code cannot show.
 - Keep `///` docs on `JsonSchema` types. The AI reads them as instructions.
 - Split a file when it holds two concerns.
-- Write docs and comments to the rules in the user's global CLAUDE.md.
+- Write docs and comments in short, direct sentences, active voice, one idea each.
 
 ## Tests
 
@@ -91,7 +91,7 @@ The crate compiles twice: `ssr` for the server and `hydrate` for WASM.
 - `tests/integration/`: a PostgreSQL in `target/`. Each test calls `fresh_db()`.
 - `tests/fixtures/`: saved API responses. Every source parser has a fixture test.
 - Test behaviour through public interfaces. No snapshots or golden files.
-- Tests and dev builds never touch `~/.hunt`. OS-level names carry `Config::instance()`.
+- Tests and dev builds never touch `~/.hunt`. OS-level names carry `Config::os_suffix()`.
 
 ## Product rules
 

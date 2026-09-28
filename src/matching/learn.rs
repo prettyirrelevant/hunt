@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 use crate::jobs::{Job, WorkMode};
 use crate::profile::model::Profile;
 
-/// Below this many examples, overall or of the rarer label, a model learns noise.
 const MIN_EXAMPLES: usize = 30;
+const HOLD_OUT_EVERY: usize = 5;
 const MIN_PER_CLASS: usize = 5;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -15,7 +15,6 @@ pub struct Model {
     pub weights: Vec<f64>,
     pub bias: f64,
     pub examples: usize,
-    /// Held-out accuracy, when there were enough jobs to hold out.
     pub accuracy: Option<f64>,
 }
 
@@ -36,8 +35,8 @@ impl Model {
             Some((model.params().iter().map(|w| w * sign).collect::<Vec<f64>>(), model.intercept() * sign))
         };
 
-        // Every fifth job is held out to measure accuracy.
-        let (train, test): (Vec<_>, Vec<_>) = rows.iter().cloned().enumerate().partition(|(i, _)| i % 5 != 0);
+        let (train, test): (Vec<_>, Vec<_>) =
+            rows.iter().cloned().enumerate().partition(|(i, _)| i % HOLD_OUT_EVERY != 0);
         let train: Vec<_> = train.into_iter().map(|(_, row)| row).collect();
         let accuracy = fit(&train).map(|(weights, bias)| {
             let held_out = Model { weights, bias, examples: train.len(), accuracy: None };
@@ -55,7 +54,6 @@ impl Model {
     }
 }
 
-/// The job's meaning plus the few facts that decide most calls.
 pub fn features(job: &Job, embedding: &[f32], profile: &Profile, fit: Option<u8>) -> Vec<f64> {
     let skills: Vec<String> = profile.skills.iter().map(|s| s.to_lowercase()).collect();
     let overlap = if job.skills.is_empty() {
@@ -74,7 +72,6 @@ pub fn features(job: &Job, embedding: &[f32], profile: &Profile, fit: Option<u8>
     embedding.iter().map(|&v| f64::from(v)).chain(facts).collect()
 }
 
-/// Similarity to your approvals minus similarity to your skips.
 pub fn rocchio(embedding: &[f32], liked: &[f32], skipped: &[f32]) -> f64 {
     cosine(embedding, liked) - cosine(embedding, skipped)
 }

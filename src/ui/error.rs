@@ -6,7 +6,6 @@ use leptos::server_fn::{
 };
 use serde::{Deserialize, Serialize};
 
-/// A server function error. The UI shows the message as is.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Error(pub String);
 

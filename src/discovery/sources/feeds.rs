@@ -114,9 +114,9 @@ impl Feed {
             Feed::Jobicy => lenient::<Jobicy>(serde_json::from_slice::<ListOf>(body)?.jobs),
             Feed::Remotive => lenient::<Remotive>(serde_json::from_slice::<ListOf>(body)?.jobs),
             Feed::RemoteOk => {
-                // The first element is the API's legal notice.
                 let items: Vec<serde_json::Value> = serde_json::from_slice(body)?;
-                lenient::<RemoteOk>(items.into_iter().skip(1).collect())
+                let postings_after_legal_notice = items.into_iter().skip(1).collect();
+                lenient::<RemoteOk>(postings_after_legal_notice)
             }
             Feed::WeWorkRemotely => rss(body)?,
             Feed::WorkingNomads => lenient::<WorkingNomads>(serde_json::from_slice(body)?),
@@ -139,7 +139,6 @@ struct DataOf {
     data: Vec<serde_json::Value>,
 }
 
-/// Parses each posting on its own and skips malformed ones.
 fn lenient<T: serde::de::DeserializeOwned + Into<Posting>>(items: Vec<serde_json::Value>) -> Vec<Posting> {
     items.into_iter().filter_map(|item| serde_json::from_value::<T>(item).ok()).map(Into::into).collect()
 }
@@ -300,8 +299,7 @@ struct WorkingNomads {
 
 impl From<WorkingNomads> for Posting {
     fn from(j: WorkingNomads) -> Posting {
-        // Titles arrive as "Company - Role".
-        let title = j.title.split_once(" - ").map_or(j.title.as_str(), |(_, role)| role);
+        let title = j.title.split_once(" - ").map_or(j.title.as_str(), |(_company, role)| role);
         let mut p = remote(Posting::new("workingnomads", &j.url, &j.company_name, title, &j.url), &j.location);
         p.description = markdown(&j.description);
         p.skills = j.tags.split(',').map(|t| t.trim().to_string()).filter(|t| !t.is_empty()).collect();
@@ -369,7 +367,6 @@ struct LandingLocation {
 
 impl From<LandingJobs> for Posting {
     fn from(j: LandingJobs) -> Posting {
-        // "https://landing.jobs/at/{company}/{role}"
         let company = j.url.split('/').nth(4).unwrap_or("").replace('-', " ");
         let mut p = Posting::new("landingjobs", j.id, &company, &j.title, &j.url);
         p.work_mode = if j.remote { WorkMode::Remote } else { WorkMode::Onsite };
@@ -417,8 +414,7 @@ impl From<FourDayWeek> for Posting {
         let mut p = Posting::new("4dayweek", &j.id, &j.company_name, &j.title, &url);
         let place = j.locations.iter().filter_map(|l| l.country.clone()).collect::<Vec<_>>().join(", ");
         p = if j.work_arrangement == "remote" { remote(p, &place) } else { p };
-        // Salaries arrive in cents.
-        let dollars = |n: Option<i64>| n.map(|c| c / 100);
+        let dollars = |cents: Option<i64>| cents.map(|c| c / 100);
         yearly(&mut p, dollars(j.salary_lower), dollars(j.salary_upper), j.salary_period.as_deref(), j.salary_currency);
         p.seniority = j.level;
         p.posted_at = j.posted.and_then(|s| Utc.timestamp_opt(s, 0).single());
@@ -495,7 +491,6 @@ struct HnComment {
     created_at: Option<DateTime<Utc>>,
 }
 
-/// Top-level comments in "Who is hiring?" open with `Company | Role | Place | ...`.
 fn hacker_news(body: &[u8]) -> Result<Vec<Posting>> {
     let item: HnItem = serde_json::from_slice(body)?;
     Ok(item

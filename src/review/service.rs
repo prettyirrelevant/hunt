@@ -69,7 +69,6 @@ fn prompt(job: &Job, base_cv: &str, evidence: &str) -> String {
     )
 }
 
-/// Removes skills your material does not show and flags numbers it does not contain.
 fn keep_to_the_facts(tailored: &mut Tailored, sources: &str) {
     let sources = sources.to_lowercase();
     for group in &mut tailored.cv.skills {

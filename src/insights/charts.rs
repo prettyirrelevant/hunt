@@ -7,7 +7,6 @@ use charming::{
 
 use super::model::{Flow, Week};
 
-/// Theme colours live in CSS custom properties, so light and dark both work.
 fn token(name: &str) -> String {
     web_sys::window()
         .and_then(|w| w.document()?.document_element().map(|root| (w, root)))

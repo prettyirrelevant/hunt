@@ -19,10 +19,8 @@ const TIMEOUT: Duration = Duration::from_mins(4);
 const BROWSE_TIMEOUT: Duration = Duration::from_mins(10);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
-/// claude has no command that lists its models.
-const CLAUDE_MODELS: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
-/// How long a provider rests after a usage limit or login failure.
-const REST: Duration = Duration::from_mins(30);
+const CLAUDE_ALIASES: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
+const USAGE_LIMIT_REST: Duration = Duration::from_mins(30);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -73,7 +71,6 @@ enum Tools<'a> {
 }
 
 enum Failure {
-    /// Out of credits, rate limited or logged out.
     Unavailable(String),
     Failed(anyhow::Error),
 }
@@ -84,10 +81,9 @@ impl Ai {
         Ok(Ai { workdir, resting: Mutex::default() })
     }
 
-    /// Empty when the provider cannot list them.
     pub async fn models(&self, provider: Provider) -> Vec<String> {
         let listed = match provider {
-            Provider::Claude => return CLAUDE_MODELS.map(String::from).to_vec(),
+            Provider::Claude => return CLAUDE_ALIASES.map(String::from).to_vec(),
             Provider::Gemini => return vec![],
             Provider::Codex => Command::new("codex").args(["debug", "models"]).output().await,
             Provider::Opencode => Command::new("opencode").arg("models").output().await,
@@ -109,7 +105,6 @@ impl Ai {
         }
     }
 
-    /// One tiny call with `model`.
     pub async fn check(&self, provider: Provider, model: &str) -> Result<()> {
         #[derive(Deserialize, JsonSchema)]
         struct Ping {
@@ -142,7 +137,6 @@ impl Ai {
         self.answer(order, prompt, &Tools::Off, &HashMap::new()).await
     }
 
-    /// Like `ask`, with web tools and a model per provider.
     pub async fn read_web<T: DeserializeOwned + JsonSchema>(
         &self,
         order: &[Provider],
@@ -173,7 +167,7 @@ impl Ai {
                 }
                 Err(Failure::Unavailable(why)) => {
                     warn!("{} is unavailable: {why}", provider.name());
-                    self.resting.lock().expect("lock").insert(provider, Instant::now() + REST);
+                    self.resting.lock().expect("lock").insert(provider, Instant::now() + USAGE_LIMIT_REST);
                     tried.push(format!("{}: {why}", provider.name()));
                 }
                 Err(Failure::Failed(err)) => {
@@ -378,7 +372,6 @@ fn failure(message: &str) -> Failure {
     }
 }
 
-/// Text-only CLIs wrap their JSON in prose or code fences.
 fn json_in(text: &str) -> Result<Value> {
     let start = text.find('{').context("no JSON object in the answer")?;
     let end = text.rfind('}').context("no JSON object in the answer")?;

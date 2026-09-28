@@ -47,7 +47,6 @@ pub struct Log {
     pub total: i64,
 }
 
-/// How far each job got, for the Sankey.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Reach {
@@ -72,7 +71,6 @@ pub struct Flow {
     pub jobs: i64,
 }
 
-/// Each job flows from "Found" to the furthest stage it reached.
 pub fn flows(reached: &[Reach]) -> Vec<Flow> {
     let mut flows: Vec<Flow> = vec![];
     let mut add = |from: &str, to: &str| match flows.iter_mut().find(|f| f.from == from && f.to == to) {
@@ -141,7 +139,6 @@ pub struct Week {
     pub heard_back: i64,
 }
 
-/// Reply rate by score band.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Band {

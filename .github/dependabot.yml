@@ -7,6 +7,9 @@ updates:
     groups:
       cargo:
         patterns: ["*"]
+    ignore:
+      # Must match the version linfa uses.
+      - dependency-name: ndarray
   - package-ecosystem: github-actions
     directory: /
     schedule:

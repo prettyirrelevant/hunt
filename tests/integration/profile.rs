@@ -21,7 +21,6 @@ async fn reading_a_site_replaces_only_its_own_notes() {
     let first = [(format!("{a} 0"), work("Old A"), v()), (format!("{b} 0"), work("B"), v())];
     repo::replace_site_notes(&db, &[a.clone(), b.clone()], &[&a, &b], &first).await.unwrap();
 
-    // b could not be read this time, so what hunt knew about it stays.
     let second = [(format!("{a} 0"), work("New A"), v()), (format!("{a} 1"), work("Another A"), v())];
     repo::replace_site_notes(&db, &[a.clone(), b.clone()], &[&a], &second).await.unwrap();
     assert_eq!(site_notes(&db).await, vec![format!("{a} 0"), format!("{a} 1"), format!("{b} 0")]);

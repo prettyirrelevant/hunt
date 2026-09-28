@@ -9,7 +9,6 @@ use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
-/// Defaults, then `hunt.toml`, then `HUNT_*` and `DATABASE_URL`.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Config {
     pub database: Database,
@@ -19,7 +18,6 @@ pub struct Config {
     pub home: PathBuf,
 }
 
-/// `embedded`, or a `postgres://` URL to a server with `vector` and `pg_trgm`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(from = "String", into = "String")]
 pub enum Database {
@@ -71,8 +69,7 @@ impl Config {
         Ok(config)
     }
 
-    /// Suffix for Keychain and login item names. Empty for `~/.hunt`.
-    pub fn instance(&self) -> String {
+    pub fn os_suffix(&self) -> String {
         if self.home == live_home() {
             return String::new();
         }
@@ -96,7 +93,6 @@ impl Config {
     }
 }
 
-/// Debug builds keep their own data, so development never touches the live app.
 fn default_home() -> PathBuf {
     if cfg!(debug_assertions) { live_home().with_file_name(".hunt-dev") } else { live_home() }
 }

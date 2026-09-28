@@ -127,7 +127,6 @@ pub async fn drops(db: &PgPool) -> Result<Vec<(String, i64)>> {
     .await?)
 }
 
-/// Skills the jobs you shortlisted ask for most that your profile does not list.
 pub async fn gaps(db: &PgPool, known: &[String]) -> Result<Vec<(String, i64)>> {
     let known: Vec<String> = known.iter().map(|s| s.to_lowercase()).collect();
     Ok(sqlx::query_as(

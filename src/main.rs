@@ -153,7 +153,6 @@ async fn database(config: &Config, shell: bool) -> Result<()> {
     Ok(())
 }
 
-/// Ctrl-C in a terminal, or SIGTERM from launchd and systemd.
 async fn stopped() {
     #[cfg(unix)]
     {

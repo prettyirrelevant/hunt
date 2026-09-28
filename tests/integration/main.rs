@@ -29,7 +29,6 @@ pub async fn fresh_db() -> PgPool {
     pool
 }
 
-/// Starts or joins the test server, and drops earlier test databases.
 async fn start() -> PgConnectOptions {
     let server = db::embedded(&Path::new(env!("CARGO_TARGET_TMPDIR")).join("postgres")).await.unwrap();
     let options: PgConnectOptions = server.url().parse().unwrap();

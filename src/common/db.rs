@@ -14,10 +14,16 @@ use crate::config::{Config, Database};
 
 pub enum Server {
     /// `owned` is set when this process started the server. Dropping it stops the server.
-    Embedded { bin: PathBuf, url: String, owned: Option<Box<PostgreSQL>> },
-    /// Backups use `pg_dump` from your PATH.
+    Embedded {
+        bin: PathBuf,
+        url: String,
+        owned: Option<Box<PostgreSQL>>,
+    },
     External(String),
 }
+
+const EXTENSIONS: [&str; 2] = ["vector", "pg_trgm"];
+const POSTGRES_WITH_PREBUILT_PGVECTOR: &str = "=16";
 
 pub async fn connect(config: &Config) -> Result<(PgPool, Server)> {
     let server = match &config.database {
@@ -30,21 +36,26 @@ pub async fn connect(config: &Config) -> Result<(PgPool, Server)> {
         .connect(server.url())
         .await
         .context("cannot reach the database")?;
+    let available: Vec<String> = sqlx::query_scalar("select name from pg_available_extensions where name = any($1)")
+        .bind(&EXTENSIONS[..])
+        .fetch_all(&pool)
+        .await?;
+    let missing: Vec<&str> = EXTENSIONS.into_iter().filter(|e| !available.iter().any(|a| a == e)).collect();
+    if !missing.is_empty() {
+        bail!("the database lacks the {} extension. Install it, or set database = \"embedded\"", missing.join(" and "));
+    }
     sqlx::migrate!().run(&pool).await.context("database migration failed")?;
     Ok((pool, server))
 }
 
-/// Installs PostgreSQL and pgvector once, then starts the server or joins a running one.
 pub async fn embedded(dir: &Path) -> Result<Server> {
     let mut settings = Settings::new();
-    // `Settings::new` creates two temporary folders that hunt does not use.
-    let scratch =
+    let unused_temp_dirs =
         [settings.data_dir.clone(), settings.password_file.parent().map(Path::to_path_buf).unwrap_or_default()];
-    for folder in scratch {
+    for folder in unused_temp_dirs {
         tokio::fs::remove_dir(folder).await.ok();
     }
-    // pgvector ships prebuilt for PostgreSQL 16 only.
-    settings.version = VersionReq::parse("=16")?;
+    settings.version = VersionReq::parse(POSTGRES_WITH_PREBUILT_PGVECTOR)?;
     settings.installation_dir = dir.join("install");
     settings.data_dir = dir.join("data");
     settings.password_file = dir.join("password");
@@ -88,7 +99,6 @@ pub async fn embedded(dir: &Path) -> Result<Server> {
     Ok(Server::Embedded { bin, url, owned: Some(Box::new(postgres)) })
 }
 
-/// PostgreSQL writes its port on the fourth line of `postmaster.pid`.
 async fn running_port(data: &Path) -> Option<u16> {
     let pid = tokio::fs::read_to_string(data.join("postmaster.pid")).await.ok()?;
     pid.lines().nth(3)?.trim().parse().ok()

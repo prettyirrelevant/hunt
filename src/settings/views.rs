@@ -16,7 +16,6 @@ pub fn SettingsPage() -> impl IntoView {
     let watch = ServerAction::<Watch>::new();
     let unwatch = ServerAction::<Unwatch>::new();
     let web = ServerAction::<SaveWebModel>::new();
-    // Refetches after every model check, so each dropdown shows the saved model.
     let changed = move || {
         (
             providers.version().get(),
@@ -221,7 +220,6 @@ fn Body(
     }
 }
 
-/// ISO names, sorted without a leading "The".
 fn countries() -> Vec<(&'static str, &'static str)> {
     let mut all: Vec<_> = celes::Country::get_countries()
         .into_iter()

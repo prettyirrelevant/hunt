@@ -7,7 +7,6 @@ use serde_json::json;
 
 use crate::{app::App, config::Config, insights, jobs};
 
-/// Nightly dumps kept in the backup folder.
 const KEEP: usize = 14;
 
 pub async fn backup(app: &Arc<App>) -> Result<()> {
@@ -30,7 +29,6 @@ pub async fn backup(app: &Arc<App>) -> Result<()> {
     jobs::record(&app.db, None, "system", &body, json!({ "path": path })).await
 }
 
-/// launchd on macOS, systemd on Linux, the Run key on Windows.
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 pub fn install(config: &Config) -> Result<()> {
     use service_manager::{RestartPolicy, ServiceInstallCtx, ServiceStartCtx};
@@ -91,14 +89,13 @@ fn windows_launch(config: &Config) -> Result<auto_launch::AutoLaunch> {
 }
 
 fn label(config: &Config) -> String {
-    format!("dev.hunt{}", config.instance())
+    format!("dev.hunt{}", config.os_suffix())
 }
 
 fn start_args(config: &Config) -> Vec<std::ffi::OsString> {
     vec!["--home".into(), config.home.clone().into(), "start".into(), "--quiet".into()]
 }
 
-/// Logs a failure instead of returning it.
 pub async fn notify(title: String, body: String) {
     let shown =
         tokio::task::spawn_blocking(move || notify_rust::Notification::new().summary(&title).body(&body).show()).await;
@@ -107,7 +104,6 @@ pub async fn notify(title: String, body: String) {
     }
 }
 
-/// The morning summary: what needs you, and what hunt found overnight.
 pub async fn rundown(app: &Arc<App>) -> Result<()> {
     let today = insights::repo::today(&app.db).await?;
     let mut needs = vec![];

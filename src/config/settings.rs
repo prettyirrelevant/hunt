@@ -28,15 +28,11 @@ pub struct Settings {
     pub providers: Vec<Provider>,
     /// The app password lives in the macOS Keychain.
     pub email: Option<String>,
-    /// Unset means `backups` in the hunt home.
     pub backup_dir: Option<PathBuf>,
     pub watched: Vec<Board>,
     pub repo_roots: Vec<PathBuf>,
-    /// Gitignore-style patterns for folders and files hunt never reads.
     pub ignore: Vec<String>,
-    /// Your site, blog or talks.
     pub sites: Vec<String>,
-    /// The model each provider reads sites with. Missing means its default.
     pub web_models: HashMap<Provider, String>,
 }
 
@@ -68,7 +64,6 @@ impl Settings {
         Ok(serde_json::from_value(Value::Object(rows.into_iter().collect::<Map<_, _>>()))?)
     }
 
-    /// Applies `change` under a lock.
     pub async fn edit<T>(db: &PgPool, change: impl FnOnce(&mut Settings) -> T) -> Result<T> {
         let mut tx = db.begin().await?;
         sqlx::query("select pg_advisory_xact_lock(hashtext('settings'))").execute(&mut *tx).await?;

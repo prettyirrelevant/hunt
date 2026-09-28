@@ -8,7 +8,6 @@ use tokio::io::AsyncWriteExt;
 
 use super::text::scrub;
 
-/// Pinned to one commit and checked by hash.
 const SOURCE: &str =
     "https://huggingface.co/gravitee-io/gliner-pii-detection/resolve/e6282f2fa32fa6098f64043c6afe0b53e9ae8db7";
 /// Remote name, local name, SHA-256.
@@ -83,7 +82,6 @@ impl Redactor {
     }
 }
 
-/// Downloads to a temporary file and renames it once the hash matches.
 async fn download(http: &reqwest::Client, url: &str, path: &Path, sha256: &str) -> Result<()> {
     let partial = path.with_extension("partial");
     let mut response =

@@ -58,7 +58,6 @@ pub fn find_repos(roots: &[PathBuf], never: &NeverRead) -> Vec<PathBuf> {
     repos
 }
 
-/// `None` when you never committed to the repo.
 pub async fn read_repo(repo: &Path, never: &NeverRead) -> Result<Option<String>> {
     let email = git(repo, &["config", "user.email"]).await.unwrap_or_default();
     if email.is_empty() {
