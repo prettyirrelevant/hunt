@@ -151,6 +151,8 @@ ssr = [
 unsafe_code = "forbid"
 
 [lints.clippy]
+# Leptos generates async `#[server]` stubs without `.await`.
+unused_async_trait_impl = "allow"
 pedantic = { level = "warn", priority = -1 }
 module_name_repetitions = "allow"
 missing_errors_doc = "allow"

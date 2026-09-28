@@ -40,7 +40,7 @@ Prebuilt pgvector exists for macOS on Apple silicon, Linux x86_64 and Windows x8
 
 ## Build
 
-You need Rust 1.94, the `wasm32-unknown-unknown` target, and `cargo install cargo-leptos --locked`.
+You need rustup and `cargo install cargo-leptos --locked`. rustup installs the Rust version in `rust-toolchain.toml`.
 
 ```sh
 cargo leptos build --release     # target/release/hunt
