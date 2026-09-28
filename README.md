@@ -45,3 +45,7 @@ cargo test --features ssr --test integration live -- --ignored --nocapture   # c
 ## Configure
 
 Everything has a default. To change one, copy `hunt.example.toml` to `~/.hunt/hunt.toml` and edit it. You choose everything else in the dashboard.
+
+## License
+
+MIT. See `LICENSE`. The Hanken Grotesk and JetBrains Mono fonts in `assets/public/fonts` are under the SIL Open Font License 1.1, with their texts beside them.
