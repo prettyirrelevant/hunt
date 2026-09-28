@@ -47,7 +47,8 @@ impl From<Database> for String {
 
 impl Default for Config {
     fn default() -> Config {
-        Config { database: Database::Embedded, port: 7777, log: "hunt=info,warn".into(), home: PathBuf::new() }
+        let port = if cfg!(debug_assertions) { 7779 } else { 7777 };
+        Config { database: Database::Embedded, port, log: "hunt=info,warn".into(), home: PathBuf::new() }
     }
 }
 
@@ -72,7 +73,7 @@ impl Config {
 
     /// Suffix for Keychain and login item names. Empty for `~/.hunt`.
     pub fn instance(&self) -> String {
-        if self.home == default_home() {
+        if self.home == live_home() {
             return String::new();
         }
         let hash = Sha256::digest(self.home.to_string_lossy().as_bytes());
@@ -95,6 +96,11 @@ impl Config {
     }
 }
 
+/// Debug builds keep their own data, so development never touches the live app.
 fn default_home() -> PathBuf {
+    if cfg!(debug_assertions) { live_home().with_file_name(".hunt-dev") } else { live_home() }
+}
+
+fn live_home() -> PathBuf {
     directories::BaseDirs::new().expect("a home directory").home_dir().join(".hunt")
 }

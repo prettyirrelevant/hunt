@@ -87,7 +87,7 @@ impl Redactor {
 async fn download(http: &reqwest::Client, url: &str, path: &Path, sha256: &str) -> Result<()> {
     let partial = path.with_extension("partial");
     let mut response =
-        http.get(url).timeout(Duration::from_secs(900)).send().await?.error_for_status().context("download failed")?;
+        http.get(url).timeout(Duration::from_mins(15)).send().await?.error_for_status().context("download failed")?;
     let mut file = tokio::fs::File::create(&partial).await?;
     let mut hasher = Sha256::new();
     while let Some(chunk) = response.chunk().await? {

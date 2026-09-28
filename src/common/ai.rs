@@ -15,14 +15,14 @@ use serde_json::Value;
 use tokio::{io::AsyncWriteExt, process::Command};
 use tracing::warn;
 
-const TIMEOUT: Duration = Duration::from_secs(240);
-const BROWSE_TIMEOUT: Duration = Duration::from_secs(600);
+const TIMEOUT: Duration = Duration::from_mins(4);
+const BROWSE_TIMEOUT: Duration = Duration::from_mins(10);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
 /// claude has no command that lists its models.
 const CLAUDE_MODELS: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
 /// How long a provider rests after a usage limit or login failure.
-const REST: Duration = Duration::from_secs(30 * 60);
+const REST: Duration = Duration::from_mins(30);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]

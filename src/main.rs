@@ -33,7 +33,7 @@ const SCHEDULE: &str = "
 #[derive(Parser)]
 #[command(version, about = "A job search that runs on your machine")]
 struct Cli {
-    /// Where hunt keeps its data. Defaults to `HUNT_HOME`, then `~/.hunt`.
+    /// Where hunt keeps its data. Defaults to `HUNT_HOME`, then `~/.hunt` (`~/.hunt-dev` in debug builds).
     #[arg(long, global = true)]
     home: Option<PathBuf>,
     #[command(subcommand)]

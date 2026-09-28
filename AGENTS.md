@@ -5,7 +5,7 @@ hunt is a personal job search that runs on one machine. It finds jobs, learns wh
 ## Commands
 
 ```sh
-cargo leptos watch                 # dev server with hot reload at http://127.0.0.1:7777
+cargo leptos watch                 # dev server at http://127.0.0.1:7779, data in ~/.hunt-dev
 cargo leptos build --release       # one binary in target/release/hunt
 cargo test --features ssr          # unit and integration tests; the first run downloads PostgreSQL into target/
 hunt db --shell                    # psql on your database

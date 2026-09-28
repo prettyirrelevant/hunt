@@ -2,7 +2,7 @@
 name = "hunt"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.88"
+rust-version = "1.94"
 license = "MIT"
 
 [lib]
@@ -185,7 +185,7 @@ site-root = "target/site"
 site-pkg-dir = "pkg"
 style-file = "assets/app.css"
 assets-dir = "assets/public"
-site-addr = "127.0.0.1:7777"
+site-addr = "127.0.0.1:7779"
 reload-port = 7778
 bin-features = ["ssr"]
 lib-features = ["hydrate"]
