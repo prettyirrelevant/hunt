@@ -16,7 +16,7 @@ pub fn SettingsPage() -> impl IntoView {
     let watch = ServerAction::<Watch>::new();
     let unwatch = ServerAction::<Unwatch>::new();
     let web = ServerAction::<SaveWebModel>::new();
-    // A failed model check refetches too, so each dropdown shows what is saved.
+    // Refetches after every model check, so each dropdown shows the saved model.
     let changed = move || {
         (
             providers.version().get(),

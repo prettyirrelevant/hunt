@@ -73,9 +73,8 @@ impl Config {
         Ok(config)
     }
 
-    /// Names shared with the operating system, such as the Keychain entry and
-    /// the login item, end with this. A second hunt home, for tests or
-    /// development, so never touches the live one. Empty for `~/.hunt`.
+    /// Suffix for names shared with the operating system, such as the Keychain
+    /// entry and the login item. Empty for `~/.hunt`, unique for any other home.
     pub fn instance(&self) -> String {
         if self.home == default_home() {
             return String::new();

@@ -20,7 +20,7 @@ const TIMEOUT: Duration = Duration::from_secs(240);
 const BROWSE_TIMEOUT: Duration = Duration::from_secs(600);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
-/// claude takes aliases for its latest models and has no command that lists them.
+/// Aliases for the latest claude models. claude has no command that lists models.
 const CLAUDE_MODELS: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
 /// How long a provider rests after a usage limit or login failure.
 const REST: Duration = Duration::from_secs(30 * 60);
@@ -191,7 +191,7 @@ impl Ai {
 
     /// Drives a headless browser through claude and the Playwright MCP server,
     /// with browser tools only. The session is recorded to `recording` as video
-    /// and screenshots. `secrets` are typed by name, so claude never sees them.
+    /// and screenshots. `secrets` are typed by name. claude sees only the names.
     pub async fn browse<T: DeserializeOwned + JsonSchema>(
         &self,
         prompt: &str,

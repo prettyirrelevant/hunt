@@ -91,7 +91,7 @@ fn windows_launch(config: &Config) -> Result<auto_launch::AutoLaunch> {
         .build()?)
 }
 
-/// One login item per hunt home, so installing a test home never replaces yours.
+/// One login item per hunt home.
 fn label(config: &Config) -> String {
     format!("dev.hunt{}", config.instance())
 }
@@ -100,7 +100,7 @@ fn start_args(config: &Config) -> Vec<std::ffi::OsString> {
     vec!["--home".into(), config.home.clone().into(), "start".into(), "--quiet".into()]
 }
 
-/// A desktop notification. Failing to show one never fails the caller.
+/// Shows a desktop notification, and logs a failure instead of returning it.
 pub async fn notify(title: String, body: String) {
     let shown =
         tokio::task::spawn_blocking(move || notify_rust::Notification::new().summary(&title).body(&body).show()).await;

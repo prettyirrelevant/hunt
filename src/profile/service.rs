@@ -132,7 +132,7 @@ pub async fn summarize(app: &Arc<App>, note: i64) -> Result<()> {
     repo::save_work(&app.db, note, &work, app.embedder.embed(&text)).await
 }
 
-/// The AI is told to leave personal data out. This makes sure.
+/// Removes personal data the AI left in.
 async fn redact_work(app: &Arc<App>, work: Work) -> Result<Work> {
     Ok(Work {
         summary: app.redact(work.summary).await?,

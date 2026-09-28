@@ -48,7 +48,7 @@ impl App {
         Settings::load(&self.db).await
     }
 
-    /// A waiting task with the same `key` is replaced, never doubled.
+    /// A waiting task with the same `key` is replaced.
     pub async fn queue<T: TaskHandler>(&self, task: T, key: impl Into<String>) -> Result<()> {
         let spec = JobSpec { job_key: Some(key.into()), ..Default::default() };
         self.worker.add_job(task, spec).await?;

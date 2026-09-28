@@ -18,9 +18,9 @@ const KEEP_ENDED_DAYS: i64 = 30;
 const KEEP_OFFER_DAYS: i64 = 180;
 const RECORDINGS_CAP: u64 = 5 * 1024 * 1024 * 1024;
 
-/// Sends every approved application after the undo window. The send tasks go
-/// in first: a task whose job is no longer sending does nothing, so a failure
-/// between the two steps never strands a job.
+/// Sends every approved application after the undo window. The send tasks
+/// are queued before the jobs move. A task whose job is no longer sending
+/// does nothing.
 pub async fn send_batch(app: &App) -> Result<usize> {
     let ids: Vec<i64> = sqlx::query_scalar("select id from jobs where stage = 'approved'").fetch_all(&app.db).await?;
     let sends = ids.iter().map(|&id| (Apply { job: id }, format!("apply:{id}"))).collect();

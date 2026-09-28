@@ -14,9 +14,8 @@ use crate::config::{Config, Database};
 
 /// Where the database runs, chosen by `database` in `hunt.toml`.
 pub enum Server {
-    /// Run by hunt from `postgres` in the hunt home. `owned` is set when this process
-    /// started the server. Dropping it stops the server, so `hunt sweep` never
-    /// stops the server that the running dashboard uses.
+    /// Run by hunt from `postgres` in the hunt home. `owned` is set when this
+    /// process started the server, and dropping it stops the server.
     Embedded { bin: PathBuf, url: String, owned: Option<Box<PostgreSQL>> },
     /// Your own server. Backups use `pg_dump` from your PATH.
     External(String),
@@ -41,7 +40,7 @@ pub async fn connect(config: &Config) -> Result<(PgPool, Server)> {
 /// or joins the one another hunt process already runs.
 pub async fn embedded(dir: &Path) -> Result<Server> {
     let mut settings = Settings::new();
-    // `Settings::new` makes and keeps two temporary folders. hunt uses its own.
+    // `Settings::new` creates two temporary folders that hunt does not use.
     let scratch =
         [settings.data_dir.clone(), settings.password_file.parent().map(Path::to_path_buf).unwrap_or_default()];
     for folder in scratch {
@@ -71,7 +70,7 @@ pub async fn embedded(dir: &Path) -> Result<Server> {
     }
     let bin = postgres.settings().binary_dir();
 
-    // The pid file can outlive a restart, so only a server that answers counts.
+    // A pid file can remain after a restart, so the server must also answer.
     if postgres.status() == Status::Started
         && let Some(port) = running_port(&postgres.settings().data_dir).await
     {
@@ -79,7 +78,7 @@ pub async fn embedded(dir: &Path) -> Result<Server> {
         settings.port = port;
         let url = settings.url("hunt");
         if PgPoolOptions::new().connect(&url).await.is_ok() {
-            // Not ours to stop. `forget` skips the Drop that would stop it.
+            // `forget` keeps Drop from stopping a server this process did not start.
             std::mem::forget(postgres);
             return Ok(Server::Embedded { bin, url, owned: None });
         }

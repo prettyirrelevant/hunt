@@ -19,7 +19,7 @@ use crate::{
 };
 
 pub const SHORTLIST_AT: i32 = 70;
-/// Caps AI calls so a large first sweep cannot drain a subscription.
+/// Most AI assessments per day.
 const AI_PER_DAY: i64 = 80;
 /// How much closer to your skips than your approvals a job must be to hide it
 /// before a model exists.

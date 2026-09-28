@@ -16,7 +16,7 @@ use crate::{
 const SURE: f32 = 0.8;
 
 /// Reads new mail, updates the jobs that replies are clearly about, and asks
-/// you about the rest. Mail that is not about an application is never read further.
+/// you about the rest. Other mail is not read further.
 pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
     let settings = app.settings().await?;
     let Some(address) = settings.email else { return Ok(()) };
@@ -83,7 +83,7 @@ pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
         }
     }
 
-    // After the replies, so a failed classification never moves the uid checkpoint past them.
+    // Saved last, so the uid checkpoint stays behind a reply that failed to classify.
     let uids: Vec<i64> = ignored.iter().map(|m| i64::from(m.uid)).collect();
     let ids: Vec<&str> = ignored.iter().map(|m| m.message_id.as_str()).collect();
     let ats: Vec<_> = ignored.iter().map(|m| m.at).collect();

@@ -37,7 +37,7 @@ impl Model {
             Some((model.params().iter().map(|w| w * sign).collect::<Vec<f64>>(), model.intercept() * sign))
         };
 
-        // Every fifth job is held out to measure accuracy honestly.
+        // Every fifth job is held out to measure accuracy.
         let (train, test): (Vec<_>, Vec<_>) = rows.iter().cloned().enumerate().partition(|(i, _)| i % 5 != 0);
         let train: Vec<_> = train.into_iter().map(|(_, row)| row).collect();
         let accuracy = fit(&train).map(|(weights, bias)| {

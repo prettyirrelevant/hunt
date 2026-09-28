@@ -8,7 +8,7 @@ use tokio::io::AsyncWriteExt;
 
 use super::text::scrub;
 
-/// Pinned to one commit and checked by hash, so a changed upload never reaches you.
+/// Pinned to one commit and checked by hash.
 const SOURCE: &str =
     "https://huggingface.co/gravitee-io/gliner-pii-detection/resolve/e6282f2fa32fa6098f64043c6afe0b53e9ae8db7";
 /// Remote name, local name, SHA-256.
@@ -84,8 +84,7 @@ impl Redactor {
     }
 }
 
-/// Writes to a temporary file and renames it only when the hash matches, so a
-/// cut connection never leaves a broken model behind.
+/// Downloads to a temporary file and renames it once the hash matches.
 async fn download(http: &reqwest::Client, url: &str, path: &Path, sha256: &str) -> Result<()> {
     let partial = path.with_extension("partial");
     let mut response =

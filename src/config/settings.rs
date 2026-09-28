@@ -68,7 +68,7 @@ impl Settings {
         Ok(serde_json::from_value(Value::Object(rows.into_iter().collect::<Map<_, _>>()))?)
     }
 
-    /// Applies `change` under a lock, so two edits at once never overwrite each other.
+    /// Applies `change` under a lock, so concurrent edits apply one after another.
     pub async fn edit<T>(db: &PgPool, change: impl FnOnce(&mut Settings) -> T) -> Result<T> {
         let mut tx = db.begin().await?;
         sqlx::query("select pg_advisory_xact_lock(hashtext('settings'))").execute(&mut *tx).await?;

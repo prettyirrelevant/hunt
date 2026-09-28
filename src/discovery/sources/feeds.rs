@@ -139,7 +139,7 @@ struct DataOf {
     data: Vec<serde_json::Value>,
 }
 
-/// One malformed posting is skipped instead of failing the whole feed.
+/// Parses each posting on its own and skips malformed ones.
 fn lenient<T: serde::de::DeserializeOwned + Into<Posting>>(items: Vec<serde_json::Value>) -> Vec<Posting> {
     items.into_iter().filter_map(|item| serde_json::from_value::<T>(item).ok()).map(Into::into).collect()
 }
