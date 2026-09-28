@@ -12,12 +12,10 @@ use tracing::info;
 
 use crate::config::{Config, Database};
 
-/// Where the database runs, chosen by `database` in `hunt.toml`.
 pub enum Server {
-    /// Run by hunt from `postgres` in the hunt home. `owned` is set when this
-    /// process started the server, and dropping it stops the server.
+    /// `owned` is set when this process started the server. Dropping it stops the server.
     Embedded { bin: PathBuf, url: String, owned: Option<Box<PostgreSQL>> },
-    /// Your own server. Backups use `pg_dump` from your PATH.
+    /// Backups use `pg_dump` from your PATH.
     External(String),
 }
 
@@ -36,8 +34,7 @@ pub async fn connect(config: &Config) -> Result<(PgPool, Server)> {
     Ok((pool, server))
 }
 
-/// Downloads PostgreSQL and pgvector the first time, then starts the server,
-/// or joins the one another hunt process already runs.
+/// Installs PostgreSQL and pgvector once, then starts the server or joins a running one.
 pub async fn embedded(dir: &Path) -> Result<Server> {
     let mut settings = Settings::new();
     // `Settings::new` creates two temporary folders that hunt does not use.
@@ -136,12 +133,10 @@ impl Server {
         }
     }
 
-    /// Whether this process started the server, and so stops it on exit.
     pub fn started_here(&self) -> bool {
         matches!(self, Server::Embedded { owned: Some(_), .. })
     }
 
-    /// `pg_dump`, `pg_restore` or `psql`, from the same PostgreSQL as the server.
     fn tool(&self, name: &str, args: &[&str]) -> Command {
         let mut command = match self {
             Server::Embedded { bin, .. } => Command::new(bin.join(name)),

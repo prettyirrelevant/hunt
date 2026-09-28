@@ -1,5 +1,4 @@
-//! Pure logic, with no database. The PII tests download their model into
-//! `target/` once.
+//! Pure logic, with no database.
 
 mod ats;
 mod documents;

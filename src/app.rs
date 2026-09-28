@@ -55,7 +55,6 @@ impl App {
         Ok(())
     }
 
-    /// Adds many tasks of one kind in one round trip, each with its key.
     pub async fn queue_all<T: TaskHandler + Clone>(
         &self,
         tasks: Vec<(T, String)>,
@@ -74,7 +73,6 @@ impl App {
         ctx.get_ext::<Arc<App>>().expect("the worker is built with the app").clone()
     }
 
-    /// Loads the PII model, downloading it the first time.
     pub async fn redactor(&self) -> Result<&Redactor> {
         let dir = self.config.home.join("models/pii");
         self.redactor

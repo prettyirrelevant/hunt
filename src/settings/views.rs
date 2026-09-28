@@ -221,7 +221,7 @@ fn Body(
     }
 }
 
-/// ISO names, sorted as people look for them: "United Kingdom…", not "The United Kingdom…".
+/// ISO names, sorted without a leading "The".
 fn countries() -> Vec<(&'static str, &'static str)> {
     let mut all: Vec<_> = celes::Country::get_countries()
         .into_iter()

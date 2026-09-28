@@ -141,8 +141,7 @@ pub async fn save_providers(order: Vec<String>) -> Result<(), Error> {
     Ok(Settings::edit(&app.db, |s| s.providers = providers).await?)
 }
 
-/// Checks that the provider can use `model` with one tiny call, then saves it.
-/// An empty `model` returns the provider to its default.
+/// Saves `model` after one test call. Empty means the provider's default.
 #[server]
 pub async fn save_web_model(provider: String, model: String) -> Result<(), Error> {
     use std::sync::Arc;
@@ -169,7 +168,7 @@ pub async fn save_web_model(provider: String, model: String) -> Result<(), Error
     .await?)
 }
 
-/// The app password goes to the macOS Keychain; only the address is stored.
+/// The password goes to the Keychain, the address to settings.
 #[server]
 pub async fn save_email(address: String, password: String) -> Result<(), Error> {
     use std::sync::Arc;

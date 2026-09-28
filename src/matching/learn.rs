@@ -6,8 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::jobs::{Job, WorkMode};
 use crate::profile::model::Profile;
 
-/// Below this many labelled jobs, or this many of the rarer label, a model
-/// would learn noise.
+/// Below this many examples, overall or of the rarer label, a model learns noise.
 const MIN_EXAMPLES: usize = 30;
 const MIN_PER_CLASS: usize = 5;
 
@@ -16,7 +15,7 @@ pub struct Model {
     pub weights: Vec<f64>,
     pub bias: f64,
     pub examples: usize,
-    /// Share of held-out jobs predicted correctly, when there were enough to hold out.
+    /// Held-out accuracy, when there were enough jobs to hold out.
     pub accuracy: Option<f64>,
 }
 
@@ -75,8 +74,7 @@ pub fn features(job: &Job, embedding: &[f32], profile: &Profile, fit: Option<u8>
     embedding.iter().map(|&v| f64::from(v)).chain(facts).collect()
 }
 
-/// Cosine similarity to what you approved minus similarity to what you
-/// skipped. Positive means the job looks more like your approvals.
+/// Similarity to your approvals minus similarity to your skips.
 pub fn rocchio(embedding: &[f32], liked: &[f32], skipped: &[f32]) -> f64 {
     cosine(embedding, liked) - cosine(embedding, skipped)
 }

@@ -18,7 +18,6 @@ fn keychain(config: &Config) -> String {
     format!("hunt-gmail{}", config.instance())
 }
 
-/// Your Gmail account, signed in with an app password from the Keychain.
 pub struct Mailbox {
     address: String,
     password: String,

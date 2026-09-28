@@ -1,6 +1,4 @@
-//! Behaviour against a real PostgreSQL. The first run downloads one into
-//! `target/`. It stays running between runs, and each test gets a fresh
-//! database, so nothing here touches your hunt home.
+//! Runs against a PostgreSQL in `target/`, with a fresh database per test.
 
 use std::{
     path::Path,
@@ -31,8 +29,7 @@ pub async fn fresh_db() -> PgPool {
     pool
 }
 
-/// Starts the test server, or joins the one a previous run left, and drops
-/// the databases earlier runs made.
+/// Starts or joins the test server, and drops earlier test databases.
 async fn start() -> PgConnectOptions {
     let server = db::embedded(&Path::new(env!("CARGO_TARGET_TMPDIR")).join("postgres")).await.unwrap();
     let options: PgConnectOptions = server.url().parse().unwrap();

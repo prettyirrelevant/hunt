@@ -98,7 +98,6 @@ pub async fn get_job(id: i64) -> Result<JobDetail, Error> {
     Ok(JobDetail { job, html: ammonia::clean(&html), record, recording })
 }
 
-/// Your call on a job. Approvals and skips teach hunt your taste.
 #[server]
 pub async fn decide(id: i64, stage: Stage, why: String) -> Result<(), Error> {
     use std::sync::Arc;

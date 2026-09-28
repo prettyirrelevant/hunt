@@ -30,8 +30,7 @@ pub async fn backup(app: &Arc<App>) -> Result<()> {
     jobs::record(&app.db, None, "system", &body, json!({ "path": path })).await
 }
 
-/// Starts hunt at login and keeps it running: a launchd agent on macOS, a
-/// systemd user service on Linux, and a Run registry entry on Windows.
+/// launchd on macOS, systemd on Linux, the Run key on Windows.
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 pub fn install(config: &Config) -> Result<()> {
     use service_manager::{RestartPolicy, ServiceInstallCtx, ServiceStartCtx};
@@ -91,7 +90,6 @@ fn windows_launch(config: &Config) -> Result<auto_launch::AutoLaunch> {
         .build()?)
 }
 
-/// One login item per hunt home.
 fn label(config: &Config) -> String {
     format!("dev.hunt{}", config.instance())
 }
@@ -100,7 +98,7 @@ fn start_args(config: &Config) -> Vec<std::ffi::OsString> {
     vec!["--home".into(), config.home.clone().into(), "start".into(), "--quiet".into()]
 }
 
-/// Shows a desktop notification, and logs a failure instead of returning it.
+/// Logs a failure instead of returning it.
 pub async fn notify(title: String, body: String) {
     let shown =
         tokio::task::spawn_blocking(move || notify_rust::Notification::new().summary(&title).body(&body).show()).await;

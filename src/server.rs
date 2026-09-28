@@ -51,8 +51,7 @@ pub fn router(app: Arc<App>) -> Router {
         .with_state(options)
 }
 
-/// hunt only answers its own pages. A `Host` check stops DNS rebinding; an
-/// `Origin` check stops other sites posting to it, such as to send a batch.
+/// Rejects a foreign `Host` (DNS rebinding) or `Origin` (cross-site posts).
 async fn same_origin(request: Request, next: Next) -> Response {
     let local = |value: &str| {
         let host = value.trim_start_matches("http://");

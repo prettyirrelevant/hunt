@@ -1,5 +1,4 @@
-// Downloads the embedding model and web libraries once, so they compile into the binary.
-// hunt downloads the PII model on first use.
+// Downloads the embedding model and web libraries that compile into the binary.
 use std::{path::Path, process::Command};
 
 const FILES: [(&str, &str); 4] = [

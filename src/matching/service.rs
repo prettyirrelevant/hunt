@@ -21,8 +21,7 @@ use crate::{
 pub const SHORTLIST_AT: i32 = 70;
 /// Most AI assessments per day.
 const AI_PER_DAY: i64 = 80;
-/// How much closer to your skips than your approvals a job must be to hide it
-/// before a model exists.
+/// How much closer to your skips a job must be to hide it before a model exists.
 const ROCCHIO_MARGIN: f64 = 0.08;
 const ROCCHIO_MIN_SKIPS: i64 = 5;
 
@@ -109,7 +108,6 @@ async fn prompt(app: &App, job: &Job, profile: &profile::model::Profile) -> Resu
     ))
 }
 
-/// Retrains both models from everything you have decided and heard back.
 pub async fn learn(app: &Arc<App>) -> Result<()> {
     let profile = profile::repo::profile(&app.db).await?.unwrap_or_default();
     let mut summary = vec![];

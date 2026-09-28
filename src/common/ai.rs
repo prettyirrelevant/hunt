@@ -1,5 +1,4 @@
-//! Job postings are untrusted, so every CLI runs in an empty directory with its
-//! tools off. Reading your sites allows web tools only, on a small model.
+//! Every CLI runs in an empty directory with its tools off, except as each caller says.
 
 use std::{
     collections::HashMap,
@@ -20,7 +19,7 @@ const TIMEOUT: Duration = Duration::from_secs(240);
 const BROWSE_TIMEOUT: Duration = Duration::from_secs(600);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
-/// Aliases for the latest claude models. claude has no command that lists models.
+/// claude has no command that lists its models.
 const CLAUDE_MODELS: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
 /// How long a provider rests after a usage limit or login failure.
 const REST: Duration = Duration::from_secs(30 * 60);
@@ -85,7 +84,7 @@ impl Ai {
         Ok(Ai { workdir, resting: Mutex::default() })
     }
 
-    /// Models the provider offers. Empty when it cannot list them.
+    /// Empty when the provider cannot list them.
     pub async fn models(&self, provider: Provider) -> Vec<String> {
         let listed = match provider {
             Provider::Claude => return CLAUDE_MODELS.map(String::from).to_vec(),
@@ -110,7 +109,7 @@ impl Ai {
         }
     }
 
-    /// One tiny call, to prove the provider can use `model` before you save it.
+    /// One tiny call with `model`.
     pub async fn check(&self, provider: Provider, model: &str) -> Result<()> {
         #[derive(Deserialize, JsonSchema)]
         struct Ping {
@@ -143,8 +142,7 @@ impl Ai {
         self.answer(order, prompt, &Tools::Off, &HashMap::new()).await
     }
 
-    /// Like `ask`, but the model may fetch and search the web. `models` picks
-    /// the model per provider.
+    /// Like `ask`, with web tools and a model per provider.
     pub async fn read_web<T: DeserializeOwned + JsonSchema>(
         &self,
         order: &[Provider],
@@ -189,9 +187,7 @@ impl Ai {
         bail!("every AI provider is unavailable ({})", tried.join("; "))
     }
 
-    /// Drives a headless browser through claude and the Playwright MCP server,
-    /// with browser tools only. The session is recorded to `recording` as video
-    /// and screenshots. `secrets` are typed by name. claude sees only the names.
+    /// claude with Playwright tools only, recorded to `recording`. `secrets` are typed by name.
     pub async fn browse<T: DeserializeOwned + JsonSchema>(
         &self,
         prompt: &str,
@@ -337,9 +333,7 @@ impl Ai {
     }
 }
 
-/// claude rejects the `$schema` URI schemars adds. codex accepts only strict
-/// schemas: closed objects with every property required, optional ones
-/// nullable, and `anyOf` in place of `oneOf`.
+/// No `$schema` for claude. Strict for codex: closed objects, all required, `anyOf`.
 fn schema<T: JsonSchema>() -> Result<Value> {
     let mut schema = serde_json::to_value(schemars::schema_for!(T))?;
     if let Some(object) = schema.as_object_mut() {

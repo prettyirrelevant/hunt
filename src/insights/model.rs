@@ -72,8 +72,7 @@ pub struct Flow {
     pub jobs: i64,
 }
 
-/// Every job starts at "Found" and flows to where it stands now. Rejections
-/// and silence count at the furthest stage the job reached.
+/// Each job flows from "Found" to the furthest stage it reached.
 pub fn flows(reached: &[Reach]) -> Vec<Flow> {
     let mut flows: Vec<Flow> = vec![];
     let mut add = |from: &str, to: &str| match flows.iter_mut().find(|f| f.from == from && f.to == to) {
@@ -142,7 +141,7 @@ pub struct Week {
     pub heard_back: i64,
 }
 
-/// Reply rate by score band: does a high score really mean a better chance?
+/// Reply rate by score band.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Band {

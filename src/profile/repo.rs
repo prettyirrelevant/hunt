@@ -4,8 +4,7 @@ use sqlx::{PgPool, types::Json};
 
 use super::model::{Note, Profile, Work};
 
-/// Saves notes as `(path, title, body)`, and returns the ids whose body changed
-/// and so need a new summary.
+/// Upserts `(path, title, body)` notes and returns the ids whose body changed.
 pub async fn upsert_notes(db: &PgPool, source: &str, notes: &[(String, String, String)]) -> Result<Vec<i64>> {
     let (mut paths, mut titles, mut bodies) = (vec![], vec![], vec![]);
     for (path, title, body) in notes {
@@ -37,8 +36,7 @@ pub async fn remove_notes(db: &PgPool, ids: &[i64]) -> Result<()> {
     Ok(())
 }
 
-/// Replaces the notes of each site in `read`, and drops notes of sites no
-/// longer in `listed`. A note's path is the site, a space, and its position.
+/// Replaces the notes of sites in `read`, and drops sites not in `listed`.
 pub async fn replace_site_notes(
     db: &PgPool,
     listed: &[String],
@@ -130,8 +128,7 @@ pub async fn save_profile(db: &PgPool, profile: &Profile) -> Result<()> {
     Ok(())
 }
 
-/// The best `limit` pieces of your work for each need, in the order of `needs`.
-/// Each need ranks by words and by meaning, merged with reciprocal rank fusion.
+/// The top `limit` works per need, by reciprocal rank fusion of text and vector search.
 pub async fn evidence(db: &PgPool, needs: &[String], meanings: &[Vector], limit: i64) -> Result<Vec<Work>> {
     let any_word: Vec<String> =
         needs.iter().map(|need| need.split_whitespace().collect::<Vec<_>>().join(" or ")).collect();

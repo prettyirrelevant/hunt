@@ -12,8 +12,7 @@ use walkdir::WalkDir;
 const SKIP: [&str; 6] = ["node_modules", "target", "vendor", "dist", "build", ".venv"];
 const MANIFESTS: [&str; 5] = ["Cargo.toml", "package.json", "pyproject.toml", "go.mod", "Gemfile"];
 
-/// Your "never read" patterns, read like a .gitignore in your home folder.
-/// `~/` anchors a pattern there.
+/// Gitignore patterns rooted at your home folder, so `~/` anchors one.
 pub struct NeverRead(Gitignore);
 
 impl NeverRead {

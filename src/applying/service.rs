@@ -18,9 +18,7 @@ const KEEP_ENDED_DAYS: i64 = 30;
 const KEEP_OFFER_DAYS: i64 = 180;
 const RECORDINGS_CAP: u64 = 5 * 1024 * 1024 * 1024;
 
-/// Sends every approved application after the undo window. The send tasks
-/// are queued before the jobs move. A task whose job is no longer sending
-/// does nothing.
+/// Queues each send for after the undo window, then moves the jobs.
 pub async fn send_batch(app: &App) -> Result<usize> {
     let ids: Vec<i64> = sqlx::query_scalar("select id from jobs where stage = 'approved'").fetch_all(&app.db).await?;
     let sends = ids.iter().map(|&id| (Apply { job: id }, format!("apply:{id}"))).collect();
@@ -128,9 +126,7 @@ fn form_prompt(job: &Job, contact: &crate::config::Contact, answers: &[Answer], 
     )
 }
 
-/// Deletes session videos you no longer need: 30 days after an application
-/// ends, 180 days after an offer, and the oldest ended ones first when all
-/// recordings pass 5 GB. Screenshots stay as lasting proof.
+/// Deletes videos 30 days after an application ends (180 for offers), and the oldest past 5 GB.
 pub async fn prune(app: &App) -> Result<()> {
     let jobs: Vec<(i64, Stage, chrono::DateTime<Utc>)> = sqlx::query_as::<_, (i64, String, chrono::DateTime<Utc>)>(
         "select id, stage, stage_at from jobs
@@ -180,7 +176,6 @@ pub async fn prune(app: &App) -> Result<()> {
     Ok(())
 }
 
-/// Whether a session video has outlived its use, given days since the last stage change.
 pub fn video_expired(stage: Stage, days: i64) -> bool {
     match stage {
         Stage::Rejected | Stage::Ghosted | Stage::Withdrawn | Stage::Manual => days > KEEP_ENDED_DAYS,

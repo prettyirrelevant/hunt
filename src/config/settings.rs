@@ -34,9 +34,9 @@ pub struct Settings {
     pub repo_roots: Vec<PathBuf>,
     /// Gitignore-style patterns for folders and files hunt never reads.
     pub ignore: Vec<String>,
-    /// Your site, blog or talks. A small model reads them for your work.
+    /// Your site, blog or talks.
     pub sites: Vec<String>,
-    /// The model each provider reads your sites with. A missing provider uses its default.
+    /// The model each provider reads sites with. Missing means its default.
     pub web_models: HashMap<Provider, String>,
 }
 
@@ -68,7 +68,7 @@ impl Settings {
         Ok(serde_json::from_value(Value::Object(rows.into_iter().collect::<Map<_, _>>()))?)
     }
 
-    /// Applies `change` under a lock, so concurrent edits apply one after another.
+    /// Applies `change` under a lock.
     pub async fn edit<T>(db: &PgPool, change: impl FnOnce(&mut Settings) -> T) -> Result<T> {
         let mut tx = db.begin().await?;
         sqlx::query("select pg_advisory_xact_lock(hashtext('settings'))").execute(&mut *tx).await?;

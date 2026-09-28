@@ -69,8 +69,7 @@ fn prompt(job: &Job, base_cv: &str, evidence: &str) -> String {
     )
 }
 
-/// The fabrication gate. A skill hunt cannot find in your own material is
-/// removed, and a number it cannot find is flagged for you to check.
+/// Removes skills your material does not show and flags numbers it does not contain.
 fn keep_to_the_facts(tailored: &mut Tailored, sources: &str) {
     let sources = sources.to_lowercase();
     for group in &mut tailored.cv.skills {

@@ -34,7 +34,6 @@ const CHUNK: usize = 1200;
 pub struct Redactor(GLiNER<SpanMode>);
 
 impl Redactor {
-    /// Downloads the model into `dir` the first time, then loads it.
     pub async fn fetch(http: &reqwest::Client, dir: &Path) -> Result<Redactor> {
         tokio::fs::create_dir_all(dir).await?;
         for (remote, local, sha256) in FILES {

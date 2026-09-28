@@ -49,7 +49,7 @@ pub async fn embedding(db: &PgPool, id: i64) -> Result<Option<Vec<f32>>> {
     Ok(vector.map(|v| v.to_vec()))
 }
 
-/// Mean embedding of jobs you went for, of jobs you skipped, and how many you skipped.
+/// Mean embeddings of approved and skipped jobs, and the skip count.
 pub async fn centroids(db: &PgPool) -> Result<(Option<Vec<f32>>, Option<Vec<f32>>, i64)> {
     let (liked, skipped, skips): (Option<Vector>, Option<Vector>, i64) = sqlx::query_as(
         "select avg(embedding) filter (where stage <> 'skipped'),

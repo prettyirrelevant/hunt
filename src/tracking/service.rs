@@ -15,8 +15,7 @@ use crate::{
 /// Below this the reply goes to you instead of moving the job.
 const SURE: f32 = 0.8;
 
-/// Reads new mail, updates the jobs that replies are clearly about, and asks
-/// you about the rest. Other mail is not read further.
+/// Moves jobs on clear replies and asks you about unclear ones.
 pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
     let settings = app.settings().await?;
     let Some(address) = settings.email else { return Ok(()) };

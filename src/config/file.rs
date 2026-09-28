@@ -9,8 +9,7 @@ use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
-/// Static settings: defaults, then `~/.hunt/hunt.toml`, then `HUNT_*`
-/// environment variables. `DATABASE_URL` also sets `database`, for sqlx tooling.
+/// Defaults, then `hunt.toml`, then `HUNT_*` and `DATABASE_URL`.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Config {
     pub database: Database,
@@ -20,8 +19,7 @@ pub struct Config {
     pub home: PathBuf,
 }
 
-/// `embedded` runs PostgreSQL inside hunt. A `postgres://` URL uses your own
-/// server, which needs the `vector` and `pg_trgm` extensions.
+/// `embedded`, or a `postgres://` URL to a server with `vector` and `pg_trgm`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(from = "String", into = "String")]
 pub enum Database {
@@ -54,7 +52,6 @@ impl Default for Config {
 }
 
 impl Config {
-    /// `home` comes from `--home`, then `HUNT_HOME`, then `~/.hunt`.
     pub fn load(home: Option<PathBuf>) -> Result<Config> {
         let home = home.or_else(|| std::env::var_os("HUNT_HOME").map(PathBuf::from)).unwrap_or_else(default_home);
         std::fs::create_dir_all(&home).with_context(|| format!("cannot create {}", home.display()))?;
@@ -73,8 +70,7 @@ impl Config {
         Ok(config)
     }
 
-    /// Suffix for names shared with the operating system, such as the Keychain
-    /// entry and the login item. Empty for `~/.hunt`, unique for any other home.
+    /// Suffix for Keychain and login item names. Empty for `~/.hunt`.
     pub fn instance(&self) -> String {
         if self.home == default_home() {
             return String::new();

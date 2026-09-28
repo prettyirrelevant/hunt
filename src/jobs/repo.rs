@@ -7,8 +7,7 @@ use sqlx::{PgExecutor, PgPool};
 
 use super::model::{Job, Posting, Stage};
 
-/// Saves the postings hunt has not seen, and returns their new ids. A posting
-/// seen before, on any board, only refreshes `last_seen`.
+/// Inserts unseen postings and returns their ids. Seen ones refresh `last_seen`.
 pub async fn add(db: &PgPool, postings: &[Posting]) -> Result<Vec<i64>> {
     let mut tx = db.begin().await?;
     // Two sweeps at once would each miss the other's twins and store a role twice.
@@ -79,8 +78,7 @@ pub async fn add(db: &PgPool, postings: &[Posting]) -> Result<Vec<i64>> {
     Ok(ids)
 }
 
-/// Same employer and the same set of title words. Word order and punctuation
-/// can differ between boards; a city or seniority word cannot.
+/// Company plus the set of title words, so word order between boards does not matter.
 fn fingerprint(company: &str, title: &str) -> String {
     const COMPANY_NOISE: [&str; 9] = ["inc", "ltd", "llc", "gmbh", "corp", "co", "plc", "bv", "sa"];
     const TITLE_NOISE: [&str; 8] = ["remote", "m", "w", "d", "f", "x", "h", "all"];
@@ -104,13 +102,12 @@ pub async fn get_many(db: &PgPool, ids: &[i64]) -> Result<Vec<Job>> {
     Ok(sqlx::query_as(crate::select_jobs!("where id = any($1) order by id")).bind(ids).fetch_all(db).await?)
 }
 
-/// Moves each job to `to` and records why. A job already at `to` stays as it is.
+/// Moves each job to `to` and records why.
 pub async fn move_to(db: &PgPool, moves: &[(i64, &str)], to: Stage) -> Result<()> {
     shift(db, moves, None, to).await.map(drop)
 }
 
-/// Moves only the jobs still at `from`, so a decision made in the meantime
-/// wins. Returns the ids that moved.
+/// Moves only jobs still at `from`, and returns the ids that moved.
 pub async fn move_from(db: &PgPool, from: Stage, moves: &[(i64, &str)], to: Stage) -> Result<Vec<i64>> {
     shift(db, moves, Some(from), to).await
 }
@@ -175,7 +172,6 @@ pub async fn record(db: impl PgExecutor<'_>, job_id: Option<i64>, kind: &str, bo
     Ok(())
 }
 
-/// Adds each `(job, flag)` pair a job does not already carry.
 pub async fn add_flags(db: &PgPool, flags: &[(i64, &str)]) -> Result<()> {
     let (ids, names): (Vec<i64>, Vec<&str>) = flags.iter().copied().unzip();
     sqlx::query(

@@ -54,8 +54,7 @@ pub async fn read_repos(app: &Arc<App>) -> Result<()> {
     app.queue(Rebuild, "rebuild_profile").await
 }
 
-/// A small model with web access reads each of your sites for work worth
-/// showing. A site that fails keeps what hunt read from it last time.
+/// A site that fails keeps its notes from the last read.
 pub async fn read_sites(app: &Arc<App>) -> Result<()> {
     let settings = app.settings().await?;
     let (mut read, mut failed) = (vec![], vec![]);
@@ -104,8 +103,7 @@ pub async fn read_sites(app: &Arc<App>) -> Result<()> {
     Ok(())
 }
 
-/// What you wrote about yourself, and the sites hunt reads. Queues a read of
-/// the sites and, when the text changed, a new profile.
+/// Queues a site read, and a profile rebuild when `about` changed.
 pub async fn save_context(app: &App, about: String, sites: Vec<String>) -> Result<()> {
     let changed = repo::about(&app.db).await?.unwrap_or_default() != about;
     repo::upsert_notes(&app.db, "about", &[("about".into(), "About you".into(), about)]).await?;
