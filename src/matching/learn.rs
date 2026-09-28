@@ -31,7 +31,7 @@ impl Model {
                 Array2::from_shape_vec((rows.len(), width), rows.iter().flat_map(|(x, _)| x.clone()).collect()).ok()?;
             let y = Array1::from_iter(rows.iter().map(|(_, y)| *y));
             let model = LogisticRegression::default().alpha(1.0).max_iterations(200).fit(&Dataset::new(x, y)).ok()?;
-            // linfa picks its positive class from the data; orient the weights towards `true`.
+            // linfa picks its positive class from the data. Orient the weights to `true`.
             let sign = if model.labels().pos.class { 1.0 } else { -1.0 };
             Some((model.params().iter().map(|w| w * sign).collect::<Vec<f64>>(), model.intercept() * sign))
         };

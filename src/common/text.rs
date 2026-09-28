@@ -22,7 +22,7 @@ static PII: LazyLock<[(Regex, &str); 4]> = LazyLock::new(|| {
 pub fn scrub(text: &str) -> String {
     let text =
         PII.iter().fold(text.to_string(), |text, (pattern, mask)| pattern.replace_all(&text, *mask).into_owned());
-    // Date ranges look like phone numbers too; only ten or more digits is a phone.
+    // Only ten or more digits count as a phone number. Date ranges have fewer.
     PHONE
         .replace_all(&text, |m: &regex::Captures| {
             let digits = m[0].chars().filter(char::is_ascii_digit).count();
