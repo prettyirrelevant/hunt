@@ -1,0 +1,9 @@
+pub mod api;
+#[cfg(feature = "ssr")]
+pub mod documents;
+pub mod model;
+#[cfg(feature = "ssr")]
+pub(crate) mod repo;
+#[cfg(feature = "ssr")]
+pub mod service;
+pub mod views;

@@ -1,0 +1,99 @@
+{
+ "comments": "21/08/2026: Cursor pagination is now available and is the preferred way to page through the feed. Pass the nextCursor value from each response back as ?cursor=. It is faster than offset and will never return the same job twice. The offset parameter is deprecated and will be removed in a future release. 13/03/2026: The API has been updated to include the companySlug field in the response.",
+ "updatedAt": 1790401136,
+ "offset": 0,
+ "limit": 2,
+ "totalCount": 96495,
+ "nextCursor": "MjAyNi0wOS0yNlQwNDozMToyMC42NTI3MzJafDIyODM1MTg",
+ "jobs": [
+  {
+   "title": "Gmail & Google Calendar AI Assistant Evaluator",
+   "excerpt": "Role Title: Gmail & Google Calendar AI Assistant Evaluator Role Type: Contractor, Remote Location: United States only micro1 is engaging Gmail & Google Calendar AI Assistant Evaluators to collaborate on a customer-driven project enhancing AI assistant quality through real-world task evaluation.",
+   "companyName": "micro1",
+   "companySlug": "micro1",
+   "companyLogo": "https://cdn-images.himalayas.app/91oa56akgt3qjqc1nh3uoruub40c",
+   "employmentType": "Contractor",
+   "minSalary": 15,
+   "maxSalary": 30,
+   "salaryPeriod": "hourly",
+   "seniority": [
+    "Entry-level"
+   ],
+   "currency": "USD",
+   "locationRestrictions": [
+    "United States"
+   ],
+   "timezoneRestrictions": [
+    -10,
+    -9,
+    -8,
+    -7,
+    -6,
+    -5,
+    14
+   ],
+   "categories": [
+    "AI-Evaluator",
+    "AI-Chatbot-Evaluator",
+    "AI-Feedback-Evaluator",
+    "Generative-AI-Evaluator",
+    "AI-Evaluation-Analyst",
+    "AI-Evaluation",
+    "Chatbot-Conversational-AI-Evaluator",
+    "Freelance-AI-Evaluator"
+   ],
+   "parentCategories": [
+    "Data Science"
+   ],
+   "description": "<p><strong>Role Title:</strong> Gmail &amp; Google Calendar AI Assistant Evaluator</p><p><strong>Role Type:</strong> Contractor, Remote</p><p><strong>Location:</strong> United States only</p><p><a href=\"https://himalayas.app/companies/micro1\">micro1</a> is engaging Gmail &amp; Google Calendar AI Assistant Evaluators to collaborate on a customer-driven project enhancing AI assistant quality through real-world task evaluation. In this role, you'll use your everyday experience managing your digital life — email, calendars, bookings, and coordination — to help train and evaluate next-generation AI",
+   "pubDate": 1790401136,
+   "expiryDate": 1795585136,
+   "applicationLink": "https://himalayas.app/companies/micro1/jobs/gmail-google-calendar-ai-assistant-evaluator",
+   "guid": "https://himalayas.app/companies/micro1/jobs/gmail-google-calendar-ai-assistant-evaluator"
+  },
+  {
+   "title": "IT Operations Specialist",
+   "excerpt": "About AbridgeAbridge was founded in 2018 with the mission of powering deeper understanding in healthcare.",
+   "companyName": "abridge",
+   "companySlug": "abridge",
+   "companyLogo": "https://cdn-images.himalayas.app/ir6vqybnc5b6essc8hik0xe9sll3",
+   "employmentType": "Full Time",
+   "minSalary": 100000,
+   "maxSalary": 115000,
+   "salaryPeriod": "annual",
+   "seniority": [
+    "Mid-level"
+   ],
+   "currency": "USD",
+   "locationRestrictions": [
+    "United States"
+   ],
+   "timezoneRestrictions": [
+    -10,
+    -9,
+    -8,
+    -7,
+    -6,
+    -5,
+    14
+   ],
+   "categories": [
+    "IT-Operations-Specialist",
+    "IT-Operations-Analyst",
+    "IT-Operations-Technician",
+    "IT-Operations-Coordinator",
+    "Operations-Specialist",
+    "IT-Operations-Engineer",
+    "Technical-Operations-Specialist"
+   ],
+   "parentCategories": [
+    "Operations"
+   ],
+   "description": "<h3><strong>About Abridge</strong></h3><p>Abridge was founded in 2018 with the mission of powering deeper understanding in healthcare. Our AI-powered platform was purpose-built for medical conversations, improving clinical documentation efficiencies while enabling clinicians to focus on what matters most—their patients.</p><p>Our enterprise-grade technology transforms patient-clinician conversations into structured clinical notes in real-time, with deep EMR integrations. Powered by Linked Evidence and our purpose-built, auditable AI, we are the only company that maps AI-generated summaries to ",
+   "pubDate": 1790397080,
+   "expiryDate": 1795581079,
+   "applicationLink": "https://himalayas.app/companies/abridge/jobs/it-operations-specialist",
+   "guid": "https://himalayas.app/companies/abridge/jobs/it-operations-specialist"
+  }
+ ]
+}

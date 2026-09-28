@@ -1,0 +1,192 @@
+[package]
+name = "hunt"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "hunt"
+required-features = ["ssr"]
+
+[dependencies]
+chrono = { version = "0.4.45", features = ["serde", "wasmbind"] }
+charming = { version = "0.6.0", default-features = false, features = ["wasm"], optional = true }
+console_error_panic_hook = { version = "0.1.7", optional = true }
+leptos = "0.8.21"
+leptos_meta = "0.8.7"
+leptos_router = "0.8.16"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+wasm-bindgen = { version = "0.2.129", optional = true }
+web-sys = { version = "0.3", features = ["CssStyleDeclaration", "Window", "Element", "Document"], optional = true }
+
+anyhow = { version = "1.0.104", optional = true }
+axum = { version = "0.8.9", features = ["multipart"], optional = true }
+clap = { version = "4.6.7", features = ["derive"], optional = true }
+directories = { version = "6.0.0", optional = true }
+futures = { version = "0.3.34", optional = true }
+gline-rs = { version = "1.1.0", optional = true }
+graphile_worker = { version = "0.13.5", optional = true }
+htmd = { version = "0.5.5", optional = true }
+html-escape = { version = "0.2.15", optional = true }
+leptos_axum = { version = "0.8.10", optional = true }
+linfa = { version = "0.8.1", optional = true }
+linfa-logistic = { version = "0.8.1", optional = true }
+mime_guess = { version = "2.0.5", optional = true }
+model2vec-rs = { version = "0.3.0", optional = true }
+ndarray = { version = "0.16", optional = true }
+open = { version = "5.4.4", optional = true }
+orp = { version = "1.0.0", optional = true }
+pgvector = { version = "0.4.2", features = ["sqlx"], optional = true }
+quick-xml = { version = "0.42.0", features = ["serialize"], optional = true }
+regex = { version = "1.13.1", optional = true }
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls", "gzip", "query", "http2", "form"], optional = true }
+rust-embed = { version = "8.12.0", features = ["include-exclude"], optional = true }
+schemars = { version = "1.2.2", optional = true }
+scraper = { version = "0.27.0", optional = true }
+sqlx = { version = "0.9.0", default-features = false, features = ["runtime-tokio", "postgres", "macros", "migrate", "chrono", "json", "uuid"], optional = true }
+tempfile = { version = "3.27.0", optional = true }
+tokio = { version = "1.53.1", features = ["full"], optional = true }
+tracing = { version = "0.1.44", optional = true }
+tracing-appender = { version = "0.2.5", optional = true }
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"], optional = true }
+typst = { version = "0.15", optional = true }
+typst-as-lib = { version = "0.16.0", features = ["typst-kit-fonts", "typst-kit-embed-fonts"], optional = true }
+typst-layout = { version = "0.15", optional = true }
+typst-pdf = { version = "0.15", optional = true }
+url = { version = "2.5.8", optional = true }
+walkdir = { version = "2.5.0", optional = true }
+which = { version = "8.0.6", optional = true }
+pulldown-cmark = { version = "0.13.4", optional = true }
+ammonia = { version = "4.2.0", optional = true }
+lettre = { version = "0.11.23", default-features = false, features = ["tokio1", "tokio1-rustls", "builder", "smtp-transport", "ring", "webpki-roots"], optional = true }
+keyring = { version = "4.2.0", optional = true }
+async-imap = { version = "0.11.3", default-features = false, features = ["runtime-tokio"], optional = true }
+mail-parser = { version = "0.11.9", optional = true }
+tokio-rustls = { version = "0.26.5", optional = true }
+webpki-roots = { version = "1.0.9", optional = true }
+ignore = { version = "0.4.33", optional = true }
+celes = "2"
+config = { version = "0.15.26", default-features = false, features = ["toml"], optional = true }
+pdf_oxide = { version = "0.3.78", optional = true }
+sha2 = { version = "0.11.0", optional = true }
+postgresql_embedded = { version = "0.21.0", default-features = false, features = ["theseus", "tokio", "tls-rustls-ring"], optional = true }
+postgresql_extensions = { version = "0.21.0", default-features = false, features = ["portal-corp", "tokio", "tls-rustls-ring"], optional = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+notify-rust = "4.18.1"
+
+[target.'cfg(any(target_os = "macos", target_os = "linux"))'.dependencies]
+service-manager = "0.11.0"
+
+[target.'cfg(windows)'.dependencies]
+auto-launch = "0.6.0"
+
+[features]
+hydrate = ["leptos/hydrate", "dep:charming", "dep:console_error_panic_hook", "dep:wasm-bindgen", "dep:web-sys"]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+    "dep:ammonia",
+    "dep:anyhow",
+    "dep:async-imap",
+    "dep:axum",
+    "dep:clap",
+    "dep:config",
+    "dep:directories",
+
+    "dep:futures",
+    "dep:gline-rs",
+    "dep:graphile_worker",
+    "dep:htmd",
+    "dep:ignore",
+    "dep:keyring",
+    "dep:lettre",
+    "dep:html-escape",
+    "dep:leptos_axum",
+    "dep:linfa",
+    "dep:mail-parser",
+    "dep:linfa-logistic",
+    "dep:mime_guess",
+    "dep:model2vec-rs",
+    "dep:ndarray",
+    "dep:open",
+    "dep:orp",
+
+    "dep:pdf_oxide",
+    "dep:pgvector",
+    "dep:postgresql_embedded",
+    "dep:postgresql_extensions",
+    "dep:pulldown-cmark",
+    "dep:quick-xml",
+    "dep:regex",
+    "dep:reqwest",
+    "dep:rust-embed",
+    "dep:schemars",
+    "dep:scraper",
+    "dep:sha2",
+    "dep:sqlx",
+    "dep:tempfile",
+    "dep:tokio",
+    "dep:tokio-rustls",
+    "dep:tracing",
+    "dep:tracing-appender",
+    "dep:tracing-subscriber",
+    "dep:typst",
+    "dep:typst-as-lib",
+    "dep:typst-layout",
+    "dep:typst-pdf",
+    "dep:url",
+    "dep:walkdir",
+    "dep:webpki-roots",
+    "dep:which",
+]
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+too_many_lines = "allow"
+cast_possible_truncation = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+cast_possible_wrap = "allow"
+struct_excessive_bools = "allow"
+fn_params_excessive_bools = "allow"
+
+[profile.release]
+lto = "thin"
+strip = true
+
+# Stripping proc macros on macOS corrupts them; only the shipped binary is stripped.
+[profile.release.build-override]
+strip = false
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[package.metadata.leptos]
+output-name = "hunt"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+style-file = "assets/app.css"
+assets-dir = "assets/public"
+site-addr = "127.0.0.1:7777"
+reload-port = 7778
+bin-features = ["ssr"]
+lib-features = ["hydrate"]
+lib-profile-release = "wasm-release"
+precompress = true

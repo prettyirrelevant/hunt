@@ -1,0 +1,243 @@
+{
+ "offset": 0,
+ "limit": 2,
+ "totalFound": 310,
+ "content": [
+  {
+   "id": "744000151912444",
+   "name": "Spécialiste Fiabilité outils et infrastructures - TGQF",
+   "uuid": "e316b29e-fcfb-42fd-9ef2-686ee113febc",
+   "jobAdId": "46d59653-37c9-4822-a8d3-ed3db2e39a4c",
+   "defaultJobAd": true,
+   "refNumber": "REF31910A",
+   "company": {
+    "identifier": "Ubisoft2",
+    "name": "Ubisoft"
+   },
+   "releasedDate": "2026-09-25T18:18:52.891Z",
+   "location": {
+    "city": "Montreal",
+    "region": "QC",
+    "country": "ca",
+    "remote": false,
+    "hybrid": false,
+    "latitude": "45.5018869",
+    "longitude": "-73.56739189999999",
+    "fullLocation": "Montreal, QC, Canada"
+   },
+   "industry": {
+    "id": "entertainment",
+    "label": "Entertainment"
+   },
+   "department": {
+    "id": "13847731",
+    "label": "Ubisoft"
+   },
+   "function": {
+    "id": "engineering",
+    "label": "Engineering"
+   },
+   "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Full-time"
+   },
+   "experienceLevel": {
+    "id": "mid_senior_level",
+    "label": "Mid-Senior Level"
+   },
+   "customField": [
+    {
+     "fieldId": "56c253c2e4b0cabf01d19d37",
+     "fieldLabel": "Organizational Unit",
+     "valueId": "21cb51c2-24e9-4088-8f65-52ce10f74bcf",
+     "valueLabel": "Montréal studio"
+    },
+    {
+     "fieldId": "5bb3995c6d8bc56bc081b87d",
+     "fieldLabel": "Contract",
+     "valueId": "b5a86fc0-2681-4b3c-98b6-b73a4be23ef1",
+     "valueLabel": "Permanent"
+    },
+    {
+     "fieldId": "68e4ce369c52964c7125078a",
+     "fieldLabel": "Job Family",
+     "valueId": "e3c9e4f4-a983-42c1-acfb-15a77c35f610",
+     "valueLabel": "Information & Systems"
+    },
+    {
+     "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "Ubisoft"
+    },
+    {
+     "fieldId": "6904811aa8fa2db78e2ee2ed",
+     "fieldLabel": "Job  Function",
+     "valueId": "2e7438ae-0c0e-4504-9fcd-f01b8b1062bf",
+     "valueLabel": "Infrastructure & Operations"
+    },
+    {
+     "fieldId": "691ca2ee342dfb96e5364508",
+     "fieldLabel": "Reference Job",
+     "valueId": "3993eae3-899e-44bf-930d-ea17e062cf38",
+     "valueLabel": "Infrastructure & Systems Virtualisation Administrator"
+    },
+    {
+     "fieldId": "6a158e3c77b1f5657b57af9d",
+     "fieldLabel": "Management Unit (New)",
+     "valueId": "f0bd3708-c5ff-47b1-9104-b83a1b4071d2",
+     "valueLabel": "UBISOFT"
+    },
+    {
+     "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+     "fieldLabel": "Department",
+     "valueId": "13847731",
+     "valueLabel": "Ubisoft"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "ca",
+     "valueLabel": "Canada"
+    },
+    {
+     "fieldId": "6904797c56f594d5ed50988d",
+     "fieldLabel": "Work flexibility",
+     "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+     "valueLabel": "Office-based"
+    },
+    {
+     "fieldId": "5def94650389ad3cc4be9d17",
+     "fieldLabel": "OU sub location (select when applicable)",
+     "valueId": "8282aec3-a755-4c6d-b27f-88e4344879af",
+     "valueLabel": "Canada"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000151912444",
+   "language": {
+    "code": "fr-CA",
+    "label": "French (Canada)",
+    "labelNative": "français (Canada)"
+   }
+  },
+  {
+   "id": "744000151872065",
+   "name": "CRM Webmarketing Assistant",
+   "uuid": "46ba4d82-41ee-40d6-b66a-878314e2f20b",
+   "jobAdId": "db45b6d9-45c2-4db3-97be-1d32164338e4",
+   "defaultJobAd": true,
+   "refNumber": "REF31996L",
+   "company": {
+    "identifier": "Ubisoft2",
+    "name": "Ubisoft"
+   },
+   "releasedDate": "2026-09-25T14:49:00.552Z",
+   "location": {
+    "city": "Paris",
+    "region": "IDF",
+    "country": "fr",
+    "remote": false,
+    "hybrid": false,
+    "latitude": "48.8575475",
+    "longitude": "2.3513765",
+    "fullLocation": "Paris, IDF, France"
+   },
+   "industry": {
+    "id": "entertainment",
+    "label": "Entertainment"
+   },
+   "department": {
+    "id": "13847731",
+    "label": "Ubisoft"
+   },
+   "function": {
+    "id": "marketing",
+    "label": "Marketing"
+   },
+   "typeOfEmployment": {
+    "id": "intern",
+    "label": "Intern"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "56c253c2e4b0cabf01d19d37",
+     "fieldLabel": "Organizational Unit",
+     "valueId": "562562fb-aed4-418b-bb83-6b3e2b09c375",
+     "valueLabel": "Central Publishing"
+    },
+    {
+     "fieldId": "5bb3995c6d8bc56bc081b87d",
+     "fieldLabel": "Contract",
+     "valueId": "f932c7ce-c2d6-47b0-bce3-ff3b6f1fa952",
+     "valueLabel": "Internship"
+    },
+    {
+     "fieldId": "68e4ce369c52964c7125078a",
+     "fieldLabel": "Job Family",
+     "valueId": "3248d469-5642-4951-b422-99637d061ac3",
+     "valueLabel": "Marketing"
+    },
+    {
+     "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "Ubisoft"
+    },
+    {
+     "fieldId": "6904811aa8fa2db78e2ee2ed",
+     "fieldLabel": "Job  Function",
+     "valueId": "c7dcdb74-0248-45d1-9ffb-783e8102cd7b",
+     "valueLabel": "Media & Channels"
+    },
+    {
+     "fieldId": "691ca2ee342dfb96e5364508",
+     "fieldLabel": "Reference Job",
+     "valueId": "160da9c8-2b16-4e38-bfdd-b92f8ee3083c",
+     "valueLabel": "Media & Channels Trainee"
+    },
+    {
+     "fieldId": "6a158e3c77b1f5657b57af9d",
+     "fieldLabel": "Management Unit (New)",
+     "valueId": "f0bd3708-c5ff-47b1-9104-b83a1b4071d2",
+     "valueLabel": "UBISOFT"
+    },
+    {
+     "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+     "fieldLabel": "Department",
+     "valueId": "13847731",
+     "valueLabel": "Ubisoft"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "fr",
+     "valueLabel": "France"
+    },
+    {
+     "fieldId": "6904797c56f594d5ed50988d",
+     "fieldLabel": "Work flexibility",
+     "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+     "valueLabel": "Office-based"
+    },
+    {
+     "fieldId": "5def94650389ad3cc4be9d17",
+     "fieldLabel": "OU sub location (select when applicable)",
+     "valueId": "ac8ae7ad-70a6-491d-b848-4625c10b9609",
+     "valueLabel": "N/A"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000151872065",
+   "language": {
+    "code": "fr",
+    "label": "French",
+    "labelNative": "français"
+   }
+  }
+ ]
+}

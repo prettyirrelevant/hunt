@@ -1,0 +1,148 @@
+{
+ "data": [
+  {
+   "public_slug": "backend-engineer-sponsored-listings-constructor-io-dpsvjhdf",
+   "source": "getmatch",
+   "manually_added": false,
+   "external_id": ":24623",
+   "url": "https://getmatch.ru/vacancies/24623-backend-engineer-sponsored-listings?utm_source=freehire.me",
+   "title": "Backend Engineer (Sponsored Listings)",
+   "company": "Constructor.io",
+   "company_slug": "constructor-io",
+   "location": "Worldwide",
+   "description": "## Responsibilities\n\nThe primary focus of this job is to design, deliver & maintain web services in close collaboration with other engineers.\n\n- Build/deploy/support services using Python and FastAPI.\n- Write AWS CloudFormation scripts, Jenkins Jobs, GitHub Actions following best industry standards.\n- Set up service observability, monitoring metrics, and alerting (Prometheus, Grafana, PagerDuty, AWS CloudWatch).\n- Implement CI/CD pipelines and separate stability testing.\n- Collaborate with techn",
+   "countries": [],
+   "regions": [
+    "global"
+   ],
+   "work_mode": "remote",
+   "skills": [
+    "api",
+    "api-design",
+    "athena",
+    "aws",
+    "azure",
+    "ci-cd"
+   ],
+   "cities": [],
+   "collections": [],
+   "is_tech": "tech",
+   "posted_at": "2026-09-22T10:35:21Z",
+   "created_at": "2026-07-23T16:13:02Z",
+   "updated_at": "2026-09-22T12:36:40Z",
+   "last_seen_at": "2026-09-26T05:14:41Z",
+   "closed_at": null,
+   "enrichment": {
+    "summary": "Designs, builds, and maintains scalable backend services using Python, FastAPI, and AWS, with a focus on observability, CI/CD, and ad tech systems.",
+    "visa_sponsorship": true,
+    "category": "backend",
+    "domains": [
+     "adtech"
+    ],
+    "posting_language": "en",
+    "company_type": "product",
+    "requirements": [
+     {
+      "text": "Strong computer science background & familiarity with networking principles.",
+      "priority": "required"
+     },
+     {
+      "text": "Experience in designing, developing & maintaining highload real-time services.",
+      "priority": "required"
+     },
+     {
+      "text": "Proficiency in Infrastructure as Code (IaC) tools like CloudFormation or Terraform for managing cloud resources.",
+      "priority": "required"
+     }
+    ]
+   },
+   "enriched_at": "2026-07-23T16:13:17Z",
+   "enrichment_version": 2,
+   "view_count": 50,
+   "applied_count": 0,
+   "upvote_count": 0,
+   "downvote_count": 0,
+   "my_vote": 0,
+   "reality": {
+    "class": "stale",
+    "age_days": 64,
+    "repost_count": 1,
+    "mass_posting_count": 1,
+    "fake_freshness": false
+   }
+  },
+  {
+   "public_slug": "experienced-backend-javascript-developer-worldwide-bright-data-ctmcvid6",
+   "source": "comeet",
+   "manually_added": false,
+   "external_id": "brightdata/88.007:2B.E5F",
+   "url": "https://brightdata.com/careers/experienced-backend-javascript-developer-worldwide?utm_source=freehire.me",
+   "title": "Experienced Backend JavaScript Developer - Worldwide",
+   "company": "Bright Data",
+   "company_slug": "bright-data",
+   "location": "Bright Data - Worldwide",
+   "description": "We're looking for experienced and exceptional **back-end JavaScript developers**, with expertise in Node.js. MongoDB, Express, Kubernetes, RabbitMQ, Cassandra and Snowflake.\n\nIn this role, you will take full ownership of product and feature development, using cutting-edge technologies, in a fast-paced and professional agile environment.\n\n### Responsibilities\n\n- End-to-end feature development, from conception to production.\n- Participate in system design and architecture planning, for optimal sof",
+   "countries": [],
+   "regions": [
+    "global"
+   ],
+   "work_mode": "remote",
+   "skills": [
+    "agile",
+    "cassandra",
+    "css",
+    "dns",
+    "express",
+    "html"
+   ],
+   "cities": [],
+   "collections": [],
+   "is_tech": "tech",
+   "posted_at": "2026-09-25T19:25:10Z",
+   "created_at": "2026-08-17T22:45:23Z",
+   "updated_at": "2026-09-25T20:56:19Z",
+   "last_seen_at": "2026-09-26T02:56:12Z",
+   "closed_at": null,
+   "enrichment": {
+    "summary": "Develop backend features using Node.js, MongoDB, and Kubernetes in a fast-paced, remote agile environment.",
+    "experience_years_min": 2,
+    "english_level": "c1",
+    "category": "backend",
+    "posting_language": "en",
+    "requirements": [
+     {
+      "text": "At least 3 years of hands-on experience in development / engineering, including 2+ years focused specifically on Back-End JavaScript development.",
+      "priority": "required"
+     },
+     {
+      "text": "In-depth understanding of network protocols and security, including TCP/IP, DNS, HTTP, HTTPS, CORS and WebSockets.",
+      "priority": "required"
+     },
+     {
+      "text": "Proficient in system design and architecture to ensure product functionality, performance, scalability, and reliability.",
+      "priority": "required"
+     }
+    ]
+   },
+   "enriched_at": "2026-08-18T13:41:20Z",
+   "enrichment_version": 2,
+   "view_count": 89,
+   "applied_count": 1,
+   "upvote_count": 0,
+   "downvote_count": 0,
+   "my_vote": 0,
+   "reality": {
+    "class": "stale",
+    "age_days": 39,
+    "repost_count": 1,
+    "mass_posting_count": 1,
+    "fake_freshness": false
+   }
+  }
+ ],
+ "meta": {
+  "limit": 2,
+  "offset": 0,
+  "total": 30
+ }
+}

@@ -1,0 +1,51 @@
+{
+ "jobs": [
+  {
+   "id": 2091144,
+   "url": "https://remotive.com/remote-jobs/all-others/content-reviewer-united-states-2091144",
+   "title": "Content Reviewer - United States",
+   "company_name": "TELUS Digital",
+   "company_logo": "https://remotive.com/job/2091144/logo",
+   "category": "All others",
+   "tags": [
+    "android",
+    "ios",
+    "social media",
+    "AI/ML"
+   ],
+   "job_type": "part_time",
+   "publication_date": "2026-09-21T12:55:11",
+   "candidate_required_location": "USA",
+   "salary": "",
+   "description": "<p class=\"figma-padding-bottom-32 tw-border-b tw-border-[#E3E6E8]\" style=\"border-width: 0px 0px 1px; border-color: #e3e6e8; --tw-shadow: 0 0 #0000; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / .5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-border-spacing-x: 0; --tw-border-spacing-y: 0; --tw-translate-x: 0; --tw-translate-y: 0; --tw-rotate: 0; --tw-skew-x: 0; --tw-skew-y: 0; --tw-scale-x: 1; --tw-scale-y: 1; --tw-scroll-snap-strictness: proximity; --tw-shadow-colored: 0 0 #0000; --tw-border-opacity: 1; padding-bottom: 3",
+   "company_logo_url": "https://remotive.com/job/2091144/logo"
+  },
+  {
+   "id": 2091141,
+   "url": "https://remotive.com/remote-jobs/design/frontend-web-application-developer-2091141",
+   "title": "Frontend Web Application Developer",
+   "company_name": "KoboToolbox",
+   "company_logo": "https://remotive.com/job/2091141/logo",
+   "category": "Design",
+   "tags": [
+    "api",
+    "django",
+    "docker",
+    "frontend",
+    "git",
+    "python",
+    "react",
+    "security",
+    "video",
+    "AI/ML",
+    "documentation",
+    "Typescript "
+   ],
+   "job_type": "full_time",
+   "publication_date": "2026-09-18T16:43:22",
+   "candidate_required_location": "USA, Canada, Argentina, Mexico, Peru",
+   "salary": "$90k - $105k",
+   "description": "<p><strong>Location:</strong> Remote<br><strong>Availability:</strong> 35-40 hours per week<br><strong>Working hours:</strong> US East business hours<br><strong>Reporting to:</strong> Lead developer</p>\n<p><a href=\"http://www.kobotoolbox.org/\" rel=\"nofollow\">KoboToolbox</a> has an immediate opening for a Frontend Web Application Developer to fill a full-time position of approximately 35-40 hours per week, for a commitment of at least 1 year. As a member of our team, you will share in the challenge and excitement of writing code used by over 32,000 organizations around the world. These organiza"
+  }
+ ]
+}

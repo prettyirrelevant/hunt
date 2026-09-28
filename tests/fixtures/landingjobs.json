@@ -1,0 +1,71 @@
+[
+ {
+  "id": 19066,
+  "currency_code": "EUR",
+  "expires_at": "2027-03-02",
+  "main_requirements": "<ul><li>6-8 years of experience in software development with Java.</li><li>5+ years working with Spring Boot.</li><li>Experience with SQL.</li><li>Proactively solution oriented (Nothing is lost in the cracks).</li><li>Always on the ball.</li><li>Displays maturity and loyalty to the processes, organization, and decisions.</li><li>Dares and wants to challenge status quo.</li><li>Keeping cool and taking qualified decisions under pressure.</li><li>Able and willing to mentor and teach others.</li><li>Is very adept at managing own time and priorities.</li><li>Collaboration and help-seeking are seen ",
+  "nice_to_have": "<ul><li>Experience with Cloud Native engineering.</li><li>Experience with Kafka.</li><li>Experience with Docker and Kubernetes.</li><li>Test Driven Development (TDD).</li></ul>",
+  "perks": "<ul><li>Permanent contract with Inscale</li><li>14 salaries</li><li>22 days vacation</li><li>Portugal Holidays</li><li>Health insurance</li><li>Flex benefits</li><li>Career plan&nbsp;</li></ul>",
+  "relocation_paid": false,
+  "role_description": "<div>Our client is a Global retail chain that brings Scandinavian design and quality to the world through an extensive range of quality products for sleeping and living. Known for its commitment to simplicity, functionality, and affordability.&nbsp;<br><br></div><div>Teamwork, innovation, and a customer-focused mindset as core values.&nbsp;<br><br></div><div>Our culture is built on Scandinavian roots, emphasizing respect, responsibility, and sustainable practices. We are proud to provide opportunities for career growth in a dynamic and supportive environment. <br><br>The Java team is responsib",
+  "title": "Senior Java Software Developer",
+  "created_at": "2025-02-26T08:53:02.254Z",
+  "updated_at": "2026-09-02T07:19:49.719Z",
+  "published_at": "2025-02-26T09:38:38.127Z",
+  "type": "Full-time",
+  "remote": false,
+  "gross_salary_low": 50000,
+  "gross_salary_high": 67000,
+  "tags": [
+   "Spring Boot",
+   "Java",
+   "SQL",
+   "Apache Kafka",
+   "Kubernetes",
+   "Docker"
+  ],
+  "url": "https://landing.jobs/at/inscale/senior-java-software-developer-in-lisbon-2025",
+  "locations": [
+   {
+    "city": "Lisbon",
+    "country_code": "PT"
+   }
+  ]
+ },
+ {
+  "id": 19410,
+  "currency_code": "EUR",
+  "expires_at": "2026-09-29",
+  "main_requirements": "<ul><li><strong>Experience &amp; Tech Stack</strong> → Several years of experience as a Data Engineer or in a similar role, ideally with a focus on Microsoft Azure</li><li><strong>Technical Expertise</strong> → Strong knowledge of Databricks, Spark, Kafka, and data modeling (Star Schema, Snowflake, Data Vault)<br><br></li><li><strong>Cloud &amp; Big Data Knowledge</strong> → Experience with Azure Data Factory, Azure Synapse Analytics, and Azure Databricks<br><br></li><li><strong>Performance Optimization</strong> → Understanding of how to scale data pipelines and optimize queries efficiently<br",
+  "nice_to_have": "",
+  "perks": "<div><strong>Why Join Us?<br></strong><br></div><ul><li><strong>State-of-the-Art Technologies</strong> → Work with Azure, Databricks, and leading cloud technologies on innovative Data &amp; AI projects<br><br></li><li><strong>High Performance &amp; Ambition</strong> → We are looking for driven professionals who want to make an impact<br><br></li><li><strong>Steep Learning Curve &amp; Development Opportunities</strong> → Benefit from regular training, certifications, and exciting projects<br><br></li><li><strong>Innovative Company Culture</strong> → We foster a hands-on mentality, team spirit, ",
+  "relocation_paid": false,
+  "role_description": "<div>As a <strong>(Senior)</strong> <strong>Data Engineer</strong>, you will be the driving force behind the development and optimization of our <strong>cloud-based data platforms</strong>. Working at the intersection of business and technology, you will ensure that our data solutions are not only technically excellent but also provide real business value to our customers.<br><br>Using state-of-the-art technologies, you will develop robust <strong>data pipelines, ETL processes, and high-performance data models</strong> that enable scalable and efficient data utilization. Your goal: <strong>tur",
+  "title": "(Senior) Data Engineer",
+  "created_at": "2025-09-29T14:49:19.836Z",
+  "updated_at": "2026-09-01T01:00:10.777Z",
+  "published_at": "2026-03-17T10:23:40.667Z",
+  "type": "Full-time",
+  "remote": false,
+  "tags": [
+   "Microsoft Azure",
+   "Databricks",
+   "Apache Spark"
+  ],
+  "url": "https://landing.jobs/at/ki-performance/senior-data-engineer-in-multiple-locations",
+  "locations": [
+   {
+    "city": "Munich",
+    "country_code": "DE"
+   },
+   {
+    "city": "Lisbon",
+    "country_code": "PT"
+   },
+   {
+    "city": "Cologne",
+    "country_code": "DE"
+   }
+  ]
+ }
+]

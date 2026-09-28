@@ -1,0 +1,476 @@
+{
+ "offers": [
+  {
+   "country": "Netherlands",
+   "dynamic_fields": [],
+   "options_phone": "required",
+   "position": 616,
+   "state_name": "Utrecht",
+   "max_hours": 40,
+   "cover_image": null,
+   "highlight": null,
+   "requirements": "<p style=\"min-height: 1.7em;\"></p><h4><strong><span style=\"color:#000000\">Your role</span></strong></h4><ul><li><p><span style=\"color:#000000\">Portfolio &amp; client management: customer retention, identifying risk, preventing churn, realizing upsell &amp; expansion; including pipeline creation &amp; forecasting;</span></p></li><li><p><span style=\"color:#000000\">Performing kick off meetings, strategic impact reviews, check-ins, demos, and commercially lead meetings. Working strategically with our partners online and onsite;</span></p></li><li><p><span style=\"color:#000000\">Realizing success pl",
+   "guid": "tcvwa",
+   "location_question_visible": false,
+   "company_name": "Channable",
+   "location": "Utrecht, Utrecht, Netherlands",
+   "title": "Customer Success Manager Benelux - Dutch speaking",
+   "salary": {
+    "max": "5250",
+    "min": "3750",
+    "period": "month",
+    "currency": "EUR"
+   },
+   "experience_code": "mid_level",
+   "options_photo": "off",
+   "max_hours_per_week": "40",
+   "hybrid": true,
+   "state_code": "UT",
+   "created_at": "2026-09-18 12:55:59 UTC",
+   "education_code": "bachelor_degree",
+   "min_hours_per_week": "32",
+   "sharing_image": null,
+   "department": "Customer Success",
+   "postal_code": "3512 HL",
+   "city": "Utrecht",
+   "locations_question_required": true,
+   "sharing_title": "Customer Success Manager Benelux - Dutch speaking",
+   "locations": [
+    {
+     "id": 64463,
+     "name": "Utrecht",
+     "state": "Utrecht",
+     "country": "Netherlands",
+     "city": "Utrecht",
+     "translations": {
+      "en": {
+       "name": "Utrecht",
+       "city": "Utrecht",
+       "postal_code": "3512 HL",
+       "street": "Kromme Nieuwegracht 66",
+       "note": null
+      }
+     },
+     "country_code": "NL",
+     "postal_code": "3512 HL",
+     "state_code": "UT",
+     "street": "Kromme Nieuwegracht 66",
+     "note": null
+    }
+   ],
+   "options_salutation": "off",
+   "sharing_description": "Channable is a fast-growing B2B SaaS platform driving digital commerce across the globe. By offering a fully integrated solution, we empower marketers, online stores, and digital agencies to manage, s",
+   "country_code": "NL",
+   "min_hours": 32,
+   "description": "<p><span style=\"color:#000000\">Channable is a fast-growing B2B SaaS platform driving digital commerce across the globe. By offering a fully integrated solution, we empower marketers, online stores, and digital agencies to manage, scale, and optimize their online activities.</span></p><p style=\"min-height: 1.7em;\"></p><p><span style=\"color:#000000\">As the market leader in the Benelux, we owe our success to an incredible product, a passionate team ánd our customers who love working with us! To keep winning, our Benelux region is split into two specialized teams (Strategic and Growth), working cl",
+   "locations_question": "What is your preferred work location?",
+   "slug": "customer-success-manager-benelux-dutch-speaking-3",
+   "mailbox_email": "job.tcvwa@channable.recruitee.com",
+   "careers_apply_url": "https://jobs.channable.com/o/customer-success-manager-benelux-dutch-speaking-3/c/new",
+   "remote": false,
+   "id": 2751915,
+   "updated_at": "2026-09-19 19:02:48 UTC",
+   "careers_url": "https://jobs.channable.com/o/customer-success-manager-benelux-dutch-speaking-3",
+   "employment_type_code": "fulltime_permanent",
+   "locations_question_type": "multiple_choice",
+   "translations": {
+    "en": {
+     "description": "<p><span style=\"color:#000000\">Channable is a fast-growing B2B SaaS platform driving digital commerce across the globe. By offering a fully integrated solution, we empower marketers, online stores, and digital agencies to manage, scale, and optimize their online activities.</span></p><p style=\"min-height: 1.7em;\"></p><p><span style=\"color:#000000\">As the market leader in the Benelux, we owe our success to an incredible product, a passionate team ánd our customers who love working with us! To keep winning, our Benelux region is split into two specialized teams (Strategic and Growth), working cl",
+     "title": "Customer Success Manager Benelux - Dutch speaking",
+     "highlight": null,
+     "sharing_image": null,
+     "requirements": "<p style=\"min-height: 1.7em;\"></p><h4><strong><span style=\"color:#000000\">Your role</span></strong></h4><ul><li><p><span style=\"color:#000000\">Portfolio &amp; client management: customer retention, identifying risk, preventing churn, realizing upsell &amp; expansion; including pipeline creation &amp; forecasting;</span></p></li><li><p><span style=\"color:#000000\">Performing kick off meetings, strategic impact reviews, check-ins, demos, and commercially lead meetings. Working strategically with our partners online and onsite;</span></p></li><li><p><span style=\"color:#000000\">Realizing success pl",
+     "sharing_title": "Customer Success Manager Benelux - Dutch speaking",
+     "sharing_description": "Channable is a fast-growing B2B SaaS platform driving digital commerce across the globe. By offering a fully integrated solution, we empower marketers, online stores, and digital agencies to manage, s",
+     "locations_question": "What is your preferred work location?"
+    }
+   },
+   "close_at": null,
+   "on_site": false,
+   "options_cover_letter": "off",
+   "status": "published",
+   "published_at": "2026-09-18 13:27:28 UTC",
+   "options_cv": "required",
+   "options_title": "off",
+   "tags": [],
+   "open_questions": [
+    {
+     "id": 4380112,
+     "position": 1,
+     "options": {},
+     "required": true,
+     "body": "Do you speak the Dutch language on a C2 (Native Proficiency) level?",
+     "kind": "boolean",
+     "translations": {
+      "en": {
+       "body": "Do you speak the Dutch language on a C2 (Native Proficiency) level?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380113,
+     "position": 2,
+     "options": {},
+     "required": true,
+     "body": "How did you find out about Channable?",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "How did you find out about Channable?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380114,
+     "position": 3,
+     "options": {},
+     "required": true,
+     "body": "Do you have EU citizenship or a valid work permit for the Netherlands?",
+     "kind": "single_choice",
+     "translations": {
+      "en": {
+       "body": "Do you have EU citizenship or a valid work permit for the Netherlands?"
+      }
+     },
+     "open_question_options": [
+      {
+       "id": 6742684,
+       "position": 0,
+       "body": "EU citizenship",
+       "translations": {
+        "en": {
+         "body": "EU citizenship"
+        }
+       }
+      },
+      {
+       "id": 6742685,
+       "position": 1,
+       "body": "Valid work permit",
+       "translations": {
+        "en": {
+         "body": "Valid work permit"
+        }
+       }
+      },
+      {
+       "id": 6742686,
+       "position": 2,
+       "body": "I need sponsorship from Channable",
+       "translations": {
+        "en": {
+         "body": "I need sponsorship from Channable"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": 4380115,
+     "position": 4,
+     "options": {},
+     "required": true,
+     "body": "Where do you live? (City)",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "Where do you live? (City)"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380116,
+     "position": 5,
+     "options": {},
+     "required": true,
+     "body": "Are you willing and able to work from our Utrecht office at least 2 days per week?",
+     "kind": "boolean",
+     "translations": {
+      "en": {
+       "body": "Are you willing and able to work from our Utrecht office at least 2 days per week?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380117,
+     "position": 6,
+     "options": {},
+     "required": true,
+     "body": "How many hours per week are you available to work?",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "How many hours per week are you available to work?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380118,
+     "position": 7,
+     "options": {},
+     "required": true,
+     "body": "Which one of our company values resonates the most with you and why?",
+     "kind": "text",
+     "translations": {
+      "en": {
+       "body": "Which one of our company values resonates the most with you and why?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4380119,
+     "position": 8,
+     "options": {
+      "length": 300
+     },
+     "required": true,
+     "body": "No motivation letter is required; instead, take this chance to introduce yourself! Please record a short video (max. 5 minutes) telling us about yourself and what motivates you to join both Channable and the Customer Success team within this role. It's your opportunity to leave a lasting impression! 😎 ",
+     "kind": "video",
+     "translations": {
+      "en": {
+       "body": "No motivation letter is required; instead, take this chance to introduce yourself! Please record a short video (max. 5 minutes) telling us about yourself and what motivates you to join both Channable and the Customer Success team within this role. It's your opportunity to leave a lasting impression! 😎 "
+      }
+     },
+     "open_question_options": []
+    }
+   ],
+   "category_code": "consulting"
+  },
+  {
+   "country": "Netherlands",
+   "dynamic_fields": [],
+   "options_phone": "required",
+   "position": 613,
+   "state_name": "Utrecht",
+   "max_hours": 40,
+   "cover_image": null,
+   "highlight": "<p>Channable has always had a vibrant, informal, and positive culture. Your mission is to evolve that as we grow, while building a high-performance sports team, an analogy we often refer to.</p>",
+   "requirements": "<p style=\"min-height: 1.7em;\"></p><h4><strong><span style=\"color:#000000\">Who are you?</span></strong></h4><ul><li><p><span style=\"color:#000000\">You enjoy setting the people strategy, not just running what's already there.</span></p></li><li><p><span style=\"color:#000000\">Of course, you're people-oriented, with an open and approachable attitude that fits an informal, positive culture.</span></p></li><li><p><span style=\"color:#000000\">Pragmatic, hands-on, and not afraid to roll up your sleeves alongside your team if that's needed.</span></p></li><li><p><span style=\"color:#000000\">A confident v",
+   "guid": "ntvtp",
+   "location_question_visible": false,
+   "company_name": "Channable",
+   "location": "Utrecht, Utrecht, Netherlands",
+   "title": "Head of People & Culture",
+   "salary": {
+    "max": "130000",
+    "min": "115000",
+    "period": "year",
+    "currency": "EUR"
+   },
+   "experience_code": "senior_manager",
+   "options_photo": "off",
+   "max_hours_per_week": "40",
+   "hybrid": true,
+   "state_code": "UT",
+   "created_at": "2026-09-11 12:20:09 UTC",
+   "education_code": "bachelor_degree",
+   "min_hours_per_week": "32",
+   "sharing_image": null,
+   "department": "Operations",
+   "postal_code": "3512 HL",
+   "city": "Utrecht",
+   "locations_question_required": true,
+   "sharing_title": "Head of People & Culture",
+   "locations": [
+    {
+     "id": 64463,
+     "name": "Utrecht",
+     "state": "Utrecht",
+     "country": "Netherlands",
+     "city": "Utrecht",
+     "translations": {
+      "en": {
+       "name": "Utrecht",
+       "city": "Utrecht",
+       "postal_code": "3512 HL",
+       "street": "Kromme Nieuwegracht 66",
+       "note": null
+      }
+     },
+     "country_code": "NL",
+     "postal_code": "3512 HL",
+     "state_code": "UT",
+     "street": "Kromme Nieuwegracht 66",
+     "note": null
+    }
+   ],
+   "options_salutation": "off",
+   "sharing_description": "You will be the driving force behind the people function at Channable, at a moment when we're scaling fast and want our culture to scale right alongside us. As Head of People &amp; Culture, you’ll be ",
+   "country_code": "NL",
+   "min_hours": 32,
+   "description": "<p><span style=\"color:#000000\">You will be the driving force behind the people function at Channable, at a moment when we're scaling fast and want our culture to scale right alongside us. As Head of People &amp; Culture, you’ll be reporting directly to our CEO, Rob van Nuenen, and sit on the management team. You'll lead our P&amp;C team: Talent Acquisition, HR, Employee Experience, and People Operations, with team leads reporting to you directly.</span></p><p style=\"min-height: 1.7em;\"></p><p><span style=\"color:#000000\">Channable has always had a vibrant, informal, and positive culture. Your m",
+   "locations_question": "What is your preferred work location?",
+   "slug": "head-of-people-culture",
+   "mailbox_email": "job.ntvtp@channable.recruitee.com",
+   "careers_apply_url": "https://jobs.channable.com/o/head-of-people-culture/c/new",
+   "remote": false,
+   "id": 2743511,
+   "updated_at": "2026-09-21 12:02:55 UTC",
+   "careers_url": "https://jobs.channable.com/o/head-of-people-culture",
+   "employment_type_code": "fulltime_permanent",
+   "locations_question_type": "multiple_choice",
+   "translations": {
+    "en": {
+     "description": "<p><span style=\"color:#000000\">You will be the driving force behind the people function at Channable, at a moment when we're scaling fast and want our culture to scale right alongside us. As Head of People &amp; Culture, you’ll be reporting directly to our CEO, Rob van Nuenen, and sit on the management team. You'll lead our P&amp;C team: Talent Acquisition, HR, Employee Experience, and People Operations, with team leads reporting to you directly.</span></p><p style=\"min-height: 1.7em;\"></p><p><span style=\"color:#000000\">Channable has always had a vibrant, informal, and positive culture. Your m",
+     "title": "Head of People & Culture",
+     "highlight": "<p>Channable has always had a vibrant, informal, and positive culture. Your mission is to evolve that as we grow, while building a high-performance sports team, an analogy we often refer to.</p>",
+     "sharing_image": null,
+     "requirements": "<p style=\"min-height: 1.7em;\"></p><h4><strong><span style=\"color:#000000\">Who are you?</span></strong></h4><ul><li><p><span style=\"color:#000000\">You enjoy setting the people strategy, not just running what's already there.</span></p></li><li><p><span style=\"color:#000000\">Of course, you're people-oriented, with an open and approachable attitude that fits an informal, positive culture.</span></p></li><li><p><span style=\"color:#000000\">Pragmatic, hands-on, and not afraid to roll up your sleeves alongside your team if that's needed.</span></p></li><li><p><span style=\"color:#000000\">A confident v",
+     "sharing_title": "Head of People & Culture",
+     "sharing_description": "You will be the driving force behind the people function at Channable, at a moment when we're scaling fast and want our culture to scale right alongside us. As Head of People &amp; Culture, you’ll be ",
+     "locations_question": "What is your preferred work location?"
+    }
+   },
+   "close_at": null,
+   "on_site": false,
+   "options_cover_letter": "off",
+   "status": "published",
+   "published_at": "2026-09-11 15:16:33 UTC",
+   "options_cv": "required",
+   "options_title": "off",
+   "tags": [],
+   "open_questions": [
+    {
+     "id": 4366869,
+     "position": 1,
+     "options": {},
+     "required": true,
+     "body": "How did you find out about Channable?",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "How did you find out about Channable?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4366870,
+     "position": 2,
+     "options": {},
+     "required": true,
+     "body": "Do you have EU citizenship or a valid work permit for the Netherlands? Or do you need sponsorship from us?",
+     "kind": "single_choice",
+     "translations": {
+      "en": {
+       "body": "Do you have EU citizenship or a valid work permit for the Netherlands? Or do you need sponsorship from us?"
+      }
+     },
+     "open_question_options": [
+      {
+       "id": 6722105,
+       "position": 0,
+       "body": "EU citizenship ",
+       "translations": {
+        "en": {
+         "body": "EU citizenship "
+        }
+       }
+      },
+      {
+       "id": 6722106,
+       "position": 1,
+       "body": "Valid work permit",
+       "translations": {
+        "en": {
+         "body": "Valid work permit"
+        }
+       }
+      },
+      {
+       "id": 6722107,
+       "position": 2,
+       "body": "I need sponsorship",
+       "translations": {
+        "en": {
+         "body": "I need sponsorship"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": 4366871,
+     "position": 3,
+     "options": {},
+     "required": true,
+     "body": "Where do you live? (City)",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "Where do you live? (City)"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4366872,
+     "position": 4,
+     "options": {},
+     "required": true,
+     "body": "How many hours per week are you available to work?",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "How many hours per week are you available to work?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4366873,
+     "position": 5,
+     "options": {},
+     "required": true,
+     "body": "Which one of our company values resonates the most with you and why?",
+     "kind": "string",
+     "translations": {
+      "en": {
+       "body": "Which one of our company values resonates the most with you and why?"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4366875,
+     "position": 6,
+     "options": {
+      "length": 300
+     },
+     "required": true,
+     "body": "Want to impress us even more? Take the chance to introduce yourself to us and tell us more about your motivation (max. 5 mins)!\n\n",
+     "kind": "video",
+     "translations": {
+      "en": {
+       "body": "Want to impress us even more? Take the chance to introduce yourself to us and tell us more about your motivation (max. 5 mins)!\n\n"
+      }
+     },
+     "open_question_options": []
+    },
+    {
+     "id": 4366879,
+     "position": 7,
+     "options": {
+      "currency": "EUR"
+     },
+     "required": true,
+     "body": "Please provide your target annual gross salary.",
+     "kind": "salary",
+     "translations": {
+      "en": {
+       "body": "Please provide your target annual gross salary."
+      }
+     },
+     "open_question_options": []
+    }
+   ],
+   "category_code": "recruitment_hr"
+  }
+ ]
+}

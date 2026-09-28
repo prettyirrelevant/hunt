@@ -1,0 +1,207 @@
+{
+ "jobs": [
+  {
+   "id": "01a0dc05-e1ff-7d04-b257-cc5b70f3e7e3",
+   "title": "Sr. Staff AI Engineer",
+   "slug": "sr-staff-ai-engineer-at-capital-one-633c7892",
+   "company_name": "Capital One",
+   "company_id": "019b7796-55b1-78b8-87d6-49955e343636",
+   "work_arrangement": "remote",
+   "locations": [
+    {
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 39.83,
+     "longitude": -98.58,
+     "work_arrangement": "remote",
+     "is_primary": true
+    }
+   ],
+   "posted": 1790397768,
+   "inserted": "2026-09-26T04:42:48.190644Z",
+   "schedule_type": "4_day_week_pro_rata",
+   "salary": "$286k - $392k",
+   "salary_lower": 28620000,
+   "salary_upper": 39200000,
+   "salary_currency": "USD",
+   "salary_period": "year",
+   "stack": [
+    {
+     "id": "019b6fe8-a5ec-7133-bdc3-9c632a4d2664",
+     "name": "Java",
+     "slug": "java"
+    },
+    {
+     "id": "019b6fe8-a5ec-7787-ae64-db39392c1ebc",
+     "name": "C#",
+     "slug": "csharp"
+    },
+    {
+     "id": "019b6fe8-a5ec-78d3-b3f8-3c5485929625",
+     "name": "Go",
+     "slug": "go"
+    },
+    {
+     "id": "019b6fe8-a5ec-79db-abd6-e6b9306f5d34",
+     "name": "Scala",
+     "slug": "scala"
+    },
+    {
+     "id": "019b6fe8-a5ec-7d91-a2b5-131efd931e0c",
+     "name": "Python",
+     "slug": "python"
+    },
+    {
+     "id": "019b792a-05f9-71e0-9f92-c2f6aaccc6aa",
+     "name": "PyTorch",
+     "slug": "pytorch"
+    },
+    {
+     "id": "019b81b9-d765-7e74-8827-f5ffae0c433d",
+     "name": "C++",
+     "slug": "cplusplus"
+    },
+    {
+     "id": "019db2d0-27d3-7e42-88a3-775fa8fe210b",
+     "name": "CUDA",
+     "slug": "cuda"
+    }
+   ],
+   "category": "engineering",
+   "level": "senior",
+   "is_expired": false,
+   "company": {
+    "id": "019b7796-55b1-78b8-87d6-49955e343636",
+    "name": "Capital One",
+    "slug": "capital-one",
+    "logo_url": "https://media.4dayweek.io/files/1771901598193_9bd30f9032461725.jpg",
+    "hires_worldwide": false,
+    "inserted": "0001-01-01T00:00:00Z",
+    "updated": "0001-01-01T00:00:00Z"
+   },
+   "work_life_score": 86
+  },
+  {
+   "id": "01a0db1e-9637-71a2-9055-ee36669aa3f0",
+   "title": "Director, AI Engineer",
+   "slug": "director-ai-engineer-at-capital-one-878cc3d6",
+   "company_name": "Capital One",
+   "company_id": "019b7796-55b1-78b8-87d6-49955e343636",
+   "work_arrangement": "remote",
+   "locations": [
+    {
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 39.83,
+     "longitude": -98.58,
+     "work_arrangement": "remote",
+     "is_primary": true
+    },
+    {
+     "city": "Cambridge",
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 42.3751,
+     "longitude": -71.10561,
+     "work_arrangement": "onsite"
+    },
+    {
+     "city": "McLean",
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 38.93428,
+     "longitude": -77.17748,
+     "work_arrangement": "onsite"
+    },
+    {
+     "city": "New York",
+     "country": "United States",
+     "continent": "North America",
+     "work_arrangement": "onsite"
+    },
+    {
+     "city": "Richmond",
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 37.55376,
+     "longitude": -77.46026,
+     "work_arrangement": "onsite"
+    },
+    {
+     "city": "San Francisco",
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 37.77493,
+     "longitude": -122.41942,
+     "work_arrangement": "onsite"
+    },
+    {
+     "city": "San Jose",
+     "country": "United States",
+     "continent": "North America",
+     "latitude": 37.33939,
+     "longitude": -121.89496,
+     "work_arrangement": "onsite"
+    }
+   ],
+   "posted": 1790382610,
+   "inserted": "2026-09-26T00:30:09.974476Z",
+   "schedule_type": "4_day_week_pro_rata",
+   "salary": "$244k - $279k",
+   "salary_lower": 24470000,
+   "salary_upper": 27920000,
+   "salary_currency": "USD",
+   "salary_period": "year",
+   "stack": [
+    {
+     "id": "019b6fe8-a5ec-7133-bdc3-9c632a4d2664",
+     "name": "Java",
+     "slug": "java"
+    },
+    {
+     "id": "019b6fe8-a5ec-7787-ae64-db39392c1ebc",
+     "name": "C#",
+     "slug": "csharp"
+    },
+    {
+     "id": "019b6fe8-a5ec-7d91-a2b5-131efd931e0c",
+     "name": "Python",
+     "slug": "python"
+    },
+    {
+     "id": "019b7922-d51e-7818-a514-09034aded49b",
+     "name": "Golang",
+     "slug": "golang"
+    },
+    {
+     "id": "019b792a-05f9-71e0-9f92-c2f6aaccc6aa",
+     "name": "PyTorch",
+     "slug": "pytorch"
+    },
+    {
+     "id": "019b81b9-d765-7e74-8827-f5ffae0c433d",
+     "name": "C++",
+     "slug": "cplusplus"
+    },
+    {
+     "id": "019db2d0-27d3-7e42-88a3-775fa8fe210b",
+     "name": "CUDA",
+     "slug": "cuda"
+    }
+   ],
+   "category": "engineering",
+   "level": "executive",
+   "is_expired": false,
+   "company": {
+    "id": "019b7796-55b1-78b8-87d6-49955e343636",
+    "name": "Capital One",
+    "slug": "capital-one",
+    "logo_url": "https://media.4dayweek.io/files/1771901598193_9bd30f9032461725.jpg",
+    "hires_worldwide": false,
+    "inserted": "0001-01-01T00:00:00Z",
+    "updated": "0001-01-01T00:00:00Z"
+   },
+   "work_life_score": 86
+  }
+ ]
+}

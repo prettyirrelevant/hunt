@@ -1,0 +1,57 @@
+{
+ "apiVersion": "2.2.16",
+ "documentationUrl": "https://jobi.cy/apidocs",
+ "friendlyNotice": "Thanks for using Jobicy API! Please ensure Jobicy is clearly credited with a direct link to the source, and all application buttons redirect to the original job URL provided in this feed. That’s all! You might be building something amazing, we wish you the best of luck!",
+ "jobCount": 2,
+ "lastUpdate": "2026-09-25T20:54:07+00:00",
+ "appliedFilters": {
+  "count": 2,
+  "industry": "engineering"
+ },
+ "jobs": [
+  {
+   "id": 154087,
+   "url": "https://jobicy.com/jobs/154087-orioledb-developer-amer",
+   "jobSlug": "154087-orioledb-developer-amer",
+   "jobTitle": "OrioleDB Developer (AMER)",
+   "companyName": "Supabase",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2026/06/611d3bfa-221.png",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "LATAM,  Canada,  USA",
+   "jobLevel": "Any",
+   "jobExcerpt": "About Supabase Supabase is the Postgres development platform, built by developers for developers. We provide a complete backend solution including Database, Auth, Storage, Edge Functions, Realtime, and Vector Search. All services are deeply integrated and designed for growth. About the role We're looking for an engineer to drive the evolution of OrioleDB and its collaboration&hellip;",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/supabase\" target=\"_blank\" rel=\"noopener\">Supabase</a></strong></h3>\r\n<p>Supabase is the Postgres development platform, built by developers for developers. We provide a complete backend solution including Database, Auth, Storage, Edge Functions, Realtime, and Vector Search. All services are deeply integrated and designed for growth.</p>\r\n\r\n<h3>About the role</h3>\r\n<p>We're looking for an engineer to drive the evolution of <a href=\"https://www.orioledb.com\" rel=\"nofollow ugc noopener\" target=\"_blank\">OrioleDB</a> and its collaboration with th",
+   "pubDate": "2026-09-25T20:54:07+00:00"
+  },
+  {
+   "id": 154084,
+   "url": "https://jobicy.com/jobs/154084-staff-engineer-full-stack-trust-safety-risk",
+   "jobSlug": "154084-staff-engineer-full-stack-trust-safety-risk",
+   "jobTitle": "Staff Engineer, Full Stack (Trust, Safety & Risk)",
+   "companyName": "Phantom",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/08/3d0a3a49-221.png",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "EMEA,  LATAM,  Canada,  USA",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Phantom is on a mission to connect the world to the freedom of open markets. Tens of millions of people all over the world use Phantom to access global markets that never close, including perpetuals, prediction markets, tokenized assets, stablecoins and memes. Phantom users are able to discover the markets that matter and the cultural&hellip;",
+   "jobDescription": "<p><a href=\"https://phantom.com\" rel=\"nofollow ugc noopener\" target=\"_blank\">Phantom</a> is on a mission to connect the world to the freedom of open markets. Tens of millions of people all over the world use <a href=\"https://jobicy.com/company/phantom\" target=\"_blank\" rel=\"noopener\">Phantom</a> to access global markets that never close, including perpetuals, prediction markets, tokenized assets, stablecoins and memes. Phantom users are able to discover the markets that matter and the cultural moments that shape them, building conviction through real-time data and the verified performance of to",
+   "pubDate": "2026-09-25T20:53:54+00:00",
+   "salaryMin": 200000,
+   "salaryMax": 250000,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  }
+ ],
+ "statusCode": 200,
+ "success": true
+}
