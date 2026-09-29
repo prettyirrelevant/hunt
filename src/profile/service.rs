@@ -168,7 +168,11 @@ pub async fn rebuild(app: &Arc<App>) -> Result<()> {
     );
     let order = app.settings().await?.providers;
     let answer = app.ai.ask::<Profile>(&order, &prompt).await?;
+    let first = repo::profile(&app.db).await?.is_none_or(|p| p.roles.is_empty());
     repo::save_profile(&app.db, &answer.value).await?;
+    if first {
+        app.queue(crate::discovery::service::Sweep, "sweep").await?;
+    }
     let body = format!("Profile rewritten by {}: {}", answer.provider.name(), answer.value.headline);
     jobs::record(&app.db, None, "profile", &body, json!({})).await
 }
