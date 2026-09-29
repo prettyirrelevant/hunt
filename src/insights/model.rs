@@ -14,6 +14,8 @@ pub struct Today {
     pub shortlisted_24h: i64,
     pub applied_7d: i64,
     pub heard_back_7d: i64,
+    pub jobs: i64,
+    pub searching: bool,
     pub feed: Vec<Event>,
 }
 

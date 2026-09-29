@@ -8,8 +8,10 @@ use super::{
 use crate::{
     jobs::{Stage, api::Decide},
     ui::{
-        parts::{Empty, ScoreRing, StageChip},
-        shell::typing,
+        icons::{Glyph, Icon},
+        keys::typing,
+        parts::{Avatar, Empty, PageHead, Score, ScoreRing},
+        toast::announce,
     },
 };
 
@@ -18,6 +20,8 @@ pub fn ReviewPage() -> impl IntoView {
     let decide = ServerAction::<Decide>::new();
     let send = ServerAction::<SendBatch>::new();
     let undo = ServerAction::<UndoSend>::new();
+    announce(send, "Sending in a minute. You can still undo.");
+    announce(undo, "Send cancelled. The jobs are back in review.");
     let changed = move || (decide.version().get(), send.version().get(), undo.version().get());
     let batch = Resource::new(changed, |_| get_batch());
     let list = RwSignal::new(Vec::<Item>::new());
@@ -60,15 +64,15 @@ pub fn ReviewPage() -> impl IntoView {
 
     view! {
         <Title text="Review" />
-        <h1>"Review"</h1>
-        <p class="sub">"Approve or skip each application. Nothing goes out until you send the batch, and you can undo for a minute after."</p>
-        <Transition fallback=|| view! { <p class="sub">"Loading…"</p> }>
+        <PageHead title="Review" sub="Approve or skip each application. Nothing goes out until you send the batch, and you can undo for a minute after." />
+        <Transition fallback=|| view! { <div class="review"><div class="queue skeleton" style="height:420px"></div><div class="detail skeleton"></div></div> }>
             {move || {
                 let items = batch.get().and_then(Result::ok).unwrap_or_default();
                 if items.is_empty() {
                     return view! {
                         <Empty title="Nothing to review">
-                            <p>"New drafts land here as hunt finds jobs that fit. It checks every few hours."</p>
+                            <p>"New drafts land here when hunt finds a job that fits. It searches every three hours."</p>
+                            <a class="btn" href="/jobs">"Browse jobs"</a>
                         </Empty>
                     }.into_any();
                 }
@@ -92,10 +96,13 @@ pub fn ReviewPage() -> impl IntoView {
 fn QueueRow(item: Item, selected: Signal<Option<i64>>, on_pick: impl Fn(i64) + 'static) -> impl IntoView {
     let id = item.id;
     view! {
-        <button class="qitem" role="option" aria-selected=move || (selected.get() == Some(id)).to_string() on:click=move |_| on_pick(id)>
-            <span class="role">{item.title}</span>
-            <span class="side-score"><b class="num">{item.score.unwrap_or_default()}</b><StageChip stage=item.stage /></span>
-            <span class="co">{format!("{} · {}", item.company, item.place)}</span>
+        <button class="qitem" class:approved=item.stage == Stage::Approved role="option" aria-selected=move || (selected.get() == Some(id)).to_string() on:click=move |_| on_pick(id)>
+            <Avatar name=item.company.clone() />
+            <span class="text">
+                <span class="role">{item.title}</span>
+                <span class="co">{format!("{} · {}", item.company, item.place)}</span>
+            </span>
+            <Score score=item.score />
         </button>
     }
 }
@@ -137,22 +144,25 @@ fn DraftBody(
         [("fit", "Fit"), ("cv", "CV changes"), ("letter", "Cover letter"), ("answers", "Answers"), ("files", "Files")];
     let letter = RwSignal::new(d.letter.clone());
     let save = ServerAction::<SaveLetter>::new();
+    announce(save, "Letter saved. The PDF is rebuilt.");
     let assessment = d.assessment.clone();
 
     view! {
         <div class="dhead">
-            <div>
-                <h3>{job.title.clone()}</h3>
-                <div class="co">{job.company.clone()}</div>
-                <div class="meta">
-                    <span class="chip">{job.where_label()}</span>
-                    {job.salary().map(|s| view! { <span class="chip">{s}</span> })}
-                    {(job.visa == Some(true)).then(|| view! { <span class="chip ok">"Visa sponsored"</span> })}
-                    {job.flags.iter().map(|f| view! { <span class="chip warn">{crate::jobs::flag_label(f).to_string()}</span> }).collect_view()}
-                    <a class="chip" href=job.url.clone() target="_blank" rel="noopener">"Posting ↗"</a>
+            <div class="who">
+                <Avatar name=job.company.clone() large=true />
+                <div>
+                    <h3>{job.title.clone()}</h3>
+                    <div class="co">{format!("{} · {}", job.company, job.where_label())}</div>
                 </div>
             </div>
             {job.score.map(|score| view! { <ScoreRing score /> })}
+        </div>
+        <div class="meta">
+            {job.salary().map(|s| view! { <span class="chip outline">{format!("{s} a year")}</span> })}
+            {(job.visa == Some(true)).then(|| view! { <span class="chip ok">"Visa sponsored"</span> })}
+            {job.flags.iter().map(|f| view! { <span class="chip warn">{crate::jobs::flag_label(f).to_string()}</span> }).collect_view()}
+            <a class="chip" href=job.url.clone() target="_blank" rel="noopener">"Posting ↗"</a>
         </div>
         {assessment.as_ref().map(|a| view! { <p class="why">{a.why.clone()}</p> })}
         <div class="channel"><b>"How it goes out: "</b>{how}</div>
@@ -174,9 +184,10 @@ fn DraftBody(
                 }.into_any(),
                 "letter" => view! {
                     <textarea class="letter" prop:value=move || letter.get() on:input=move |e| letter.set(event_target_value(&e)) rows="16"></textarea>
-                    <div class="row" style="margin-top:10px">
-                        <button class="btn" on:click=move |_| { save.dispatch(SaveLetter { id, letter: letter.get_untracked() }); }>"Save letter"</button>
-                        {move || save.version().get().gt(&0).then(|| view! { <span class="muted">"Saved. The PDF is rebuilt."</span> })}
+                    <div class="row" style="margin-top:12px;justify-content:flex-end">
+                        <button class="btn" disabled=move || save.pending().get() on:click=move |_| { save.dispatch(SaveLetter { id, letter: letter.get_untracked() }); }>
+                            {move || if save.pending().get() { "Saving…" } else { "Save letter" }}
+                        </button>
                     </div>
                 }.into_any(),
                 "answers" => view! {
@@ -196,7 +207,7 @@ fn DraftBody(
                     Some(a) => view! {
                         <div class="cols">
                             <div><h4>"Why it fits"</h4><ul>{a.strengths.into_iter().map(|s| view! { <li>{s.requirement}<span class="ev">{s.evidence}</span></li> }).collect_view()}</ul></div>
-                            <div><h4>"Gaps and warnings"</h4><ul>
+                            <div class="gaps"><h4>"Gaps and warnings"</h4><ul>
                                 {a.gaps.into_iter().map(|g| view! { <li>{g.requirement}<span class="ev">{g.note}</span></li> }).collect_view()}
                                 {a.red_flags.into_iter().map(|f| view! { <li>{f}</li> }).collect_view()}
                             </ul></div>
@@ -208,13 +219,13 @@ fn DraftBody(
         </div>
         <div class="decide">
             {match job.stage {
-                Stage::Approved => view! { <button class="btn" on:click=move |_| call(Stage::Ready)>"Undo approval"</button> }.into_any(),
+                Stage::Approved => view! { <span class="chip ok"><Icon glyph=Glyph::Check size=12 />"Approved"</span><button class="btn ghost" on:click=move |_| call(Stage::Ready)>"Undo approval"</button> }.into_any(),
                 _ => view! {
-                    <button class="btn primary" on:click=move |_| call(Stage::Approved)>"Approve"</button>
-                    <button class="btn danger" on:click=move |_| call(Stage::Skipped)>"Skip"</button>
+                    <button class="btn primary" on:click=move |_| call(Stage::Approved)>"Approve"<span class="kbd">"A"</span></button>
+                    <button class="btn" on:click=move |_| call(Stage::Skipped)>"Skip"<span class="kbd">"S"</span></button>
                 }.into_any(),
             }}
-            <span class="hint-keys"><span class="kbd">"A"</span>" approve "<span class="kbd">"S"</span>" skip "<span class="kbd">"E"</span>" edit letter "<span class="kbd">"J"</span><span class="kbd">"K"</span>" move"</span>
+            <span class="hint-keys"><span class="kbd">"J"</span><span class="kbd">"K"</span>" to move · "<span class="kbd">"E"</span>" to edit the letter"</span>
         </div>
     }
 }
@@ -227,8 +238,12 @@ fn BatchBar(list: RwSignal<Vec<Item>>, send: ServerAction<SendBatch>, undo: Serv
     view! {
         <div class="batchbar" hidden=move || list.with(Vec::is_empty)>
             <div class="tally num">
+                <span class="meter" aria-hidden="true"><i style=move || {
+                    let total = list.with(Vec::len).max(1);
+                    format!("width:{}%", (total - count(Stage::Ready)) * 100 / total)
+                }></i></span>
                 <span><b>{move || count(Stage::Approved)}</b>" approved"</span>
-                <span><b>{move || count(Stage::Ready)}</b>" to review"</span>
+                <span><b>{move || count(Stage::Ready)}</b>" left to review"</span>
                 {move || (count(Stage::Sending) > 0).then(|| view! { <span><b>{count(Stage::Sending)}</b>" sending in under a minute"</span> })}
             </div>
             <div class="right">

@@ -69,3 +69,38 @@ pub fn Empty(title: &'static str, children: Children) -> impl IntoView {
         </div>
     }
 }
+
+#[component]
+pub fn PageHead(
+    #[prop(into)] title: String,
+    #[prop(optional, into)] sub: Option<String>,
+    #[prop(optional)] children: Option<Children>,
+) -> impl IntoView {
+    view! {
+        <header class="page-head">
+            <div>
+                <h1>{title}</h1>
+                {sub.map(|sub| view! { <p class="sub">{sub}</p> })}
+            </div>
+            {children.map(|actions| view! { <div class="actions">{actions()}</div> })}
+        </header>
+    }
+}
+
+/// The company's first letter on a tint that stays the same for that name.
+#[component]
+pub fn Avatar(#[prop(into)] name: String, #[prop(optional)] large: bool) -> impl IntoView {
+    let letter = name.chars().find(|c| c.is_alphanumeric()).map_or('?', |c| c.to_ascii_uppercase());
+    let tint = name.bytes().fold(0_u32, |hash, b| hash.wrapping_mul(31).wrapping_add(u32::from(b))) % 6;
+    view! { <span class=format!("avatar t{tint}") class:large=large title=name aria-hidden="true">{letter.to_string()}</span> }
+}
+
+#[component]
+pub fn Score(score: Option<i32>) -> impl IntoView {
+    let class = match score {
+        Some(s) if s >= 80 => "score hi",
+        Some(s) if s >= 70 => "score mid",
+        _ => "score",
+    };
+    view! { <span class=class title="Fit score out of 100">{score.map_or("–".to_string(), |s| s.to_string())}</span> }
+}

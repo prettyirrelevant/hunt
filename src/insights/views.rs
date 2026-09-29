@@ -6,20 +6,33 @@ use super::{
     api::{LOG_PAGE, get_insights, get_log, get_pipeline, get_today},
     model::{Band, Setup, Today},
 };
-use crate::ui::parts::{Empty, Pager, StageChip, ago};
+use chrono::Timelike;
+
+use crate::ui::{
+    api::SearchNow,
+    icons::{Glyph, Icon},
+    parts::{Avatar, Empty, PageHead, Pager, StageChip, ago},
+};
 
 #[component]
 pub fn TodayPage() -> impl IntoView {
-    let data = Resource::new(|| (), |()| get_today());
-    let heading = chrono::Local::now().format("%A, %-d %B").to_string();
+    let search = expect_context::<ServerAction<SearchNow>>();
+    let data = Resource::new(move || search.version().get(), |_| get_today());
+    let now = chrono::Local::now();
+    let greeting = match now.hour() {
+        5..=11 => "Good morning",
+        12..=17 => "Good afternoon",
+        _ => "Good evening",
+    };
     view! {
         <Title text="Today" />
-        <h1>{heading}</h1>
-        <Suspense fallback=|| view! { <p class="sub">"Loading…"</p> }>
+        <p class="eyebrow">{now.format("%A, %-d %B").to_string()}</p>
+        <PageHead title=greeting />
+        <Suspense fallback=|| view! { <div class="hero skeleton" style="height:190px"></div> }>
             {move || Suspend::new(async move {
                 match data.await {
                     Ok(today) => view! { <TodayBody today /> }.into_any(),
-                    Err(err) => view! { <p class="sub">{err.to_string()}</p> }.into_any(),
+                    Err(err) => view! { <Empty title="Could not load today"><p>{err.to_string()}</p></Empty> }.into_any(),
                 }
             })}
         </Suspense>
@@ -28,89 +41,163 @@ pub fn TodayPage() -> impl IntoView {
 
 #[component]
 fn TodayBody(today: Today) -> impl IntoView {
-    let waiting = today.ready + today.replies + today.manual;
-    let summary = match waiting {
-        0 => "Nothing needs you right now. hunt keeps looking in the background.".to_string(),
-        1 => "One thing needs you.".to_string(),
-        n => format!("{n} things need you."),
+    let search = expect_context::<ServerAction<SearchNow>>();
+    let searching = move || today.searching || search.pending().get();
+    let run = move |_| {
+        search.dispatch(SearchNow {});
     };
-    let setup = today.setup.clone();
+    let hero = if !today.setup.done() {
+        view! { <SetupHero setup=today.setup.clone() /> }.into_any()
+    } else if today.jobs == 0 {
+        view! {
+            <div class="hero">
+                <span class="badge"><Icon glyph=Glyph::Search size=22 /></span>
+                <div>
+                    {move || if searching() {
+                        view! {
+                            <h2>"Searching for the first time"</h2>
+                            <p>"hunt is reading every job board and the companies you watch. Scored jobs appear here in a few minutes."</p>
+                            <div class="cta"><span class="state"><i class="pulse on"></i>"Searching every source"</span></div>
+                        }.into_any()
+                    } else {
+                        view! {
+                            <h2>"Ready for your first search"</h2>
+                            <p>"Your profile is set. hunt searches every three hours on its own, or you can start now."</p>
+                            <div class="cta"><button class="btn primary lg" on:click=run><Icon glyph=Glyph::Search size=16 />"Search now"</button></div>
+                        }.into_any()
+                    }}
+                </div>
+            </div>
+        }.into_any()
+    } else if today.ready > 0 {
+        let n = today.ready;
+        view! {
+            <div class="hero">
+                <span class="badge"><Icon glyph=Glyph::Review size=22 /></span>
+                <div>
+                    <h2>{if n == 1 { "One application is ready for you".to_string() } else { format!("{n} applications are ready for you") }}</h2>
+                    <p>"Each has a tailored CV, a cover letter and answers. Nothing goes out until you approve it."</p>
+                    <div class="cta">
+                        <a class="btn primary lg" href="/review">"Review the batch"<Icon glyph=Glyph::Arrow size=16 /></a>
+                        <span class="hint">"About a minute each"</span>
+                    </div>
+                </div>
+            </div>
+        }.into_any()
+    } else {
+        view! {
+            <div class="hero calm">
+                <span class="badge"><Icon glyph=Glyph::Check size=22 /></span>
+                <div>
+                    <h2>"You are all caught up"</h2>
+                    <p>{format!("hunt has {} jobs on file and keeps searching every three hours. New drafts show up here when a job fits.", today.jobs)}</p>
+                    <div class="cta">
+                        <a class="btn" href="/jobs">"Browse jobs"</a>
+                        <button class="btn ghost" disabled=searching on:click=run>{move || if searching() { "Searching…" } else { "Search now" }}</button>
+                    </div>
+                </div>
+            </div>
+        }.into_any()
+    };
+    let todo = [
+        (today.replies, "Replies to check", "Emails hunt could not match with confidence.", "/replies", Glyph::Replies),
+        (
+            today.manual,
+            "Good fits to apply to yourself",
+            "They ask for something only you can do, such as a video.",
+            "/jobs?show=manual",
+            Glyph::Jobs,
+        ),
+    ];
+    let waiting: Vec<_> = todo.into_iter().filter(|(n, ..)| *n > 0).collect();
+    let stats = [
+        (today.seen_24h, "jobs seen today"),
+        (today.new_24h, "new to hunt"),
+        (today.shortlisted_24h, "shortlisted"),
+        (today.applied_7d, "applied this week"),
+        (today.heard_back_7d, "replies this week"),
+    ];
+
     view! {
-        <p class="sub">{summary}</p>
-        {(!setup.done()).then(|| view! { <SetupSteps setup /> })}
-        <section>
-            <div class="actions">
-                <a class="action" class:calm=today.ready == 0 href="/review">
-                    <span class="k num">{today.ready}</span>
-                    <span class="t">"Applications to review"</span>
-                    <span class="d">"Tailored CVs, letters and answers. Nothing is sent until you approve it."</span>
-                    <span class="go">"Review batch →"</span>
-                </a>
-                <a class="action" class:calm=today.replies == 0 href="/replies">
-                    <span class="k num">{today.replies}</span>
-                    <span class="t">"Replies to check"</span>
-                    <span class="d">"Emails hunt could not match with confidence."</span>
-                    <span class="go">"Open replies →"</span>
-                </a>
-                <a class="action" class:calm=today.manual == 0 href="/jobs?show=manual">
-                    <span class="k num">{today.manual}</span>
-                    <span class="t">"Good fits you apply to yourself"</span>
-                    <span class="d">"They ask for something only you can do, such as a recorded video."</span>
-                    <span class="go">"See them →"</span>
-                </a>
-            </div>
-        </section>
-        <section>
-            <h2>"Last 24 hours"</h2>
-            <div class="strip">
-                <div><b class="num">{today.seen_24h}</b><span>"jobs seen across every source"</span></div>
-                <div><b class="num">{today.new_24h}</b><span>"new to hunt"</span></div>
-                <div><b class="num">{today.shortlisted_24h}</b><span>"shortlisted"</span></div>
-                <div><b class="num">{today.applied_7d}</b><span>"applications this week"</span></div>
-                <div><b class="num">{today.heard_back_7d}</b><span>"replies this week"</span></div>
-            </div>
-        </section>
-        <section>
-            <h2>"Recently"</h2>
-            {if today.feed.is_empty() {
-                view! { <Empty title="Quiet so far"><p>"The first search runs a minute after setup."</p></Empty> }.into_any()
-            } else {
-                view! {
-                    <ul class="feed">
-                        {today.feed.into_iter().map(|e| view! {
-                            <li><time class="num mono">{ago(e.at)}</time><span>{e.body}</span></li>
-                        }).collect_view()}
-                    </ul>
-                }.into_any()
-            }}
-        </section>
+        {hero}
+        {(!waiting.is_empty()).then(|| view! {
+            <section>
+                <h2>"Also waiting for you"</h2>
+                <div class="todo">
+                    {waiting.into_iter().map(|(n, title, body, href, glyph)| view! {
+                        <a href=href>
+                            <span class="n num">{n}</span>
+                            <span><span class="t">{title}</span><span class="d">{body}</span></span>
+                            <Icon glyph />
+                        </a>
+                    }).collect_view()}
+                </div>
+            </section>
+        })}
+        {(today.jobs > 0).then(|| view! {
+            <section>
+                <h2>"The last day"</h2>
+                <div class="stats">
+                    {stats.into_iter().map(|(n, label)| view! { <div><b class="num">{n}</b><span>{label}</span></div> }).collect_view()}
+                </div>
+            </section>
+        })}
+        {(!today.feed.is_empty()).then(|| view! {
+            <section>
+                <div class="head"><h2>"What hunt did"</h2><a class="link" href="/log">"Full log"<Icon glyph=Glyph::Arrow size=14 /></a></div>
+                <ul class="feed box">
+                    {today.feed.into_iter().map(|e| {
+                        let body = match e.job_id {
+                            Some(id) => view! { <a href=format!("/jobs/{id}")>{e.body}</a> }.into_any(),
+                            None => view! { <span>{e.body}</span> }.into_any(),
+                        };
+                        view! { <li class=e.kind><span>{body}</span><time class="num">{ago(e.at)}</time></li> }
+                    }).collect_view()}
+                </ul>
+            </section>
+        })}
     }
 }
 
 #[component]
-fn SetupSteps(setup: Setup) -> impl IntoView {
-    let step = |n: u8, done: bool, title: &'static str, body: &'static str, href: &'static str, label: &'static str| {
-        view! {
-            <div class="step" class:done=done>
-                <span class="n">{if done { "✓".to_string() } else { n.to_string() }}</span>
-                <div>
-                    <h3>{title}</h3>
-                    <p class="muted">{body}</p>
-                    {(!done).then(|| view! { <a class="btn small" href=href>{label}</a> })}
-                </div>
-            </div>
-        }
-    };
+fn SetupHero(setup: Setup) -> impl IntoView {
+    let steps = [
+        (setup.reach, "Where you can work", "Your country, and whether you would move.", "/settings#where", "Set it"),
+        (
+            setup.cv,
+            "Your CV",
+            "Read on this machine. Personal details are removed before any AI sees it.",
+            "/you",
+            "Add CV",
+        ),
+        (
+            setup.profile,
+            "Your profile",
+            "hunt writes it from your CV and repos. It decides what to search for.",
+            "/you#profile",
+            "Review",
+        ),
+        (setup.ai, "An AI command-line tool", "Log in to claude, codex, opencode or gemini.", "/settings#ai", "Check"),
+    ];
+    let done = steps.iter().filter(|(ok, ..)| *ok).count();
     view! {
-        <section>
-            <h2>"Finish setting up"</h2>
-            <div class="steps">
-                {step(1, setup.reach, "Where you can work", "Your country, and whether you would move for the right role.", "/settings", "Set it")}
-                {step(2, setup.cv, "Your CV", "hunt reads it on this machine and strips personal details before any AI sees it.", "/you", "Add your CV")}
-                {step(3, setup.profile, "Your profile", "hunt writes it from your CV and your repos. It decides what to search for.", "/you", "See your profile")}
-                {step(4, setup.ai, "An AI command-line tool", "Install and log in to claude, codex, opencode or gemini.", "/settings", "Check AI")}
+        <div class="hero">
+            <span class="badge"><Icon glyph=Glyph::Settings size=22 /></span>
+            <div>
+                <h2>"Set up hunt"</h2>
+                <p>{format!("{done} of 4 done. hunt starts searching as soon as it knows where you can work and what you do.")}</p>
+                <div class="progress"><i style=format!("width:{}%", done * 25)></i></div>
+                <ol class="checklist">
+                    {steps.into_iter().map(|(ok, title, body, href, label)| view! {
+                        <li class:done=ok>
+                            <span class="tick">{if ok { view! { <Icon glyph=Glyph::Check size=13 /> }.into_any() } else { ().into_any() }}</span>
+                            <span><b>{title}</b><span class="d">{body}</span></span>
+                            {(!ok).then(|| view! { <a class="btn small" href=href>{label}</a> })}
+                        </li>
+                    }).collect_view()}
+                </ol>
             </div>
-        </section>
+        </div>
     }
 }
 
@@ -127,8 +214,7 @@ pub fn PipelinePage() -> impl IntoView {
     });
     view! {
         <Title text="Pipeline" />
-        <h1>"Pipeline"</h1>
-        <p class="sub">"Every job hunt has seen, from the moment it was found to where it stands now."</p>
+        <PageHead title="Pipeline" sub="Every job hunt has seen, from the moment it was found to where it stands now." />
         <section>
             <Suspense>
                 {move || Suspend::new(async move {
@@ -147,18 +233,18 @@ pub fn PipelinePage() -> impl IntoView {
                 {move || Suspend::new(async move {
                     let jobs = data.await.map(|p| p.active).unwrap_or_default();
                     if jobs.is_empty() {
-                        return view! { <Empty title="No applications yet"><p>"They appear here once you send a batch."</p></Empty> }.into_any();
+                        return view! { <Empty title="No applications yet"><p>"They appear here once you send a batch."</p><a class="btn" href="/review">"Go to review"</a></Empty> }.into_any();
                     }
                     view! {
                         <div class="tablewrap">
                             <table>
-                                <thead><tr><th>"Role"</th><th>"Stage"</th><th>"Since"</th></tr></thead>
+                                <thead><tr><th>"Role"</th><th>"Stage"</th><th class="nw">"Since"</th></tr></thead>
                                 <tbody>
                                     {jobs.into_iter().map(|job| view! {
                                         <tr>
-                                            <td><a class="title" href=format!("/jobs/{}", job.id)>{job.title.clone()}</a><div class="co">{job.company.clone()}</div></td>
+                                            <td><div class="who"><Avatar name=job.company.clone() /><div><a class="title" href=format!("/jobs/{}", job.id)>{job.title.clone()}</a><div class="co">{job.company.clone()}</div></div></div></td>
                                             <td><StageChip stage=job.stage /></td>
-                                            <td class="num">{ago(job.stage_at)}</td>
+                                            <td class="num nw muted">{ago(job.stage_at)}</td>
                                         </tr>
                                     }).collect_view()}
                                 </tbody>
@@ -182,8 +268,7 @@ pub fn InsightsPage() -> impl IntoView {
     });
     view! {
         <Title text="Insights" />
-        <h1>"Insights"</h1>
-        <p class="sub">"How your search is going, what works, and what hunt has learned about you."</p>
+        <PageHead title="Insights" sub="How your search is going, what works, and what hunt has learned about you." />
         <section class="grid2">
             <div class="card">
                 <h3>"Applications and replies"</h3>
@@ -287,8 +372,7 @@ pub fn LogPage() -> impl IntoView {
     ];
     view! {
         <Title text="Log" />
-        <h1>"Log"</h1>
-        <p class="sub">"Everything hunt did, newest first. This is the full record."</p>
+        <PageHead title="Log" sub="Everything hunt did, newest first. This is the full record." />
         <div class="filters">
             {kinds.into_iter().map(|(k, label)| view! {
                 <a href=format!("/log?kind={k}") attr:aria-current=move || (kind() == k).then_some("true")>{label}</a>
@@ -297,6 +381,9 @@ pub fn LogPage() -> impl IntoView {
         <Transition>
             {move || Suspend::new(async move {
                 let Ok(log) = data.await else { return ().into_any() };
+                if log.events.is_empty() {
+                    return view! { <Empty title="Nothing here yet"><p>"hunt records every search, score, draft and move here."</p></Empty> }.into_any();
+                }
                 let kind = kind();
                 view! {
                     <div class="box log">

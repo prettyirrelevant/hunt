@@ -1,13 +1,18 @@
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
-    NavigateOptions,
     components::{A, Route, Router, Routes},
-    hooks::{use_location, use_navigate},
+    hooks::use_location,
     path,
 };
 
-use super::{api::get_nav, parts::ago};
+use super::{
+    api::{Nav, SearchNow, get_nav},
+    icons::{Glyph, Icon, Logo},
+    keys::Keys,
+    parts::ago,
+    toast::{Toaster, Toasts},
+};
 use crate::{
     insights::views::{InsightsPage, LogPage, PipelinePage, TodayPage},
     jobs::views::{JobPage, JobsPage},
@@ -24,6 +29,8 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
             <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+                <meta name="theme-color" content="#2B45C4" />
                 <script src="/vendor/echarts.min.js" defer></script>
                 <HydrationScripts options />
                 <MetaTags />
@@ -38,11 +45,14 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
+    provide_context(ServerAction::<SearchNow>::new());
+    provide_context(Toasts::new());
     view! {
         <Stylesheet id="hunt" href="/pkg/hunt.css" />
         <Title formatter=|page: String| format!("{page} · hunt") />
         <Router>
-            <Shortcuts />
+            <Keys />
+            <Toaster />
             <div class="app">
                 <Sidebar />
                 <main>
@@ -67,95 +77,76 @@ pub fn App() -> impl IntoView {
 #[component]
 fn Sidebar() -> impl IntoView {
     let location = use_location();
-    let data = Resource::new(move || location.pathname.get(), |_| get_nav());
-    let link = move |href: &'static str, label: &'static str, count: fn(&super::api::Nav) -> i64, quiet: bool| {
+    let search = expect_context::<ServerAction<SearchNow>>();
+    let tick = RwSignal::new(0_u32);
+    #[cfg(feature = "hydrate")]
+    {
+        let handle = set_interval_with_handle(move || tick.update(|t| *t += 1), std::time::Duration::from_secs(15));
+        on_cleanup(move || {
+            if let Ok(handle) = handle {
+                handle.clear();
+            }
+        });
+    }
+    let data = Resource::new(move || (location.pathname.get(), tick.get(), search.version().get()), |_| get_nav());
+    let nav = move || data.get().and_then(Result::ok);
+    let link = move |href: &'static str, label: &'static str, glyph: Glyph, count: fn(&Nav) -> i64| {
         let current = move || {
             let path = location.pathname.get();
             if href == "/" { path == "/" } else { path.starts_with(href) }
         };
         view! {
             <A href=href attr:aria-current=move || current().then_some("page")>
-                {label}
+                <Icon glyph />
+                <span class="label">{label}</span>
                 <Transition>
                     {move || {
-                        let n = data.get().and_then(Result::ok).map_or(0, |nav| count(&nav));
-                        (n > 0).then(|| view! { <span class=if quiet { "count quiet num" } else { "count num" }>{n}</span> })
+                        let n = nav().map_or(0, |nav| count(&nav));
+                        (n > 0).then(|| view! { <span class="count num">{n}</span> })
                     }}
                 </Transition>
             </A>
         }
     };
-    let none = |_: &super::api::Nav| 0;
+    let none = |_: &Nav| 0;
 
     view! {
         <aside class="side">
-            <A href="/" attr:class="brand"><b>"hunt"</b><span>"your job search"</span></A>
+            <A href="/" attr:class="brand"><Logo size=24 /><b>"hunt"</b></A>
             <nav class="nav" aria-label="Pages">
-                {link("/", "Today", none, false)}
-                {link("/review", "Review", |n| n.ready, false)}
-                {link("/jobs", "Jobs", |n| n.manual, true)}
-                {link("/replies", "Replies", |n| n.replies, false)}
-                {link("/pipeline", "Pipeline", none, false)}
-                {link("/insights", "Insights", none, false)}
-                <hr />
-                {link("/you", "You", none, false)}
-                {link("/log", "Log", none, false)}
-                {link("/settings", "Settings", none, false)}
+                {link("/", "Today", Glyph::Today, none)}
+                {link("/review", "Review", Glyph::Review, |n| n.ready)}
+                {link("/jobs", "Jobs", Glyph::Jobs, |n| n.manual)}
+                {link("/replies", "Replies", Glyph::Replies, |n| n.replies)}
+                <span class="group">"Progress"</span>
+                {link("/pipeline", "Pipeline", Glyph::Pipeline, none)}
+                {link("/insights", "Insights", Glyph::Insights, none)}
+                <span class="group">"Setup"</span>
+                {link("/you", "You", Glyph::You, none)}
+                {link("/settings", "Settings", Glyph::Settings, none)}
+                {link("/log", "Log", Glyph::Log, none)}
             </nav>
             <Transition>
-                {move || data.get().and_then(Result::ok).map(|nav| {
-                    let dot = if nav.ai_ready { "dot" } else { "dot warn" };
-                    let when = |at: Option<_>| at.map_or_else(|| "never".into(), ago);
+                {move || nav().map(|nav| {
+                    let searching = nav.searching || search.pending().get();
+                    let state = if searching {
+                        "Searching every source".to_string()
+                    } else {
+                        nav.last_sweep.map_or_else(|| "Has not searched yet".into(), |at| format!("Searched {}", ago(at)))
+                    };
+                    let (dot, ai) = if nav.ai_ready { ("dot", nav.ai.clone()) } else { ("dot warn", nav.ai.clone()) };
                     view! {
-                        <div class="status" aria-label="System">
-                            <h4>"System"</h4>
-                            <div class="srow"><span>"AI"</span><span><i class=dot></i>{nav.ai}</span></div>
-                            <div class="srow"><span>"Last search"</span><span class="num">{when(nav.last_sweep)}</span></div>
-                            <div class="srow"><span>"Work queued"</span><span class="num">{nav.waiting}</span></div>
-                            <div class="srow"><span>"Backup"</span><span class="num">{when(nav.last_backup)}</span></div>
+                        <div class="status" aria-live="polite">
+                            <div class="state"><i class="pulse" class:on=searching></i><span>{state}</span></div>
+                            <div class="srow"><span>"AI"</span><span><i class=dot></i>{ai}</span></div>
+                            {(nav.waiting > 0).then(|| view! { <div class="srow"><span>"Queued"</span><span class="num">{nav.waiting}</span></div> })}
+                            <button class="btn small ghost wide" disabled=searching on:click=move |_| { search.dispatch(SearchNow {}); }>
+                                <Icon glyph=Glyph::Search size=14 />{if searching { "Searching…" } else { "Search now" }}
+                            </button>
                         </div>
                     }
                 })}
             </Transition>
-            <div class="keys"><span class="kbd">"g"</span>" then "<span class="kbd">"t"</span>" "<span class="kbd">"r"</span>" "<span class="kbd">"j"</span>" "<span class="kbd">"p"</span>" to jump"</div>
         </aside>
     }
-}
-
-/// `g` then a letter jumps to a page.
-#[component]
-fn Shortcuts() -> impl IntoView {
-    let navigate = use_navigate();
-    let leader = RwSignal::new(false);
-    let handle = window_event_listener(leptos::ev::keydown, move |event| {
-        if event.meta_key() || event.ctrl_key() || typing(&event) {
-            return;
-        }
-        if leader.get_untracked() {
-            leader.set(false);
-            let page = match event.key().as_str() {
-                "t" => "/",
-                "r" => "/review",
-                "j" => "/jobs",
-                "p" => "/pipeline",
-                "i" => "/insights",
-                "y" => "/you",
-                "l" => "/log",
-                "s" => "/settings",
-                _ => return,
-            };
-            navigate(page, NavigateOptions::default());
-        } else if event.key() == "g" {
-            leader.set(true);
-        }
-    });
-    on_cleanup(move || handle.remove());
-}
-
-pub fn typing(event: &leptos::ev::KeyboardEvent) -> bool {
-    use leptos::wasm_bindgen::JsCast;
-    event
-        .target()
-        .and_then(|t| t.dyn_into::<leptos::web_sys::HtmlElement>().ok())
-        .is_some_and(|el| matches!(el.tag_name().as_str(), "INPUT" | "TEXTAREA" | "SELECT") || el.is_content_editable())
 }

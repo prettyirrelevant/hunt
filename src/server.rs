@@ -42,6 +42,8 @@ pub fn router(app: Arc<App>) -> Router {
         .route("/pkg/{*path}", get(asset))
         .route("/vendor/{*path}", get(asset))
         .route("/fonts/{*path}", get(asset))
+        .route("/logo.svg", get(asset))
+        .route("/wordmark.svg", get(asset))
         .leptos_routes_with_context(&options, routes, context, {
             let options = options.clone();
             move || shell(options.clone())
@@ -115,8 +117,9 @@ async fn upload_cv(Extension(app): Extension<Arc<App>>, mut form: Multipart) -> 
         };
         if let Err(err) = result {
             tracing::error!("CV import failed: {err:#}");
-            return (StatusCode::BAD_REQUEST, format!("Could not read that CV: {err:#}")).into_response();
+            let why: String = url::form_urlencoded::byte_serialize(format!("{err:#}").as_bytes()).collect();
+            return Redirect::to(&format!("/you?cv_error={why}")).into_response();
         }
     }
-    Redirect::to("/you").into_response()
+    Redirect::to("/you?cv=imported").into_response()
 }

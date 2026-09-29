@@ -6,7 +6,8 @@ use super::model::{Band, Event, Learned, Log, Reach, SourceYield, Today, Week};
 use crate::{jobs::Job, matching::learn::Model};
 
 pub async fn today(db: &PgPool) -> Result<Today> {
-    let counts: (i64, i64, i64, i64, i64, i64, i64, i64) = sqlx::query_as(
+    #[allow(clippy::type_complexity)]
+    let counts: (i64, i64, i64, i64, i64, i64, i64, i64, i64, bool) = sqlx::query_as(
         "select
              (select count(*) from jobs where stage = 'ready'),
              (select count(*) from jobs where stage = 'manual'),
@@ -16,7 +17,9 @@ pub async fn today(db: &PgPool) -> Result<Today> {
              (select count(*) from events where kind = 'stage' and data ->> 'to' = 'shortlist' and at > now() - interval '24 hours'),
              (select count(*) from events where kind = 'stage' and data ->> 'to' = 'applied' and at > now() - interval '7 days'),
              (select count(*) from events where kind = 'stage'
-                  and data ->> 'to' in ('screen', 'interview', 'offer', 'rejected') and at > now() - interval '7 days')",
+                  and data ->> 'to' in ('screen', 'interview', 'offer', 'rejected') and at > now() - interval '7 days'),
+             (select count(*) from jobs),
+             exists (select 1 from graphile_worker.jobs where task_identifier = 'sweep' and locked_at is not null)",
     )
     .fetch_one(db)
     .await?;
@@ -24,7 +27,8 @@ pub async fn today(db: &PgPool) -> Result<Today> {
         sqlx::query_as("select at, kind, body, job_id from events where kind <> 'score' order by at desc limit 12")
             .fetch_all(db)
             .await?;
-    let (ready, manual, replies, seen_24h, new_24h, shortlisted_24h, applied_7d, heard_back_7d) = counts;
+    let (ready, manual, replies, seen_24h, new_24h, shortlisted_24h, applied_7d, heard_back_7d, jobs, searching) =
+        counts;
     Ok(Today {
         ready,
         manual,
@@ -34,6 +38,8 @@ pub async fn today(db: &PgPool) -> Result<Today> {
         shortlisted_24h,
         applied_7d,
         heard_back_7d,
+        jobs,
+        searching,
         feed,
         ..Default::default()
     })
