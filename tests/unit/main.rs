@@ -6,6 +6,7 @@ mod feeds;
 mod filter;
 mod learn;
 mod never_read;
+mod pay;
 mod pii;
 mod pipeline;
 mod postings;

@@ -273,15 +273,7 @@ impl Job {
     }
 
     pub fn salary(&self) -> Option<String> {
-        let k = |n: i64| {
-            if n >= 1000 { format!("{}k", n / 1000) } else { n.to_string() }
-        };
-        let range = match (self.salary_min, self.salary_max) {
-            (Some(a), Some(b)) if a != b => format!("{}–{}", k(a), k(b)),
-            (Some(a), _) | (None, Some(a)) => k(a),
-            _ => return None,
-        };
-        Some(format!("{} {range}", self.currency.as_deref().unwrap_or("")).trim().to_string())
+        pay(self.salary_min, self.salary_max, self.currency.as_deref())
     }
 
     pub fn where_label(&self) -> String {
@@ -294,6 +286,40 @@ impl Job {
             _ => self.location.clone(),
         }
     }
+}
+
+/// Yearly pay as people write it: `$150k–250k`, `€80k`, `878k–1.1M SEK`.
+pub fn pay(min: Option<i64>, max: Option<i64>, currency: Option<&str>) -> Option<String> {
+    let short = |n: i64| match n {
+        n if n >= 1_000_000 => format!("{}M", (n as f64 / 100_000.0).round() / 10.0),
+        n if n >= 1_000 => format!("{}k", (n + 500) / 1_000),
+        n => n.to_string(),
+    };
+    let range = match (min, max) {
+        (Some(a), Some(b)) if short(a) != short(b) => format!("{}–{}", short(a), short(b)),
+        (Some(a), _) | (None, Some(a)) => short(a),
+        _ => return None,
+    };
+    let code = currency.map(|c| c.trim().to_uppercase()).filter(|c| !c.is_empty());
+    let symbol = match code.as_deref() {
+        Some("USD" | "$") => Some("$"),
+        Some("EUR" | "€") => Some("€"),
+        Some("GBP" | "£") => Some("£"),
+        Some("INR" | "₹") => Some("₹"),
+        Some("JPY") => Some("¥"),
+        Some("NGN") => Some("₦"),
+        Some("CAD") => Some("CA$"),
+        Some("AUD") => Some("A$"),
+        Some("NZD") => Some("NZ$"),
+        Some("SGD") => Some("S$"),
+        Some("BRL") => Some("R$"),
+        _ => None,
+    };
+    Some(match (symbol, code) {
+        (Some(symbol), _) => format!("{symbol}{range}"),
+        (None, Some(code)) => format!("{range} {code}"),
+        (None, None) => range,
+    })
 }
 
 pub fn flag_label(flag: &str) -> &str {
