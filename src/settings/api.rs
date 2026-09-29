@@ -148,6 +148,9 @@ pub async fn save_web_model(provider: String, model: String) -> Result<(), Error
     let Some(provider) = ai::Provider::ALL.into_iter().find(|p| p.name() == provider) else {
         return Err(Error(format!("hunt does not know the provider {provider}")));
     };
+    if model.starts_with('-') {
+        return Err(Error(format!("{model} is not a model name")));
+    }
     if !model.is_empty() {
         app.ai
             .check(provider, &model)

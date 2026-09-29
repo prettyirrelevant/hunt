@@ -19,7 +19,6 @@ const TIMEOUT: Duration = Duration::from_mins(4);
 const BROWSE_TIMEOUT: Duration = Duration::from_mins(10);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
-/// Tools codex would otherwise keep in a read-only sandbox, such as a shell that reads any file.
 const CODEX_FEATURES_OFF: [&str; 10] = [
     "shell_tool",
     "unified_exec",
@@ -266,7 +265,6 @@ impl Ai {
                 command
                     .args(["-p", "--output-format", "json", "--no-session-persistence"])
                     .args(model.iter().flatten());
-                // Without `--strict-mcp-config`, the user's own MCP servers load with their tools.
                 command.args(["--json-schema", &schema_text, "--strict-mcp-config"]);
                 match tools {
                     Tools::Off => command.args(["--tools", ""]),
@@ -282,7 +280,6 @@ impl Ai {
                 if let Tools::Web = tools {
                     command.arg("--search");
                 }
-                // The user's config.toml adds their MCP servers.
                 command.args(["exec", "--ignore-user-config", "--skip-git-repo-check", "--ephemeral"]);
                 for feature in CODEX_FEATURES_OFF {
                     command.args(["--disable", feature]);
@@ -292,7 +289,6 @@ impl Ai {
                 prompt.to_string()
             }
             Provider::Opencode => {
-                // A shared opencode service would ignore this process's config.
                 let permissions = if let Tools::Web = tools { OPENCODE_WEB_TOOLS } else { OPENCODE_TOOLS_OFF };
                 command
                     .env("OPENCODE_CONFIG_CONTENT", permissions)

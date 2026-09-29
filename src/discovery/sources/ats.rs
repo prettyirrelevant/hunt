@@ -74,9 +74,9 @@ impl Board {
                 let tenant = host.split('.').next().unwrap_or(host);
                 let url = format!("https://{host}/wday/cxs/{tenant}/{site}/jobs");
                 let query = json!({ "appliedFacets": {}, "limit": 20, "offset": 0, "searchText": "" });
-                http.post(url).json(&query).send().await?.error_for_status()?.bytes().await?
+                super::body(http.post(url).json(&query)).await?
             }
-            _ => http.get(self.api()).send().await?.error_for_status()?.bytes().await?,
+            _ => super::body(http.get(self.api())).await?,
         };
         self.parse(&body)
     }

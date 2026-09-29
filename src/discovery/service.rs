@@ -38,7 +38,9 @@ pub async fn sweep(app: &Arc<App>) -> Result<()> {
 
     let fresh = jobs::get_many(&app.db, &jobs::add(&app.db, &harvest.postings).await?).await?;
     let ids: Vec<i64> = fresh.iter().map(|job| job.id).collect();
-    let embeddings: Vec<_> = fresh.iter().map(|job| app.embedder.embed(&job.embedding_text())).collect();
+    let texts: Vec<String> = fresh.iter().map(jobs::Job::embedding_text).collect();
+    let shared = Arc::clone(app);
+    let embeddings = tokio::task::spawn_blocking(move || shared.embedder.embed_all(&texts)).await?;
     repo::save_embeddings(&app.db, &ids, &embeddings).await?;
     let companies: Vec<&str> = fresh.iter().map(|job| job.company.as_str()).collect();
     let applied = repo::applied_recently(&app.db, &companies).await?;

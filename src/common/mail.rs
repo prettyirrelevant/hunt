@@ -13,6 +13,7 @@ use lettre::{
 
 const SMTP: &str = "smtp.gmail.com";
 const IMAP: (&str, u16) = ("imap.gmail.com", 993);
+const FIRST_CHECK_DAYS: i64 = 30;
 
 fn keychain(config: &Config) -> String {
     format!("hunt-gmail{}", config.os_suffix())
@@ -84,14 +85,19 @@ impl Mailbox {
             .await
             .map_err(|(err, _)| err)
             .context("Gmail refused the login; check the app password")?;
-        session.select("INBOX").await?;
-
+        let inbox = session.select("INBOX").await?;
+        let first = if after == 0 {
+            let since = (Utc::now() - chrono::Duration::days(FIRST_CHECK_DAYS)).format("%-d-%b-%Y");
+            let recent = session.uid_search(format!("SINCE {since}")).await?;
+            recent.into_iter().min().unwrap_or(inbox.uid_next.unwrap_or(1))
+        } else {
+            after + 1
+        };
         let mut messages = vec![];
-        let fetched: Vec<_> =
-            session.uid_fetch(format!("{}:*", after + 1), "(UID BODY.PEEK[])").await?.try_collect().await?;
+        let fetched: Vec<_> = session.uid_fetch(format!("{first}:*"), "(UID BODY.PEEK[])").await?.try_collect().await?;
         for fetch in fetched {
             let (Some(uid), Some(raw)) = (fetch.uid, fetch.body()) else { continue };
-            if uid <= after {
+            if uid < first {
                 continue;
             }
             let Some(mail) = mail_parser::MessageParser::default().parse(raw) else { continue };

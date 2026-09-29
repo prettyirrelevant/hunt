@@ -3,7 +3,7 @@ pub mod feeds;
 pub mod freehire;
 
 use futures::{StreamExt, stream};
-use reqwest::Client;
+use reqwest::{Client, RequestBuilder};
 
 use super::model::{Harvest, Want};
 use crate::jobs::Posting;
@@ -51,6 +51,23 @@ pub async fn harvest(http: &Client, want: &Want, sources: &[Source]) -> Harvest 
         }
     }
     harvest
+}
+
+const MAX_BODY: usize = 64 * 1024 * 1024;
+
+async fn body(request: RequestBuilder) -> anyhow::Result<Vec<u8>> {
+    let mut response = request.send().await?.error_for_status()?;
+    let url = response.url().clone();
+    let fits = |size: usize| -> anyhow::Result<usize> {
+        anyhow::ensure!(size <= MAX_BODY, "{url} sent more than {} MB", MAX_BODY >> 20);
+        Ok(size)
+    };
+    let mut body = Vec::with_capacity(fits(response.content_length().unwrap_or(0) as usize)?);
+    while let Some(chunk) = response.chunk().await? {
+        fits(body.len() + chunk.len())?;
+        body.extend_from_slice(&chunk);
+    }
+    Ok(body)
 }
 
 async fn fetch<'a>(source: &'a Source, http: &Client, want: &Want) -> (&'a Source, anyhow::Result<Vec<Posting>>) {

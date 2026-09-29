@@ -179,7 +179,7 @@ pub async fn evidence_for(app: &App, job: &Job) -> Result<Vec<Work>> {
     if needs.is_empty() {
         needs.push(format!("{} {}", job.title, job.skills.join(" ")));
     }
-    let meanings: Vec<_> = needs.iter().map(|need| app.embedder.embed(need)).collect();
+    let meanings = app.embedder.embed_all(&needs);
     let mut found: Vec<Work> = vec![];
     for work in repo::evidence(&app.db, &needs, &meanings, 2).await? {
         if !found.iter().any(|w| w.title == work.title) {

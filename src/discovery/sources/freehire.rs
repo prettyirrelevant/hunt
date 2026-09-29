@@ -54,7 +54,7 @@ async fn fetch(http: &Client, want: &Want, term: &str, scope: &[(&str, String)],
     query.extend(scope.iter().cloned());
     query.extend(want.seniority.iter().map(|s| ("seniority", s.clone())));
 
-    let body = http.get(API).query(&query).send().await?.error_for_status()?.bytes().await?;
+    let body = super::body(http.get(API).query(&query)).await?;
     parse(&body)
 }
 

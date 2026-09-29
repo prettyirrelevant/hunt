@@ -58,11 +58,11 @@ impl Feed {
     pub async fn fetch(self, http: &Client, want: &Want) -> Result<Vec<Posting>> {
         let mut postings = vec![];
         for url in self.urls(want) {
-            let body = http.get(&url).send().await?.error_for_status()?.bytes().await?;
+            let body = super::body(http.get(&url)).await?;
             if self == Feed::HackerNews && url.contains("search_by_date") {
                 let story = latest_hiring_thread(&body)?;
                 let item = format!("https://hn.algolia.com/api/v1/items/{story}");
-                let body = http.get(item).send().await?.error_for_status()?.bytes().await?;
+                let body = super::body(http.get(item)).await?;
                 postings.extend(self.parse(&body)?);
                 continue;
             }
