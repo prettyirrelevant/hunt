@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::{
     Extension, Router,
-    extract::{Multipart, Path, Request},
+    extract::{Multipart, Path, Request, State},
     http::{StatusCode, header},
     middleware::{self, Next},
     response::{IntoResponse, Redirect, Response},
@@ -46,16 +46,17 @@ pub fn router(app: Arc<App>) -> Router {
             let options = options.clone();
             move || shell(options.clone())
         })
-        .layer(middleware::from_fn(same_origin))
+        .layer(middleware::from_fn_with_state(app.config.port, same_origin))
         .layer(Extension(app))
         .with_state(options)
 }
 
-/// Rejects a foreign `Host` (DNS rebinding) or `Origin` (cross-site posts).
-async fn same_origin(request: Request, next: Next) -> Response {
+/// Rejects a foreign `Host` (DNS rebinding) or `Origin` (cross-site posts, also from other local ports).
+async fn same_origin(State(port): State<u16>, request: Request, next: Next) -> Response {
+    let hosts = [format!("localhost:{port}"), format!("127.0.0.1:{port}")];
     let local = |value: &str| {
-        let host = value.trim_start_matches("http://");
-        host.starts_with("localhost:") || host.starts_with("127.0.0.1:") || host == "localhost" || host == "127.0.0.1"
+        let host = value.strip_prefix("http://").unwrap_or(value);
+        hosts.iter().any(|h| h == host)
     };
     let allowed = {
         let header = |name| request.headers().get(name).and_then(|v| v.to_str().ok());

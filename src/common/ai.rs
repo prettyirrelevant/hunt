@@ -19,6 +19,21 @@ const TIMEOUT: Duration = Duration::from_mins(4);
 const BROWSE_TIMEOUT: Duration = Duration::from_mins(10);
 const PLAYWRIGHT_MCP: &str = "@playwright/mcp@0.0.82";
 const WEB_TOOLS: &str = "WebFetch,WebSearch";
+/// Tools codex would otherwise keep in a read-only sandbox, such as a shell that reads any file.
+const CODEX_FEATURES_OFF: [&str; 10] = [
+    "shell_tool",
+    "unified_exec",
+    "code_mode_host",
+    "multi_agent",
+    "apps",
+    "plugins",
+    "browser_use",
+    "computer_use",
+    "in_app_browser",
+    "image_generation",
+];
+const OPENCODE_TOOLS_OFF: &str = r#"{"permission":{"*":"deny"}}"#;
+const OPENCODE_WEB_TOOLS: &str = r#"{"permission":{"*":"deny","webfetch":"allow","websearch":"allow"}}"#;
 const CLAUDE_ALIASES: [&str; 4] = ["haiku", "sonnet", "opus", "fable"];
 const USAGE_LIMIT_REST: Duration = Duration::from_mins(30);
 
@@ -251,12 +266,13 @@ impl Ai {
                 command
                     .args(["-p", "--output-format", "json", "--no-session-persistence"])
                     .args(model.iter().flatten());
-                command.args(["--json-schema", &schema_text]);
+                // Without `--strict-mcp-config`, the user's own MCP servers load with their tools.
+                command.args(["--json-schema", &schema_text, "--strict-mcp-config"]);
                 match tools {
                     Tools::Off => command.args(["--tools", ""]),
                     Tools::Web => command.args(["--tools", WEB_TOOLS, "--allowedTools", WEB_TOOLS]),
                     Tools::Browser { mcp } => command
-                        .args(["--tools", "", "--strict-mcp-config", "--mcp-config"])
+                        .args(["--tools", "", "--mcp-config"])
                         .arg(mcp)
                         .args(["--allowedTools", "mcp__playwright"]),
                 };
@@ -266,19 +282,23 @@ impl Ai {
                 if let Tools::Web = tools {
                     command.arg("--search");
                 }
-                command.args([
-                    "exec",
-                    "--skip-git-repo-check",
-                    "--ephemeral",
-                    "--sandbox",
-                    "read-only",
-                    "--output-schema",
-                ]);
+                // The user's config.toml adds their MCP servers.
+                command.args(["exec", "--ignore-user-config", "--skip-git-repo-check", "--ephemeral"]);
+                for feature in CODEX_FEATURES_OFF {
+                    command.args(["--disable", feature]);
+                }
+                command.args(["--sandbox", "read-only", "--output-schema"]);
                 command.arg(schema_file.path()).arg("-o").arg(answer_file.path()).args(model.iter().flatten()).arg("-");
                 prompt.to_string()
             }
             Provider::Opencode => {
-                command.arg("run").args(model.iter().flatten()).arg(&plain_prompt);
+                // A shared opencode service would ignore this process's config.
+                let permissions = if let Tools::Web = tools { OPENCODE_WEB_TOOLS } else { OPENCODE_TOOLS_OFF };
+                command
+                    .env("OPENCODE_CONFIG_CONTENT", permissions)
+                    .args(["run", "--standalone"])
+                    .args(model.iter().flatten())
+                    .arg(&plain_prompt);
                 String::new()
             }
             Provider::Gemini => {

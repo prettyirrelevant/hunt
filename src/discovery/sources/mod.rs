@@ -46,7 +46,7 @@ pub async fn harvest(http: &Client, want: &Want, sources: &[Source]) -> Harvest 
     let mut results = stream::iter(requests).buffer_unordered(6);
     while let Some((source, result)) = results.next().await {
         match result {
-            Ok(postings) => harvest.postings.extend(postings),
+            Ok(postings) => harvest.postings.extend(postings.into_iter().filter_map(Posting::with_web_links)),
             Err(err) => harvest.failures.push((source.name(), format!("{err:#}"))),
         }
     }

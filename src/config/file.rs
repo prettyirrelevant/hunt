@@ -54,6 +54,12 @@ impl Config {
     pub fn load(home: Option<PathBuf>) -> Result<Config> {
         let home = home.or_else(|| std::env::var_os("HUNT_HOME").map(PathBuf::from)).unwrap_or_else(default_home);
         std::fs::create_dir_all(&home).with_context(|| format!("cannot create {}", home.display()))?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&home, std::fs::Permissions::from_mode(0o700))
+                .with_context(|| format!("cannot make {} private", home.display()))?;
+        }
 
         let database_url: HashMap<String, String> =
             std::env::var("DATABASE_URL").ok().map(|url| ("DATABASE".into(), url)).into_iter().collect();

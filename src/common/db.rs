@@ -112,7 +112,14 @@ impl Server {
         if !output.status.success() {
             bail!("pg_dump failed: {}", String::from_utf8_lossy(&output.stderr).trim());
         }
-        tokio::fs::write(&path, output.stdout).await?;
+        // The backup folder can be one the user shares, such as a synced folder.
+        let mut file = tokio::fs::OpenOptions::new();
+        file.write(true).create(true).truncate(true);
+        #[cfg(unix)]
+        file.mode(0o600);
+        let mut dump = file.open(&path).await?;
+        dump.write_all(&output.stdout).await?;
+        dump.flush().await?;
         Ok(path)
     }
 

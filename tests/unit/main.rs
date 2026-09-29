@@ -8,6 +8,7 @@ mod learn;
 mod never_read;
 mod pii;
 mod pipeline;
+mod postings;
 mod recordings;
 mod text;
 

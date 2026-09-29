@@ -205,6 +205,15 @@ impl Posting {
             ..Default::default()
         }
     }
+
+    /// Links reach a page and the form agent, so a `javascript:` link must never pass.
+    pub fn with_web_links(mut self) -> Option<Posting> {
+        let web = |link: &str| link.starts_with("https://") || link.starts_with("http://");
+        if !web(&self.apply_url) {
+            self.apply_url.clone_from(&self.url);
+        }
+        web(&self.url).then_some(self)
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
