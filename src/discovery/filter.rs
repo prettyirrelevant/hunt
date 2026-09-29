@@ -32,16 +32,18 @@ static LOCKED: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 pub fn check(job: &Job, reach: &Reach) -> Verdict {
-    let requirements = job.requirements.iter().map(|r| r.text.as_str());
-    let text = [job.title.as_str(), &job.description].into_iter().chain(requirements).collect::<Vec<_>>().join(" ");
+    let mentions = |pattern: &Regex| {
+        let requirements = job.requirements.iter().map(|r| r.text.as_str());
+        [job.title.as_str(), &job.description].into_iter().chain(requirements).any(|text| pattern.is_match(text))
+    };
 
-    if CLEARANCE.is_match(&text) && reach.country != "us" {
+    if mentions(&CLEARANCE) && reach.country != "us" {
         return Verdict::Drop("Needs US citizenship or a security clearance".into());
     }
-    if let Some(reason) = geography(job, reach, &text) {
+    if let Some(reason) = geography(job, reach, &mentions) {
         return Verdict::Drop(reason);
     }
-    if VIDEO.is_match(&text) {
+    if mentions(&VIDEO) {
         return Verdict::Manual("Asks for a recorded video".into());
     }
 
@@ -55,24 +57,24 @@ pub fn check(job: &Job, reach: &Reach) -> Verdict {
     Verdict::Keep { flags }
 }
 
-fn geography(job: &Job, reach: &Reach, text: &str) -> Option<String> {
+fn geography(job: &Job, reach: &Reach, mentions: &impl Fn(&Regex) -> bool) -> Option<String> {
     let mine = job.countries.iter().any(|c| c == &reach.country);
     let my_region = job.regions.iter().any(|r| r == "global" || r == reach.region());
     let helps_you_move = job.visa == Some(true) || job.relocation == Some(true);
 
     match job.work_mode {
-        WorkMode::Remote if mine || my_region || WORLDWIDE.is_match(text) => None,
+        WorkMode::Remote if mine || my_region || mentions(&WORLDWIDE) => None,
         WorkMode::Remote if !job.regions.is_empty() || !job.countries.is_empty() => {
             Some(format!("Remote only for people in {}", place_list(job)))
         }
-        WorkMode::Remote => LOCKED.is_match(text).then(|| "Remote, but locked to one country".into()),
+        WorkMode::Remote => mentions(&LOCKED).then(|| "Remote, but locked to one country".into()),
         WorkMode::Onsite | WorkMode::Hybrid if mine || (reach.relocate && helps_you_move) => None,
         WorkMode::Onsite | WorkMode::Hybrid => {
             let place = if job.location.is_empty() { place_list(job) } else { job.location.clone() };
             Some(format!("Office-based in {place} with no visa or relocation mentioned"))
         }
         WorkMode::Unknown => {
-            (LOCKED.is_match(text) && !mine && !WORLDWIDE.is_match(text)).then(|| "Locked to one country".into())
+            (mentions(&LOCKED) && !mine && !mentions(&WORLDWIDE)).then(|| "Locked to one country".into())
         }
     }
 }

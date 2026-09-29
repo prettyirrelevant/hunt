@@ -1,12 +1,14 @@
-use std::sync::LazyLock;
+use std::{borrow::Cow, sync::LazyLock};
 
 use regex::Regex;
 
 /// Boards serve HTML, sometimes entity-escaped twice.
 pub fn markdown(html: &str) -> String {
     let unescaped = html_escape::decode_html_entities(html);
-    let md = htmd::convert(&unescaped).unwrap_or_else(|_| unescaped.into_owned());
-    md.trim().to_string()
+    let mut md = htmd::convert(&unescaped).unwrap_or_else(|_| unescaped.into_owned());
+    md.truncate(md.trim_end().len());
+    md.drain(..md.len() - md.trim_start().len());
+    md
 }
 
 static PII: LazyLock<[(Regex, &str); 4]> = LazyLock::new(|| {
@@ -23,8 +25,12 @@ static PII: LazyLock<[(Regex, &str); 4]> = LazyLock::new(|| {
 const PHONE_MIN_DIGITS: usize = 10;
 
 pub fn scrub(text: &str) -> String {
-    let text =
-        PII.iter().fold(text.to_string(), |text, (pattern, mask)| pattern.replace_all(&text, *mask).into_owned());
+    let mut text = Cow::Borrowed(text);
+    for (pattern, mask) in PII.iter() {
+        if let Cow::Owned(masked) = pattern.replace_all(&text, *mask) {
+            text = Cow::Owned(masked);
+        }
+    }
     PHONE
         .replace_all(&text, |m: &regex::Captures| {
             let digits = m[0].chars().filter(char::is_ascii_digit).count();

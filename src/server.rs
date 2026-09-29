@@ -51,12 +51,12 @@ pub fn router(app: Arc<App>) -> Router {
         .with_state(options)
 }
 
-/// Rejects a foreign `Host` (DNS rebinding) or `Origin` (cross-site posts, also from other local ports).
+/// Rejects a foreign `Host` (DNS rebinding) or `Origin` (cross-site posts).
 async fn same_origin(State(port): State<u16>, request: Request, next: Next) -> Response {
-    let hosts = [format!("localhost:{port}"), format!("127.0.0.1:{port}")];
     let local = |value: &str| {
         let host = value.strip_prefix("http://").unwrap_or(value);
-        hosts.iter().any(|h| h == host)
+        let Some((name, at)) = host.split_once(':') else { return false };
+        matches!(name, "localhost" | "127.0.0.1") && at.parse() == Ok(port)
     };
     let allowed = {
         let header = |name| request.headers().get(name).and_then(|v| v.to_str().ok());

@@ -81,16 +81,21 @@ pub async fn add(db: &PgPool, postings: &[Posting]) -> Result<Vec<i64>> {
 fn fingerprint(company: &str, title: &str) -> String {
     const COMPANY_NOISE: [&str; 9] = ["inc", "ltd", "llc", "gmbh", "corp", "co", "plc", "bv", "sa"];
     const TITLE_NOISE: [&str; 8] = ["remote", "m", "w", "d", "f", "x", "h", "all"];
-    let words = |s: &str| {
-        s.to_lowercase()
-            .split(|c: char| !c.is_alphanumeric())
-            .filter(|w| !w.is_empty())
-            .map(str::to_string)
-            .collect::<Vec<_>>()
-    };
-    let company: String = words(company).into_iter().filter(|w| !COMPANY_NOISE.contains(&w.as_str())).collect();
-    let title: BTreeSet<String> = words(title).into_iter().filter(|w| !TITLE_NOISE.contains(&w.as_str())).collect();
-    format!("{company}|{}", title.into_iter().collect::<Vec<_>>().join(" "))
+    fn words(s: &str) -> impl Iterator<Item = &str> {
+        s.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty())
+    }
+    let (company, title) = (company.to_lowercase(), title.to_lowercase());
+    let mut print = String::with_capacity(company.len() + title.len() + 1);
+    print.extend(words(&company).filter(|w| !COMPANY_NOISE.contains(w)));
+    print.push('|');
+    let title: BTreeSet<&str> = words(&title).filter(|w| !TITLE_NOISE.contains(w)).collect();
+    for (n, word) in title.into_iter().enumerate() {
+        if n > 0 {
+            print.push(' ');
+        }
+        print.push_str(word);
+    }
+    print
 }
 
 pub async fn get(db: &PgPool, id: i64) -> Result<Job> {
@@ -130,7 +135,8 @@ async fn shift(db: &PgPool, moves: &[(i64, &str)], from: Option<Stage>, to: Stag
         let reason = why[&id];
         let mut body = format!("{company} · {title}: {} → {}", stage.label(), to.label());
         if !reason.is_empty() {
-            body = format!("{body}. {reason}");
+            body.push_str(". ");
+            body.push_str(reason);
         }
         changed.push(id);
         froms.push(from);

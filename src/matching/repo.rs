@@ -39,14 +39,14 @@ pub async fn labelled(db: &PgPool, label: Label) -> Result<Vec<(Job, Vec<f32>, b
         .collect();
     Ok(rows
         .into_iter()
-        .filter_map(|(id, embedding, label)| Some((jobs.remove(&id)?, embedding.to_vec(), label)))
+        .filter_map(|(id, embedding, label)| Some((jobs.remove(&id)?, Vec::from(embedding), label)))
         .collect())
 }
 
 pub async fn embedding(db: &PgPool, id: i64) -> Result<Option<Vec<f32>>> {
     let vector: Option<Vector> =
         sqlx::query_scalar("select embedding from jobs where id = $1").bind(id).fetch_one(db).await?;
-    Ok(vector.map(|v| v.to_vec()))
+    Ok(vector.map(Vec::from))
 }
 
 pub async fn centroids(db: &PgPool) -> Result<(Option<Vec<f32>>, Option<Vec<f32>>, i64)> {
@@ -60,7 +60,7 @@ pub async fn centroids(db: &PgPool) -> Result<(Option<Vec<f32>>, Option<Vec<f32>
     )
     .fetch_one(db)
     .await?;
-    Ok((liked.map(|v| v.to_vec()), skipped.map(|v| v.to_vec()), skips))
+    Ok((liked.map(Vec::from), skipped.map(Vec::from), skips))
 }
 
 pub async fn model(db: &PgPool, name: &str) -> Result<Option<Model>> {

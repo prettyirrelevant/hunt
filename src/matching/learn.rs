@@ -24,10 +24,11 @@ impl Model {
         if rows.len() < MIN_EXAMPLES || positives.min(rows.len() - positives) < MIN_PER_CLASS {
             return None;
         }
-        let fit = |rows: &[(Vec<f64>, bool)]| {
+        let fit = |rows: &[&(Vec<f64>, bool)]| {
             let width = rows[0].0.len();
             let x =
-                Array2::from_shape_vec((rows.len(), width), rows.iter().flat_map(|(x, _)| x.clone()).collect()).ok()?;
+                Array2::from_shape_vec((rows.len(), width), rows.iter().flat_map(|(x, _)| x.iter().copied()).collect())
+                    .ok()?;
             let y = Array1::from_iter(rows.iter().map(|(_, y)| *y));
             let model = LogisticRegression::default().alpha(1.0).max_iterations(200).fit(&Dataset::new(x, y)).ok()?;
             // linfa picks its positive class from the data. Orient the weights to `true`.
@@ -35,8 +36,7 @@ impl Model {
             Some((model.params().iter().map(|w| w * sign).collect::<Vec<f64>>(), model.intercept() * sign))
         };
 
-        let (train, test): (Vec<_>, Vec<_>) =
-            rows.iter().cloned().enumerate().partition(|(i, _)| i % HOLD_OUT_EVERY != 0);
+        let (train, test): (Vec<_>, Vec<_>) = rows.iter().enumerate().partition(|(i, _)| i % HOLD_OUT_EVERY != 0);
         let train: Vec<_> = train.into_iter().map(|(_, row)| row).collect();
         let accuracy = fit(&train).map(|(weights, bias)| {
             let held_out = Model { weights, bias, examples: train.len(), accuracy: None };
@@ -44,7 +44,7 @@ impl Model {
             hits as f64 / test.len().max(1) as f64
         });
 
-        let (weights, bias) = fit(rows)?;
+        let (weights, bias) = fit(&rows.iter().collect::<Vec<_>>())?;
         Some(Model { weights, bias, examples: rows.len(), accuracy })
     }
 
@@ -55,11 +55,12 @@ impl Model {
 }
 
 pub fn features(job: &Job, embedding: &[f32], profile: &Profile, fit: Option<u8>) -> Vec<f64> {
-    let skills: Vec<String> = profile.skills.iter().map(|s| s.to_lowercase()).collect();
+    let same = |a: &str, b: &str| a.chars().flat_map(char::to_lowercase).eq(b.chars().flat_map(char::to_lowercase));
     let overlap = if job.skills.is_empty() {
         0.0
     } else {
-        job.skills.iter().filter(|s| skills.contains(&s.to_lowercase())).count() as f64 / job.skills.len() as f64
+        let known = job.skills.iter().filter(|s| profile.skills.iter().any(|p| same(s, p))).count();
+        known as f64 / job.skills.len() as f64
     };
     let facts = [
         f64::from(job.work_mode == WorkMode::Remote),

@@ -29,7 +29,7 @@ pub async fn score(app: &Arc<App>, id: i64) -> Result<()> {
         return Ok(());
     }
     let embedding =
-        repo::embedding(&app.db, id).await?.unwrap_or_else(|| app.embedder.embed(&job.embedding_text()).to_vec());
+        repo::embedding(&app.db, id).await?.unwrap_or_else(|| app.embedder.embed(&job.embedding_text()).into());
     let like_model = repo::model(&app.db, "like").await?;
 
     if like_model.is_none() {

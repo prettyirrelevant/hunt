@@ -23,16 +23,18 @@ pub async fn check_inbox(app: &Arc<App>) -> Result<()> {
         "select id, company from jobs where stage in ('sending', 'applied', 'screen', 'interview', 'ghosted')",
     )
     .fetch_all(&app.db)
-    .await?;
+    .await?
+    .into_iter()
+    .map(|(id, company): (i64, String)| (id, company.to_lowercase()))
+    .collect();
 
     let (mut about, mut ignored) = (vec![], vec![]);
     for m in &mail {
         let domain = m.sender.rsplit('@').next().unwrap_or_default().to_lowercase();
         let text = format!("{} {}", m.subject, m.text).to_lowercase();
         let job = open.iter().find(|(_, company)| {
-            let company = company.to_lowercase();
             let word = company.split_whitespace().next().unwrap_or_default();
-            text.contains(&company) || (word.len() >= 4 && domain.contains(word))
+            text.contains(company.as_str()) || (word.len() >= 4 && domain.contains(word))
         });
         match job {
             Some(&(job_id, _)) => about.push((m, job_id)),

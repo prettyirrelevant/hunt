@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, LazyLock};
 
 use anyhow::Result;
 use graphile_worker::{IntoTaskHandlerResult, TaskHandler, WorkerContext};
@@ -69,6 +69,8 @@ fn prompt(job: &Job, base_cv: &str, evidence: &str) -> String {
     )
 }
 
+static NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\d+(?:[.,]\d+)?").expect("valid pattern"));
+
 fn keep_to_the_facts(tailored: &mut Tailored, sources: &str) {
     let sources = sources.to_lowercase();
     for group in &mut tailored.cv.skills {
@@ -83,7 +85,6 @@ fn keep_to_the_facts(tailored: &mut Tailored, sources: &str) {
             known
         });
     }
-    let number = Regex::new(r"\d+(?:[.,]\d+)?").expect("valid pattern");
     let bullets = tailored
         .cv
         .experience
@@ -91,7 +92,7 @@ fn keep_to_the_facts(tailored: &mut Tailored, sources: &str) {
         .flat_map(|r| &r.bullets)
         .chain(tailored.cv.projects.iter().flat_map(|p| &p.bullets));
     let unsure: Vec<String> = bullets
-        .filter(|bullet| number.find_iter(bullet).any(|n| !sources.contains(n.as_str())))
+        .filter(|bullet| NUMBER.find_iter(bullet).any(|n| !sources.contains(n.as_str())))
         .map(|bullet| format!("Check this number: \"{bullet}\""))
         .collect();
     tailored.changes.extend(unsure.into_iter().map(|text| Change { kind: ChangeKind::Add, text }));
