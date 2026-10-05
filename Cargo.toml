@@ -65,7 +65,7 @@ pulldown-cmark = { version = "0.13.4", optional = true }
 ammonia = { version = "4.2.0", optional = true }
 lettre = { version = "0.11.23", default-features = false, features = ["tokio1", "tokio1-rustls", "builder", "smtp-transport", "ring", "webpki-roots"], optional = true }
 keyring = { version = "4.2.0", optional = true }
-async-imap = { version = "0.11.3", default-features = false, features = ["runtime-tokio"], optional = true }
+async-imap = { version = "0.12.0", default-features = false, features = ["runtime-tokio"], optional = true }
 mail-parser = { version = "0.11.9", optional = true }
 tokio-rustls = { version = "0.26.5", optional = true }
 webpki-roots = { version = "1.0.9", optional = true }

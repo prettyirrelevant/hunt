@@ -293,19 +293,19 @@ dependencies = [
 
 [[package]]
 name = "async-imap"
-version = "0.11.3"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a6728e0f7931b36d725ac234fcb02539e9f7888dbeaaa8a18d9ea5792181570"
+checksum = "f97b87216c9f0ccc63c516263169085fa34bba25633f6d96c6a9b9ca1fd5f70a"
 dependencies = [
  "async-channel 2.5.0",
  "async-compression",
- "base64 0.22.1",
+ "base64 0.23.1",
  "bytes",
  "chrono",
- "futures",
+ "futures-util",
  "imap-proto",
  "log",
- "nom 7.1.3",
+ "nom 8.0.0",
  "pin-project",
  "pin-utils",
  "self_cell",
@@ -596,6 +596,12 @@ name = "base64"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac07cdecf99051d9a5238b80f35af32cdeba5b336e55d957b318b50137e18da5"
+
+[[package]]
+name = "base64ct"
+version = "1.8.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2af50177e190e07a26ab74f8b1efbfe2ef87da2116221318cb1c2e82baf7de06"
 
 [[package]]
 name = "biblatex"
@@ -1168,9 +1174,9 @@ dependencies = [
 
 [[package]]
 name = "config"
-version = "0.15.26"
+version = "0.15.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "790374c727a4cb20877dd2cc99ce7011cbe03b0b8df083acccd37df0d161304d"
+checksum = "38e9fbc53afcec54441422f1c596cd054655b32e70e1cbac956651b7b175a404"
 dependencies = [
  "convert_case 0.6.0",
  "pathdiff",
@@ -1201,6 +1207,12 @@ dependencies = [
  "cfg-if",
  "wasm-bindgen",
 ]
+
+[[package]]
+name = "const-oid"
+version = "0.9.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
 
 [[package]]
 name = "const-oid"
@@ -1607,6 +1619,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "der"
+version = "0.7.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb"
+dependencies = [
+ "const-oid 0.9.6",
+ "der_derive",
+ "flagset",
+ "zeroize",
+]
+
+[[package]]
+name = "der_derive"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8034092389675178f570469e6c3b0465d3d30b4505c294a6550db47f3c17ad18"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "deranged"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1695,7 +1730,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2"
 dependencies = [
  "block-buffer 0.12.1",
- "const-oid",
+ "const-oid 0.10.2",
  "crypto-common 0.2.2",
  "ctutils",
 ]
@@ -2110,6 +2145,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aedcfb3409746eddb02b9e19ebda1c3394f759a152e48ee875a0844d1b955484"
 
 [[package]]
+name = "flagset"
+version = "0.4.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b7ac824320a75a52197e8f2d787f6a38b6718bb6897a35142d749af3c0e8f4fe"
+
+[[package]]
 name = "flate2"
 version = "1.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2478,9 +2519,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker"
-version = "0.13.5"
+version = "0.13.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13b49aed0bd0fe89666b7511b897ce9ef4b948aadcf10088a3bbfc811594b27e"
+checksum = "d7fc39f751c544922baf217c53291f09d845ff52336b816f2a604f035eaf4a74"
 dependencies = [
  "chrono",
  "derive_builder",
@@ -2517,9 +2558,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_crontab_parser"
-version = "0.5.24"
+version = "0.5.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3584c0f43ba24d3d2cdddeabff61552fdb7b6e2b0bd1a2d8e54cef2c03a1a47f"
+checksum = "92ac25a7be3653ed57ccee7d63788b5b15f4e90b37d91bfc7d197b62344d66de"
 dependencies = [
  "graphile_worker_crontab_types",
  "json5",
@@ -2532,9 +2573,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_crontab_runner"
-version = "0.7.10"
+version = "0.7.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31863c5c3e0cf6199aa292ee321af98e7ffe093be44f2b746ba4f9339cb813a2"
+checksum = "90942182fad04799f5d4bf158dccc008f1866d61821e15d7c2af6b54f3a161cd"
 dependencies = [
  "chrono",
  "futures",
@@ -2555,9 +2596,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_crontab_types"
-version = "0.5.18"
+version = "0.5.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d587b9e4505d8a005919f9561ca9aad221ec8c058279778452a186c6c14fc93"
+checksum = "1753be8713144f5444f3144e8d84a5afbc09e96337934236e0115792bc1e5371"
 dependencies = [
  "chrono",
  "getset",
@@ -2568,9 +2609,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_ctx"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "740350b3004c558c09d948d72e6183798b49cd053a02296635ba0e2db491c88e"
+checksum = "80fc817ff7ef66fab62bb25b06a60da9be366b923dcdecc0c4ab978cd8ade9a6"
 dependencies = [
  "derive_builder",
  "getset",
@@ -2584,12 +2625,13 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_database"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b25daa3c247e4741cfdd4e8eb94f8c81a6882b126f6586ab7b3e5f48b451ec46"
+checksum = "620e34c06d4961f570012fb60a0d6c678ea1819c533bf9cdd89b464e9615d5ca"
 dependencies = [
  "chrono",
  "futures",
+ "graphile_worker_postgres_tls",
  "serde_json",
  "sqlx",
  "thiserror 2.0.21",
@@ -2604,9 +2646,9 @@ checksum = "4d7c3e7bb5223f5bdc47573fbd594a7cd5fb6e0fbffeb80ed439d3382d9db2a7"
 
 [[package]]
 name = "graphile_worker_job"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba8ab96a3a6f75c33233334256d914134e4ae93c97b65c1bb9092384c8caad61"
+checksum = "38a26fce6176bb872d3e1f24250c6cfc3cce56a8c1312401394676ab53399965"
 dependencies = [
  "chrono",
  "derive_builder",
@@ -2628,9 +2670,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_lifecycle_hooks"
-version = "0.3.5"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a62ab6d527a85d68a2f3b9d21e22452556222ab3d491390b099a4698310eee79"
+checksum = "e3bd38611798536e447ab56c756e9630566b980b687c098371b9ce87f0aef54f"
 dependencies = [
  "chrono",
  "futures",
@@ -2641,13 +2683,14 @@ dependencies = [
  "graphile_worker_job_spec",
  "serde_json",
  "sqlx",
+ "tracing",
 ]
 
 [[package]]
 name = "graphile_worker_migrations"
-version = "0.4.21"
+version = "0.4.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b16e1ffe2de26e0c4bea4d0fb4cbc53ce7e269cf44bbc9e07b8c40ca0c5c200f"
+checksum = "f01c627fd0d8bc5cb01a3b25bf381140f6a93021df9296689bfbe6225c0aa68d"
 dependencies = [
  "graphile_worker_database",
  "graphile_worker_migrations_core",
@@ -2667,21 +2710,35 @@ checksum = "899572d8cece56566789368d7593fb8182641fa64d492195cf880ef0d673b89c"
 
 [[package]]
 name = "graphile_worker_migrations_macros"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "125d8e9205b30e412c8a96d3b8ccdb8597a4f3d6678f531c413462acd73cb7e7"
+checksum = "5f579fbefa743eb9c3230e0e03b8bb70e0a0f235839ca389227ef70aed303a3a"
 dependencies = [
  "graphile_worker_migrations_core",
  "proc-macro2",
  "quote",
- "syn 2.0.119",
+ "syn 3.0.6",
+]
+
+[[package]]
+name = "graphile_worker_postgres_tls"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c4070d99ef71f9664220db0c22b633bd648485c4c7bd4746e1478f1646c6d9e1"
+dependencies = [
+ "rustls",
+ "rustls-pemfile",
+ "thiserror 2.0.21",
+ "tokio-postgres",
+ "tokio-postgres-rustls",
+ "webpki-roots 1.0.9",
 ]
 
 [[package]]
 name = "graphile_worker_queries"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fdf4859d491f5491149a6eaec39f4c63caa906d488ada011b11cab262c1d1feb"
+checksum = "d8ab9c5765cb744e759cd6baa726aab7a1020e829564b7efa0196fe367d87055"
 dependencies = [
  "chrono",
  "graphile_worker_database",
@@ -2697,9 +2754,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_recovery"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0eda35607a2e75e87e0923b2ed16a2222d5ffac4d2190e20f5963cc16b26402a"
+checksum = "f7eb63a3af8a552cbf4d26b10306b8ec9c9fd1eec98b9d557c170d7d3617e548"
 dependencies = [
  "chrono",
  "graphile_worker_database",
@@ -2713,9 +2770,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_runtime"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0211abb6cb358a9225b5131f7581902551034330f7e4a560a887202e0b0a69d9"
+checksum = "bb557bb495a758c17f6d7dcbc9164dd9a6bf5f20769a102798575e28a8a006b9"
 dependencies = [
  "async-channel 2.5.0",
  "async-lock",
@@ -2727,9 +2784,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_shutdown_signal"
-version = "0.3.14"
+version = "0.3.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f3d0b5f38844ab1d98135f3475d9457791370dbb4e0ee318f0bbc714fcac628"
+checksum = "a15dce2223458c57a2949724270e54b7d1ded8dadb57a17e0453e2070dc55052"
 dependencies = [
  "async-signal",
  "event-listener 5.4.2",
@@ -2740,9 +2797,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_task_details"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be2cf05a2174adc8476c5b5f625b4bccaa287e8363a50ed668fe91881f194587"
+checksum = "ab4f8bf11226d71b43457c2a2b079ad76d26602d97b2bc5439c7b02864540f1d"
 dependencies = [
  "graphile_worker_runtime",
  "tracing",
@@ -2750,9 +2807,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_task_handler"
-version = "0.5.20"
+version = "0.5.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc02ba9567a8a529578236825dd35d1b98cb6fc4af2049806568342c846bffb2"
+checksum = "0e6c8520a283e7deef26012240c588500ac6ab745629ca57923d78a3fe6ff23c"
 dependencies = [
  "graphile_worker_ctx",
  "serde",
@@ -2761,9 +2818,9 @@ dependencies = [
 
 [[package]]
 name = "graphile_worker_utils"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e129185085f22359e91b018be003cda52240de8e60a67cb52dd3ce1fa8dd1f67"
+checksum = "6984a4ac95d3a8bbae05b2ae36b2f96c9da79839986f01364671b2aa9fa60901"
 dependencies = [
  "chrono",
  "graphile_worker_ctx",
@@ -3635,11 +3692,11 @@ checksum = "09e54e57b4c48b40f7aec75635392b12b3421fa26fe8b4332e63138ed278459c"
 
 [[package]]
 name = "imap-proto"
-version = "0.16.7"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25f6af35c6a517aea5c72314abe90134980d2ae6a763809b50c208b3e429d71f"
+checksum = "5ccf963d57074747b455398a1763d174da80bcaba6f51e3671a82252b531a68b"
 dependencies = [
- "nom 7.1.3",
+ "nom 8.0.0",
 ]
 
 [[package]]
@@ -6657,6 +6714,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustls-pemfile"
+version = "2.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dce314e5fee3f39953d46bb63bb8a46d40c2f8fb7cc5a3b6cab2bde9721d6e50"
+dependencies = [
+ "rustls-pki-types",
+]
+
+[[package]]
 name = "rustls-pki-types"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7366,6 +7432,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "spki"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d91ed6c858b01f942cd56b37a94b3e0a1798290327d1236e4d9cf4eaca44d29d"
+dependencies = [
+ "base64ct",
+ "der",
+]
+
+[[package]]
 name = "spm_precompiled"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8058,6 +8134,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd3ca314f692efd6c868f8408f53fe444634a845f96c028b97d35f6a1f79f0ee"
 
 [[package]]
+name = "tls_codec"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0de2e01245e2bb89d6f05801c564fa27624dbd7b1846859876c7dad82e90bf6b"
+dependencies = [
+ "tls_codec_derive",
+ "zeroize",
+]
+
+[[package]]
+name = "tls_codec_derive"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d2e76690929402faae40aebdda620a2c0e25dd6d3b9afe48867dfd95991f4bd"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "tokenizers"
 version = "0.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8147,10 +8244,24 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-rustls"
-version = "0.26.5"
+name = "tokio-postgres-rustls"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0c85f2c3ef0b1cd58b36682f4b17aaa995f0e5db534d85692b4903abce21f67"
+checksum = "4c2ad44aa0ae96db89c4742212ed41645b2f597311ff6e1945542a4d9fadc2fb"
+dependencies = [
+ "rustls",
+ "sha2 0.11.0",
+ "tokio",
+ "tokio-postgres",
+ "tokio-rustls",
+ "x509-cert",
+]
+
+[[package]]
+name = "tokio-rustls"
+version = "0.26.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c9cc2678c2cdd569ef8215e2afd7954ada2ae20b4fdd2c5fe6139a3b02d105db"
 dependencies = [
  "rustls",
  "tokio",
@@ -8211,10 +8322,12 @@ version = "1.1.6+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "920602543f0911ab71da12c50d59701da54c196d1a2bf5cb4b75667f137a406a"
 dependencies = [
+ "indexmap 2.14.2",
  "serde_core",
  "serde_spanned 1.1.1",
  "toml_datetime 1.1.1+spec-1.1.0",
  "toml_parser",
+ "toml_writer",
  "winnow 1.0.4",
 ]
 
@@ -8276,6 +8389,12 @@ name = "toml_write"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801"
+
+[[package]]
+name = "toml_writer"
+version = "1.1.2+spec-1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d56353a2a665ad0f41a421187180aab746c8c325620617ad883a99a1cbe66d2"
 
 [[package]]
 name = "tower"
@@ -9881,6 +10000,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc"
 
 [[package]]
+name = "x509-cert"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1301e935010a701ae5f8655edc0ad17c44bad3ac5ce8c39185f75453b720ae94"
+dependencies = [
+ "const-oid 0.9.6",
+ "der",
+ "spki",
+ "tls_codec",
+]
+
+[[package]]
 name = "xattr"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -10089,6 +10220,20 @@ name = "zeroize"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e13c156562582aa81c60cb29407084cdb54c4164760106ab78e6c5b0858cf64e"
+dependencies = [
+ "zeroize_derive",
+]
+
+[[package]]
+name = "zeroize_derive"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3c50655cbb0fe3fc43170059e702f1ce5e19b84cec58dc87b037a09935c2f328"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
+]
 
 [[package]]
 name = "zerotrie"
