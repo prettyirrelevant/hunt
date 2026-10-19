@@ -32,7 +32,7 @@ futures = { version = "0.3.34", optional = true }
 gline-rs = { version = "1.1.0", optional = true }
 graphile_worker = { version = "0.13.5", optional = true }
 htmd = { version = "0.5.5", optional = true }
-html-escape = { version = "0.2.15", optional = true }
+html-escape = { version = "0.3.0", optional = true }
 leptos_axum = { version = "0.8.10", optional = true }
 linfa = { version = "0.8.1", optional = true }
 linfa-logistic = { version = "0.8.1", optional = true }
@@ -55,7 +55,7 @@ tracing = { version = "0.1.44", optional = true }
 tracing-appender = { version = "0.2.5", optional = true }
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"], optional = true }
 typst = { version = "0.15", optional = true }
-typst-as-lib = { version = "0.16.0", features = ["typst-kit-fonts", "typst-kit-embed-fonts"], optional = true }
+typst-as-lib = { version = "0.17.0", features = ["typst-kit-fonts", "typst-kit-embed-fonts"], optional = true }
 typst-layout = { version = "0.15", optional = true }
 typst-pdf = { version = "0.15", optional = true }
 url = { version = "2.5.8", optional = true }
@@ -65,7 +65,7 @@ pulldown-cmark = { version = "0.13.4", optional = true }
 ammonia = { version = "4.2.0", optional = true }
 lettre = { version = "0.11.23", default-features = false, features = ["tokio1", "tokio1-rustls", "builder", "smtp-transport", "ring", "webpki-roots"], optional = true }
 keyring = { version = "4.2.0", optional = true }
-async-imap = { version = "0.11.3", default-features = false, features = ["runtime-tokio"], optional = true }
+async-imap = { version = "0.12.0", default-features = false, features = ["runtime-tokio"], optional = true }
 mail-parser = { version = "0.11.9", optional = true }
 tokio-rustls = { version = "0.26.5", optional = true }
 webpki-roots = { version = "1.0.9", optional = true }
